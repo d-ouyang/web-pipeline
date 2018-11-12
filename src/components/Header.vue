@@ -10,7 +10,7 @@
       </div>
       <div class="header-log-reg">
         <div class="header-log">登录</div>
-        <div class="header-reg">注册</div>
+        <router-link class="header-reg" to='/register' tag="div">注册</router-link>
       </div>
     </div>
   </el-header>
