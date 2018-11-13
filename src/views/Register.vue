@@ -1,7 +1,9 @@
 <template>
   <div class="register">
     <el-row class="register-box">
+      <img class="register-box-bg" src="../common/image/register.png" alt="">
       <h2 class="register-header">注册账号</h2>
+
       <el-form class="form" ref="form" :model="form" :rules="rules" :label-position="labelPosition">
         <div class="form-model form-left">
           <el-form-item label="真实姓名">
@@ -60,6 +62,7 @@
           <router-link class="login" to='/home' tag="div">立即登录</router-link>
         </p>
       </div>
+      
     </el-row>
 
     <o-footer></o-footer>
@@ -116,6 +119,12 @@ export default {
         ]
       }
     }
+  },
+
+  methods: {
+    onSubmit() {
+      console.log('submit!');
+    }
   }
 }
 </script>
@@ -137,6 +146,12 @@ export default {
     position relative
     left 50%
     transform translateX(-50%)
+    .register-box-bg
+      position absolute
+      right 0
+      bottom 0
+      width 487px
+      height 684px
     .register-header
       font-size $size-reg
       color $color-news-title

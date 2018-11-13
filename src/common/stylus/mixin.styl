@@ -21,7 +21,11 @@ box-shadow()
   vendor('box-shadow', arguments)
 
 box-sizing()
-  vender('box-sizing', arguments)
+  -moz-box-sizing: border-box;  
+  -webkit-box-sizing: border-box; 
+  -o-box-sizing: border-box; 
+  -ms-box-sizing: border-box; 
+  box-sizing: border-box;
 
 opacity(n)
   opacity n
