@@ -103,6 +103,7 @@ export default {
       width 100%
       background-color $color-normal
       border-radius(8px)
+      margin-bottom 20px
       .info-header
         display flex
         flex-direction row
