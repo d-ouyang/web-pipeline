@@ -25,7 +25,9 @@
               </li>
             </ul>
             <div class="btn-group">
-              <button class="single-signup">立即报名</button>
+              <button class="single-signup" @click="signup">立即报名
+                <!-- <router-link to='/signup' tag="div">立即报名</router-link> -->
+              </button>
               <button class="group-signup">公司报名</button>
             </div>
           </el-col>
@@ -39,6 +41,11 @@ export default {
   data() {
     return {
       span: 12
+    }
+  },
+  methods: {
+    signup() {
+      this.$emit('signup')
     }
   }
 }
