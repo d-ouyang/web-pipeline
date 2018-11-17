@@ -27,13 +27,29 @@
             <span slot="label">
               <img src="../common/image/alipay.png" alt="">支付宝支付
             </span>
-            <div>支付宝支付</div>
+            <div class="pay-box">
+              <h4>共需支付</h4>
+              <h3>
+                <span>￥</span>
+                5,900
+              </h3>
+              <img src="" alt="">
+              <p>请用支付宝扫描支付</p>
+            </div>
           </el-tab-pane>
           <el-tab-pane>
             <span slot="label">
               <img src="../common/image/wechat.png" alt="">微信支付
             </span>
-            <div>微信支付</div>
+            <div class="pay-box">
+              <h4>共需支付</h4>
+              <h3>
+                <span>￥</span>
+                5,900
+              </h3>
+              <img @click="goToPay" src="" alt="">
+              <p>请用微信扫描支付</p>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -50,8 +66,13 @@ export default {
   },
   mounted() {
     console.log(支付)
-    console.log(this.$route);
+    console.log(this.$route)
   },
+  methods: {
+    goToPay() {
+      this.$router.push('/payOver/123')
+    }
+  }
 }
 </script>
 
@@ -117,6 +138,7 @@ export default {
       .el-tabs--border-card >>> .el-tabs__header
         border-right 0
         background-color $color-border
+        margin-right 0
         .el-tabs__item
           border 0
           height 60px
@@ -131,5 +153,34 @@ export default {
               width 20px
               height 20px
               margin-right 10px
+      .el-tabs--border-card >>> .el-tabs__content
+        padding 0
+        .pay-box 
+          display flex
+          flex-direction column
+          align-items center
+          h4
+            font-size $size-news-btn
+            color $color-nav-active
+            margin-bottom 10px
+            margin-top 84px
+          h3
+            font-size $size-amount
+            color $color-nav-active
+            font-weight 400
+            margin-bottom 30px
+            display flex
+            flex-direction row
+            align-items baseline
+            span 
+              font-size $size-news-title
+          img 
+            width 190px
+            height 190px
+            margin-bottom 16px
+          p
+            font-size $size-sub-title
+            color $color-td-name-text
+            border-bottom 0
 
 </style>

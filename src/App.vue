@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './common/stylus/index.styl';
+@import './common/stylus/index.styl'
 
 #app 
   background-color: $color-background

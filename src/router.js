@@ -44,6 +44,11 @@ export default new Router({
       path: '/pay/:id',
       name: 'pay',
       component: () => import('./views/Pay.vue')
+    },
+    {
+      path: '/payOver/:id',
+      name: 'payOver',
+      component: () => import('./views/PayOver.vue')
     }
   ]
 })
