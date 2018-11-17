@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <o-banner v-on:signup='bindSignUp'></o-banner>
-    <!-- <router-view></router-view> -->
     <o-news></o-news>
     <o-footer></o-footer>
     <o-login v-show="false"></o-login>
@@ -20,10 +19,14 @@ export default {
     OFooter,
     OLogin
   },
+  mounted() {
+    console.log('首页')
+    console.log(this.$route)
+  },
   methods: {
     bindSignUp() {
-      console.log('报名')
-      this.$router.push({path:'/signup'})
+      console.log('tiaozhuandao pay')
+      this.$router.push({path:'/signup/personal'})
     }
   }
 }

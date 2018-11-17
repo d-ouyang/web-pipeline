@@ -4,6 +4,7 @@
       <el-header height="73px">
         <div class="signup-name">课程报名</div>
       </el-header>
+
       <div class="info-container">
         <h4 class="info-header">
           <span>课程信息</span>
@@ -13,7 +14,7 @@
           <table class="info-box">
             <tr>
               <td class="name">课程名称</td>
-              <td class="value">上海市.浦东新区.浦东南路500号 41楼</td>
+              <td class="value">上海市.浦东新区</td>
             </tr>
             <tr>
               <td class="name">课程费用</td>
@@ -33,7 +34,7 @@
         </div>
       </div>
 
-      <div class="upload-container">
+      <div class="info-container">
         <h4 class="info-header">
           <span>上传资料</span>
         </h4>
@@ -41,7 +42,7 @@
           <div class="upload-box">
             <h4>毕业证书</h4>
             <div class="upload-box-add">
-              <img src="" alt="">
+              <img src="../common/image/add.png" alt="">
               <h5>点击添加图片</h5>
               <p>支持jpg/png格式</p>
               <p>不超过5MB</p>
@@ -50,7 +51,7 @@
           <div class="upload-box">
             <h4>上传资质证书</h4>
             <div class="upload-box-add">
-              <img src="" alt="">
+              <img src="../common/image/add.png" alt="">
               <h5>点击添加图片</h5>
               <p>支持jpg/png格式</p>
               <p>不超过5MB</p>
@@ -59,7 +60,9 @@
         </div>
       </div>
 
-      <el-button>确认并支付</el-button>
+      <div class="comfirm-btn">
+        <el-button @click="goToPay">确认并支付</el-button>
+      </div>
     </el-main>
   </el-container>
 </template>
@@ -69,10 +72,16 @@ export default {
     return {};
   },
   created() {
-    // console.log(this.$router)
+    
   },
   mounted() {
-    console.log(this.$route.params);
+    console.log('报名页面')
+    console.log(this.$route);
+  },
+  methods: {
+    goToPay() {
+      this.$router.push({path:'/pay/nihao'})
+    }
   }
 };
 </script>
@@ -98,7 +107,18 @@ export default {
         font-size $size-news-title
         color $color-news-title
         font-weight 400
-
+    .comfirm-btn
+      display flex
+      flex-direction column
+      align-items center
+      margin-top 70px
+      .el-button
+        width 290px
+        height 48px
+        background-color $color-nav-active
+        color $color-normal
+        font-size $size-nav-text
+        border-radius(8px)
     .info-container
       width 100%
       background-color $color-normal
@@ -148,7 +168,43 @@ export default {
             color $color-td-value-text
             font-weight 400
 
-
-
+      .upload-wrapper
+        display flex
+        flex-direction row
+        align-items center
+        justify-content space-around
+        .upload-box
+          display flex
+          flex-direction column
+          align-items center
+          padding 48px 0 50px
+          h4
+            font-size $size-news-btn
+            color $color-td-value-text
+            margin-bottom 28px
+          .upload-box-add
+            position relative
+            width 240px
+            height 180px
+            display flex
+            flex-direction column
+            align-items center
+            border 2px dashed $color-upload-border
+            background-color $color-upload-bg
+            img 
+              width 44px
+              height 44px
+              margin-bottom 20px
+              margin-top 28px
+            h5
+              font-size $size-news-btn
+              color $color-news-value
+              opacity(0.5)
+              margin-bottom 12px
+            p 
+              font-size $size-news-date
+              color $color-upload-border
+              margin-bottom 8px
+            
 </style>
 

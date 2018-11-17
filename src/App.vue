@@ -7,12 +7,10 @@
 </template>
 <script>
 import OHeader from '@/components/Header.vue'
-// import OSignup from '@/components/Signup.vue'
 
 export default {
   components: {
     OHeader,
-    // OSignup
   }
 };
 </script>

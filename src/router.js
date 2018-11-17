@@ -14,16 +14,6 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home
-      // children: [{
-      //   path: 'signup',
-      //   name: 'signup',
-      //   component: () => import('./views/children/Signup.vue')
-      // }]
-    },
-    {
-      path: '/signup/:type',
-      name: 'signup',
-      component: () => import('./views/Signup.vue')
     },
     {
       path: '/course',
@@ -44,6 +34,16 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('./views/Register.vue')
+    },
+    {
+      path: '/signup/:type',
+      name: 'signup',
+      component: () => import('./views/Signup.vue')
+    },
+    {
+      path: '/pay/:id',
+      name: 'pay',
+      component: () => import('./views/Pay.vue')
     }
   ]
 })
