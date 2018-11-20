@@ -163,6 +163,8 @@ export default {
       justify-content space-between
       .form-model
         width 50%
+        .el-form-item >>> .el-form-item__label
+          padding 0
         .el-form-item
           width 240px
           .pass-error

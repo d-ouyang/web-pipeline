@@ -1,96 +1,122 @@
 <template>
-  <el-container class="signup-container">
-    <el-main>
-      <el-header height="73px">
-        <div class="signup-name">课程报名</div>
-      </el-header>
-
-      <div class="info-container">
-        <h4 class="info-header">
-          <span>课程信息</span>
-          <span class="examination-notes">考试须知</span>
-        </h4>
-        <div class="info-wrapper">
-          <table class="info-box">
-            <tr>
-              <td class="name">课程名称</td>
-              <td class="value">上海市.浦东新区</td>
-            </tr>
-            <tr>
-              <td class="name">课程费用</td>
-              <td class="value">￥380</td>
-            </tr>
-          </table>
-          <table class="info-box">
-            <tr>
-              <td class="name">课程时间</td>
-              <td class="value">2018/10/20~2018/10/21</td>
-            </tr>
-            <tr>
-              <td class="name">课程地点</td>
-              <td class="value">上海市.浦东新区.浦东南路500号 41楼</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div class="info-container">
-        <h4 class="info-header">
-          <span>上传资料</span>
-        </h4>
-        <div class="upload-wrapper">
-          <div class="upload-box">
-            <h4>毕业证书</h4>
-            <div class="upload-box-add">
-              <img src="../common/image/add.png" alt="">
-              <h5>点击添加图片</h5>
-              <p>支持jpg/png格式</p>
-              <p>不超过5MB</p>
-            </div>
-          </div>
-          <div class="upload-box">
-            <h4>上传资质证书</h4>
-            <div class="upload-box-add">
-              <img src="../common/image/add.png" alt="">
-              <h5>点击添加图片</h5>
-              <p>支持jpg/png格式</p>
-              <p>不超过5MB</p>
-            </div>
+  <div>
+    <el-container class="signup-container">
+      <el-main>
+        <el-header height="73px">
+          <div class="signup-name">课程报名</div>
+        </el-header>
+  
+        <div class="info-container">
+          <h4 class="info-header">
+            <span>课程信息</span>
+            <span class="examination-notes" @click="bindNotes">考试须知</span>
+          </h4>
+          <div class="info-wrapper">
+            <table class="info-box">
+              <tr>
+                <td class="name">课程名称</td>
+                <td class="value">上海市.浦东新区</td>
+              </tr>
+              <tr>
+                <td class="name">课程费用</td>
+                <td class="value">￥380</td>
+              </tr>
+            </table>
+            <table class="info-box">
+              <tr>
+                <td class="name">课程时间</td>
+                <td class="value">2018/10/20~2018/10/21</td>
+              </tr>
+              <tr>
+                <td class="name">课程地点</td>
+                <td class="value">上海市.浦东新区.浦东南路500号 41楼</td>
+              </tr>
+            </table>
           </div>
         </div>
-      </div>
-
-      <div class="comfirm-btn">
-        <el-button @click="goToPay">确认并支付</el-button>
-      </div>
-    </el-main>
-  </el-container>
+  
+        <div class="info-container">
+          <h4 class="info-header">
+            <span>上传资料</span>
+          </h4>
+          <div class="upload-wrapper">
+            <div class="upload-box">
+              <h4>毕业证书</h4>
+              <div class="upload-box-add">
+                <img src="../common/image/add.png" alt="">
+                <h5>点击添加图片</h5>
+                <p>支持jpg/png格式</p>
+                <p>不超过5MB</p>
+              </div>
+            </div>
+            <div class="upload-box">
+              <h4>上传资质证书</h4>
+              <div class="upload-box-add">
+                <img src="../common/image/add.png" alt="">
+                <h5>点击添加图片</h5>
+                <p>支持jpg/png格式</p>
+                <p>不超过5MB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="comfirm-btn">
+          <el-button @click="goToPay">确认并支付</el-button>
+        </div>
+      </el-main>
+    </el-container>
+    <o-footer></o-footer>
+    <o-exam-notes v-show="showNotes" v-on:cancle='bindCancle'></o-exam-notes>
+  </div>
 </template>
+
 <script>
-export default {
-  data() {
-    return {};
-  },
-  created() {
-    
-  },
-  mounted() {
-    console.log('报名页面')
-    console.log(this.$route);
-  },
-  methods: {
-    goToPay() {
-      this.$router.push({path:'/pay/nihao'})
+import OFooter from '@/components/Footer.vue'
+import OExamNotes from '@/components/ExamNotes.vue'
+
+  export default {
+
+    data() {
+      return {
+        showNotes: false
+      };
+    },
+    created() {
+  
+    },
+    mounted() {
+      console.log('报名页面')
+      console.log(this.$route);
+    },
+    methods: {
+      goToPay() {
+        this.$router.push({
+          path: '/pay/nihao'
+        })
+      },
+      bindNotes() {
+        console.log(this.showNotes)
+        this.showNotes = true
+      },
+      bindCancle() {
+        this.showNotes = false
+      }
+    },
+    components: {
+      OFooter,
+      OExamNotes
     }
-  }
-};
+  };
 </script>
+
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'
 
 .signup-container
   padding-top 60px
+  margin-bottom 102px
   .el-main 
     width 100%;
     max-width 1200px

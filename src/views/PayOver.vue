@@ -1,31 +1,35 @@
 <template>
-  <el-cotainer class="signup-container">
-    <el-main>
-      <div class="info-container">
-        <div class="pay-over">
-          <img src="../common/image/success.png" alt="">
-          <h3>报名成功</h3>
-          <!-- <p>请前往“个人中心”-“我的考试”中查看课程订单<br>请准时参加培训</p> -->
-          <p>资料审核通过后，您将收到短信提醒<br>考试当日需携带有效证件和准考证前往考场考试</p>
-          <span>*准考证请前往“个人中心”-“我的考试”中下载并打印</span>
+  <div>
+    <el-cotainer class="signup-container">
+      <el-main>
+        <div class="info-container">
+          <div class="pay-over">
+            <img src="../common/image/success.png" alt="">
+            <h3>报名成功</h3>
+            <!-- <p>请前往“个人中心”-“我的考试”中查看课程订单<br>请准时参加培训</p> -->
+            <p>资料审核通过后，您将收到短信提醒<br>考试当日需携带有效证件和准考证前往考场考试</p>
+            <span>*准考证请前往“个人中心”-“我的考试”中下载并打印</span>
+          </div>
         </div>
-      </div>
-      <div class="info-container">
-        <p>
-          <span>课程名称</span>
-          <span>课程时间</span>
-          <span>待支付费用</span>
-        </p>
-        <h5>
-          <span>管道初级培训</span>
-          <span>2018年10月11日</span>
-          <span>5,900 元</span>
-        </h5>
-      </div>
-    </el-main>
-  </el-cotainer>
+        <div class="info-container">
+          <p>
+            <span>课程名称</span>
+            <span>课程时间</span>
+            <span>待支付费用</span>
+          </p>
+          <h5>
+            <span>管道初级培训</span>
+            <span>2018年10月11日</span>
+            <span>5,900 元</span>
+          </h5>
+        </div>
+      </el-main>
+    </el-cotainer>
+    <o-footer></o-footer>
+  </div>
 </template>
 <script>
+import OFooter from '@/components/Footer.vue'
 export default {
   data () {
     return {
@@ -37,6 +41,9 @@ export default {
   },
   methods: {
 
+  },
+  components: {
+    OFooter
   }
 }
 </script>

@@ -28,7 +28,29 @@ export default new Router({
     {
       path: '/personal',
       name: 'personal',
-      component: () => import('./views/Personal.vue')
+      component: () => import('./views/Personal.vue'),
+      children: [
+        {
+          path: '',
+          redirect: 'myexam',
+          component: () => import('./views/children/Myexam.vue')
+        },
+        {
+          path: 'myexam',
+          name: 'myexam',
+          component: () => import('./views/children/Myexam.vue')
+        },
+        {
+          path: 'mycourse',
+          name: 'mycourse',
+          component: () => import('./views/children/Mycourse.vue')
+        },
+        {
+          path: 'myinfo',
+          name: 'myinfo',
+          component: () => import('./views/children/Myinfo.vue')
+        }
+      ]
     },
     {
       path: '/register',

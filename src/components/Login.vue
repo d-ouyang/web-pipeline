@@ -77,7 +77,7 @@
       </div>
 
       <!-- cancle -->
-      <i class="el-icon-close cancle"></i>
+      <i class="el-icon-close cancle" @click="cancle"></i>
     </div>
     
   </div>
@@ -145,6 +145,9 @@ export default {
     },
     onFindSubmit() {
       console.log('发送密码到手机');
+    },
+    cancle() {
+      this.$emit('cancle')
     }
   }
 }
@@ -178,6 +181,7 @@ export default {
       right -36px
       font-size $size-title
       color $color-normal
+      cursor pointer
     .login-item
       h3
         font-size $size-news-title

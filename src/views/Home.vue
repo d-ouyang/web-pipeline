@@ -3,7 +3,7 @@
     <o-banner v-on:signup='bindSignUp'></o-banner>
     <o-news></o-news>
     <o-footer></o-footer>
-    <o-login v-show="false"></o-login>
+    <o-login v-show="showLogin" v-on:cancle='bindCancle'></o-login>
   </div>
 </template>
 <script>
@@ -13,6 +13,14 @@ import OFooter from '@/components/Footer.vue'
 import OLogin from '@/components/Login.vue'
 
 export default {
+  props: {
+    showLogin:Boolean
+  },
+  data() {
+    return {
+      
+    }
+  },
   components: {
     OBanner,
     ONews,
@@ -27,6 +35,11 @@ export default {
     bindSignUp() {
       console.log('tiaozhuandao pay')
       this.$router.push({path:'/signup/personal'})
+    },
+    bindCancle() {
+      console.log('取消')
+      // this.showLogin = false
+      this.$emit('cancle')
     }
   }
 }

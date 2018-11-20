@@ -1,63 +1,67 @@
 <template>
-  <el-container class="signup-container">
-    <el-main>
-      <el-header height="73px">
-        <div class="signup-name">课程报名</div>
-      </el-header>
+  <div>
+    <el-container class="signup-container">
+      <el-main>
+        <el-header height="73px">
+          <div class="signup-name">课程报名</div>
+        </el-header>
 
-      <div class="info-container">
-        <p>
-          <span>课程名称</span>
-          <span>课程时间</span>
-          <span>待支付费用</span>
-        </p>
-        <h5>
-          <span>管道初级培训</span>
-          <span>2018年10月11日</span>
-          <span>5,900 元</span>
-        </h5>
-      </div>
+        <div class="info-container">
+          <p>
+            <span>课程名称</span>
+            <span>课程时间</span>
+            <span>待支付费用</span>
+          </p>
+          <h5>
+            <span>管道初级培训</span>
+            <span>2018年10月11日</span>
+            <span>5,900 元</span>
+          </h5>
+        </div>
 
-      <div class="info-container">
-        <h4 class="info-header">
-          <span>支付方式</span>
-        </h4>
-        <el-tabs :tab-position="tabPosition" type="border-card">
-          <el-tab-pane>
-            <span slot="label">
-              <img src="../common/image/alipay.png" alt="">支付宝支付
-            </span>
-            <div class="pay-box">
-              <h4>共需支付</h4>
-              <h3>
-                <span>￥</span>
-                5,900
-              </h3>
-              <img src="" alt="">
-              <p>请用支付宝扫描支付</p>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane>
-            <span slot="label">
-              <img src="../common/image/wechat.png" alt="">微信支付
-            </span>
-            <div class="pay-box">
-              <h4>共需支付</h4>
-              <h3>
-                <span>￥</span>
-                5,900
-              </h3>
-              <img @click="goToPay" src="" alt="">
-              <p>请用微信扫描支付</p>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-    </el-main>
+        <div class="info-container">
+          <h4 class="info-header">
+            <span>支付方式</span>
+          </h4>
+          <el-tabs :tab-position="tabPosition" type="border-card">
+            <el-tab-pane>
+              <span slot="label">
+                <img src="../common/image/alipay.png" alt="">支付宝支付
+              </span>
+              <div class="pay-box">
+                <h4>共需支付</h4>
+                <h3>
+                  <span>￥</span>
+                  5,900
+                </h3>
+                <img src="" alt="">
+                <p>请用支付宝扫描支付</p>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane>
+              <span slot="label">
+                <img src="../common/image/wechat.png" alt="">微信支付
+              </span>
+              <div class="pay-box">
+                <h4>共需支付</h4>
+                <h3>
+                  <span>￥</span>
+                  5,900
+                </h3>
+                <img @click="goToPay" src="" alt="">
+                <p>请用微信扫描支付</p>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+      </el-main>
 
-  </el-container>
+    </el-container>
+    <o-footer></o-footer>
+  </div>
 </template>
 <script>
+import OFooter from '@/components/Footer.vue'
 export default {
   data () {
     return {
@@ -72,6 +76,9 @@ export default {
     goToPay() {
       this.$router.push('/payOver/123')
     }
+  },
+  components: {
+    OFooter
   }
 }
 </script>
@@ -82,6 +89,7 @@ export default {
 
 .signup-container
   padding-top 60px
+  margin-bottom 102px
   .el-main 
     width 100%;
     max-width 1200px

@@ -4,17 +4,29 @@
     <div class="header-right">
       <div class="header-nav">
         <router-link to='/home' tag="div">首页</router-link>
+        <!-- <div>课程列表</div>
+        <div>考试列表</div>
+        <div>个人中心</div> -->
         <router-link to='/course' tag="div">课程列表</router-link>
         <router-link to='/examination' tag="div">考试列表</router-link>
         <router-link to='/personal' tag="div">个人中心</router-link>
       </div>
       <div class="header-log-reg">
-        <div class="header-log">登录</div>
+        <div class="header-log" @click="login">登录</div>
         <router-link class="header-reg" to='/register' tag="div">注册</router-link>
       </div>
     </div>
   </el-header>
 </template>
+<script>
+export default {
+  methods: {
+    login() {
+      this.$emit('login')
+    }
+  }
+}
+</script>
 
 <style lang="stylus">
 @import '../common/stylus/variable.styl';
