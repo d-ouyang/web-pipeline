@@ -3,60 +3,94 @@
     <el-container class="signup-container">
       <el-main>
         <el-header height="73px">
-          <div class="signup-name">课程报名</div>
+          <div class="signup-name">
+            {{title}}报名
+            <el-tag v-show='showExam && isGropu' size="mini">企业版</el-tag>
+          </div>
         </el-header>
   
         <div class="info-container">
           <h4 class="info-header">
-            <span>课程信息</span>
+            <span>{{title}}信息</span>
             <span class="examination-notes" @click="bindNotes">考试须知</span>
           </h4>
           <div class="info-wrapper">
             <table class="info-box">
               <tr>
-                <td class="name">课程名称</td>
-                <td class="value">上海市.浦东新区</td>
+                <td class="name">{{title}}名称</td>
+                <td class="value">{{info.name}}</td>
               </tr>
               <tr>
-                <td class="name">课程费用</td>
-                <td class="value">￥380</td>
+                <td class="name">{{title}}费用</td>
+                <td class="value">￥{{info.price}}</td>
               </tr>
             </table>
             <table class="info-box">
               <tr>
-                <td class="name">课程时间</td>
-                <td class="value">2018/10/20~2018/10/21</td>
+                <td class="name">{{title}}时间</td>
+                <td class="value">{{info.duration}}</td>
               </tr>
               <tr>
-                <td class="name">课程地点</td>
-                <td class="value">上海市.浦东新区.浦东南路500号 41楼</td>
+                <td class="name">{{title}}地点</td>
+                <td class="value">{{info.location}}</td>
               </tr>
             </table>
           </div>
         </div>
+
+        <div class="info-container" v-show="showExam && isGropu">
+          <h4 class="info-header">
+            <span>报名流程</span>
+          </h4>
+          <div class="info-box-wrapper">
+            <div class="info-content">
+              <p>1、通过在线支付或公司转账支付报名费用，报名费用为每人价格 </p>
+              <p>2、将贵公司名称及报名员工统计表发送至邮箱：xxxxxxx@xxx.com </p>
+              <P>3、报名成功后，您将收到确认邮件和员工报考证</P>
+            </div>
+          </div>
+          
+        </div>
   
-        <div class="info-container">
+        <div class="info-container" v-show='showExam && !isGropu'>
           <h4 class="info-header">
             <span>上传资料</span>
           </h4>
           <div class="upload-wrapper">
             <div class="upload-box">
               <h4>毕业证书</h4>
-              <div class="upload-box-add">
-                <img src="../common/image/add.png" alt="">
-                <h5>点击添加图片</h5>
-                <p>支持jpg/png格式</p>
-                <p>不超过5MB</p>
-              </div>
+              <el-upload class="upload-box-add" 
+                action = "http://test.richepipe.com:9200/image"
+                auto-upload 
+                drag 
+                :show-file-list="false"
+                :on-success="handleGraduationSuccess"
+                :on-error="handleGraduationError"
+                :before-upload="beforeGraduationUpload">
+                <div class="upload-box-add-slot">
+                  <img src="../common/image/add.png" alt="">
+                  <h5>点击/拖拽 添加图片</h5>
+                  <p>支持jpg/png格式</p>
+                  <p>不超过5MB</p>
+                </div>
+              </el-upload>
             </div>
             <div class="upload-box">
               <h4>上传资质证书</h4>
-              <div class="upload-box-add">
-                <img src="../common/image/add.png" alt="">
-                <h5>点击添加图片</h5>
-                <p>支持jpg/png格式</p>
-                <p>不超过5MB</p>
-              </div>
+              <el-upload class="upload-box-add" 
+                auto-upload 
+                drag 
+                :show-file-list="false"
+                :on-success="handleIntelligenceSuccess"
+                :on-error="handleIntelligenceError"
+                :before-upload="beforeIntelligenceUpload">
+                <div class="upload-box-add-slot">
+                  <img src="../common/image/add.png" alt="">
+                  <h5>点击/拖拽 添加图片</h5>
+                  <p>支持jpg/png格式</p>
+                  <p>不超过5MB</p>
+                </div>
+              </el-upload>
             </div>
           </div>
         </div>
@@ -79,17 +113,62 @@ import OExamNotes from '@/components/ExamNotes.vue'
 
     data() {
       return {
-        showNotes: false
+        info:{
+          name:'',
+          location:'',
+          duration:'',
+          price: ''
+        },
+        title: '',
+        showExam: false,
+        showNotes: false,
+        id: this.$route.params.id,
+        group: this.$route.params.group,
+        type: this.$route.params.type,
+        isGropu: this.$route.params.isGroup
       };
     },
     created() {
   
     },
     mounted() {
-      console.log('报名页面')
-      console.log(this.$route);
+      this.initParams()
+    },
+    watch: {
+      '$route' (to, from) {
+        
+      }
     },
     methods: {
+      initParams() {
+        const id = this.id
+        const group = this.group
+        const type = this.type
+        console.log(id, group,type)
+        if (group == 'personal') {
+          this.isGropu = false
+        } else if (group == 'compony') {
+          this.isGropu = true
+        }
+        if (type == 'course') {
+          this.title = '课程'
+          this.showExam = false
+          this.Api.getCourseDetail(id).then(res => {
+            this.handleInfo(res)
+          })
+        } else if (type == 'exam') {
+          this.title = '考试'
+          this.showExam = true
+          this.Api.getExamDeatil(id).then(res => {
+            this.handleInfo(res)
+          })
+        }
+      },
+      handleInfo(info) {
+        console.log(info)
+        info.duration = `${info.registerStartDate}~${info.registerEndDate}`
+        this.info = info
+      },
       goToPay() {
         this.$router.push({
           path: '/pay/nihao'
@@ -101,7 +180,18 @@ import OExamNotes from '@/components/ExamNotes.vue'
       },
       bindCancle() {
         this.showNotes = false
+      },
+      //  上传证书
+      handleGraduationSuccess(response, file, fileList) {
+        console.log(response)
+      },
+      handleGraduationError(err, file, fileList) {
+        consol.elog(err)
+      },
+      beforeGraduationUpload(file) {
+        console.log(file)
       }
+
     },
     components: {
       OFooter,
@@ -110,7 +200,7 @@ import OExamNotes from '@/components/ExamNotes.vue'
   };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'
 
@@ -166,6 +256,24 @@ import OExamNotes from '@/components/ExamNotes.vue'
           font-weight 300
           color $color-exam-note
           cursor pointer
+      .info-box-wrapper
+        position relative
+        width 100%
+        height 322px
+        .info-content
+          position absolute
+          width 500px
+          height 128px
+          left 50%
+          margin-left -250px
+          top 78px
+          display flex
+          flex-direction column
+          justify-content space-between
+          p
+            font-size $size-news-btn
+            color $color-news-value
+            font-weight 500
       .info-wrapper
         padding 50px 55px
         display flex
@@ -208,29 +316,31 @@ import OExamNotes from '@/components/ExamNotes.vue'
             font-size $size-news-btn
             color $color-td-value-text
             margin-bottom 28px
-          .upload-box-add
-            position relative
+          .upload-box-add .el-upload .el-upload-dragger
             width 240px
             height 180px
-            display flex
-            flex-direction column
-            align-items center
             border 2px dashed $color-upload-border
             background-color $color-upload-bg
-            img 
-              width 44px
-              height 44px
-              margin-bottom 20px
-              margin-top 28px
-            h5
-              font-size $size-news-btn
-              color $color-news-value
-              opacity(0.5)
-              margin-bottom 12px
-            p 
-              font-size $size-news-date
-              color $color-upload-border
-              margin-bottom 8px
+            .upload-box-add-slot
+              display flex 
+              flex-direction column
+              align-items center
+              img 
+                width 44px
+                height 44px
+                margin-bottom 20px
+                margin-top 28px
+              h5
+                font-size $size-news-btn
+                color $color-news-value
+                opacity(0.5)
+                margin-bottom 12px
+              p 
+                font-size $size-news-date
+                color $color-upload-border
+                margin-bottom 8px
             
 </style>
+
+
 

@@ -5,27 +5,27 @@
         <img src="../common/image/entrance.png" alt="">
         <span>考试信息</span>
       </h2>
-      <button>立即报名</button>
+      <button @click="signup('personal')">立即报名</button>
     </div>
     <ul>
       <li>
         <span>考试名称</span>
-        <p>D2资格考</p>
+        <p>{{detail.name}}</p>
       </li>
       <li>
         <span>考试时间</span>
-        <p>2018年10月20日~10月27日</p>
+        <p>{{detail.examDate}}</p>
       </li>
       <li>
         <span>考试地点</span>
-        <p class="address">上海市.浦东新区.浦东南路500号 41楼</p>
+        <p class="address">{{detail.location}}</p>
       </li>
       <li>
         <span>考试费用</span>
-        <p>￥380元</p>
+        <p>￥{{detail.price}}</p>
       </li>
     </ul>
-    <p>
+    <p @click="signup('compony')">
       <span>公司报名入口</span>
       <img src="../common/image/entrance-g.png" alt="">
     </p>
@@ -33,7 +33,30 @@
 </template>
 <script>
 export default {
-  
+  data() {
+    return {
+      detail: {}
+    }
+  },
+  mounted() {
+    this.getExamDetail()
+  },
+  methods: {
+    getExamDetail() {
+      this.Api.getExamDeatil(4).then(res => {
+        this.detail = res
+      })
+    },
+    signup(group) {
+      let params = {
+        id: this.detail.id,
+        group: group,
+        type: 'exam'
+      }
+      // console.log(params)
+      this.$emit('signup', params)
+    }
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -78,8 +101,6 @@ export default {
     margin-top 24px
     margin-bottom 28px
     li
-      display flex
-      align-items center
       font-size $size-news-content
       line-height 1.0
       margin-bottom 24px
@@ -89,9 +110,10 @@ export default {
         color $color-news-key
         margin-right 28px
       p
+        display inline-block
         color $color-news-value
       .address
-        width 70%
+        width 65%
         no-wrap()
   p
     display flex

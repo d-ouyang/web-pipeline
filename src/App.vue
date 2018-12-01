@@ -7,6 +7,7 @@
 </template>
 <script>
 import OHeader from '@/components/Header.vue'
+import {isLogin} from './common/js/utils'
 
 export default {
   data() {
@@ -17,7 +18,25 @@ export default {
   components: {
     OHeader,
   },
+  created() {
+
+  },
+  mounted() {
+    console.log(isLogin())
+    if (isLogin()) {
+      this.showLogin = false
+
+    } else {
+      this.showLogin = true
+    }
+  },
   methods: {
+    getUserInfo() {
+      this.Api.getUserInfo(1).then(res => {
+        console.log(res)
+        window.localStorage.setItem('userInfo',res)
+      })
+    },
     bindLogin() {
       this.showLogin = true
     },

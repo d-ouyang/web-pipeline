@@ -1,73 +1,200 @@
 <template>
-  <el-container>
-    <el-header height='300px'>
-      <h3>最新2019年 D3 冲刺班现已火热开班</h3>
-      <p>学习掌握压力容器管道的低压、中压、高压、超高压焊接技术和工艺，掌握各种焊接工艺；掌握单面焊双面成形工艺，掌握组合焊技术和各类管道的焊接。</p>
-    </el-header>
+  <div>
     <el-container>
-      <el-main>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="综合" name="first">
-            <ul class="list">
-              <li class="item" v-for="(item, index) in [1,2,3,4,5]" :key='index'>
-                <div class="item-info">
-                  <div class="item-img">
-                    <h4>压力管道巡检维护D1</h4>
-                    <p>冲刺班</p>
-                  </div>
-                  <div class="item-info-detail">
-                    <div class="detail-top">
-                      <h4>压力管道巡检维护D1【10月班】</h4>
-                      <p>商务印书馆独家授权，从零起步，零基础高压管道就选它！四大讲师轮流授课，近二十年的丰富行业经验</p>
+      <el-header height='300px'>
+        <h3>最新2019年 D3 冲刺班现已火热开班</h3>
+        <p>学习掌握压力容器管道的低压、中压、高压、超高压焊接技术和工艺，掌握各种焊接工艺；掌握单面焊双面成形工艺，掌握组合焊技术和各类管道的焊接。</p>
+      </el-header>
+      <el-container>
+        <el-main>
+          <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="全部" name="overall">
+              <ul class="list">
+                <li class="item" v-for="(item, index) in courses" :key='index'>
+                  <div class="item-info">
+                    <div class="item-img">
+                      <h4>{{item.name}}</h4>
+                      <p>冲刺班</p>
+                      <img :src="item.src" alt="">
                     </div>
-                    <div class="detail-bottom">
-                      <h4>￥5,900</h4>
-                      <p>报名时间：2018年12月01日-2019年01月01日</p>
+                    <div class="item-info-detail">
+                      <div class="detail-top">
+                        <h4>{{item.name}}</h4>
+                        <p>{{item.description}}</p>
+                      </div>
+                      <div class="detail-bottom">
+                        <h4>￥{{item.price}}</h4>
+                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <el-button @click="bindSignUp">立即报名</el-button>
-              </li>
-            </ul>
-          </el-tab-pane>
-          <el-tab-pane name="second">
-            <span slot="label">人气 <i class="el-icon-date"></i></span>
-            
-          </el-tab-pane>
-          <el-tab-pane name="third">
-            <span slot="label">价格 <i class="el-icon-date"></i></span>
-
-          </el-tab-pane>
-        </el-tabs>
-      </el-main>
+                  <el-button @click="bindSignUp(index)">立即报名</el-button>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane name="heat">
+              <span slot="label">人气 <i class="el-icon-sort-down"></i></span>
+              <ul class="list">
+                <li class="item" v-for="(item, index) in courses" :key='index'>
+                  <div class="item-info">
+                    <div class="item-img">
+                      <h4>{{item.name}}</h4>
+                      <p>冲刺班</p>
+                      <img :src="item.src" alt="">
+                    </div>
+                    <div class="item-info-detail">
+                      <div class="detail-top">
+                        <h4>{{item.name}}</h4>
+                        <p>{{item.description}}</p>
+                      </div>
+                      <div class="detail-bottom">
+                        <h4>￥{{item.price}}</h4>
+                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <el-button @click="bindSignUp(index)">立即报名</el-button>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane name="price">
+              <span slot="label">价格 <i class="el-icon-d-caret"></i></span>
+              <ul class="list">
+                <li class="item" v-for="(item, index) in courses" :key='index'>
+                  <div class="item-info">
+                    <div class="item-img">
+                      <h4>{{item.name}}</h4>
+                      <p>冲刺班</p>
+                      <img :src="item.src" alt="">
+                    </div>
+                    <div class="item-info-detail">
+                      <div class="detail-top">
+                        <h4>{{item.name}}</h4>
+                        <p>{{item.description}}</p>
+                      </div>
+                      <div class="detail-bottom">
+                        <h4>￥{{item.price}}</h4>
+                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <el-button @click="bindSignUp(index)">立即报名</el-button>
+                </li>
+              </ul>
+            </el-tab-pane>
+          </el-tabs>
+        </el-main>
+      </el-container>
     </el-container>
-  </el-container>
+    <o-footer></o-footer>
+    <o-login v-show="showLogin" v-on:cancle='bindCancle'></o-login>
+  </div>
 </template>
+
 <script>
-export default {
-  data() {
-    return {
-      activeName: 'first'
-    };
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+  import OFooter from '@/components/Footer.vue'
+  import OLogin from '@/components/Login.vue'
+  import { Loading } from 'element-ui'
+  
+  export default {
+    components: {
+      OFooter,
+      OLogin
     },
-    bindSignUp() {
-      this.$router.push({path: '/signup/personal'})
+    props: {
+      showLogin: Boolean
+    },
+    data() {
+      return {
+        activeName: 'overall',
+        courses:[],
+        typeOneSrc: '',
+        typeTwoSrc: ''
+      };
+    },
+    mounted() {
+      this.getCourse('overall')
+    },
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab.name);
+        console.log(this.activeName)
+        this.courses = []
+        this.getCourse(tab.name)
+      },
+      bindSignUp(index) {
+        console.log(index)
+        this.$router.push({
+          name: 'signup',
+          params: {
+            group:'personal',
+            type: 'course',
+            id: this.courses[index].id
+          }
+        })
+      },
+      bindCancle() {
+        console.log('取消')
+        this.$emit('cancle')
+      },
+      getCourse(str) {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        console.log(str)
+        this.Api.getCourse({
+          sortType:str
+        }).then(res => {
+          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+            loading.close();
+          });
+          console.log(res)
+          this._handleCourse(res)
+        }).catch(err => {
+          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+            loading.close();
+          });
+        })
+      },
+      _handleCourse(arr) {
+        for (let i in arr) {
+          arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
+          arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
+          if (arr[i].type == 1) {
+            arr[i].src = require('../common/image/course1.png')
+          } else if (arr[i].type == 2) {
+            arr[i].src = require('../common/image/course2.png')
+          } else {
+            arr[i].src = require('../common/image/course-default.png')
+          }
+        }
+        this.courses = arr
+      },
+      _handleDate(str) {
+        if (str == null) {
+          return ''
+        } else {
+          let arr = str.split('-')
+          return arr[0] + '年' + arr[1] + '月' +arr[2] + '日'
+        }
+      }
     }
   }
-}
 </script>
+
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'
 
 .el-container
+  margin-bottom 102px
   .el-header
     padding 0
-    background #3676FD
+    background url('../common/image/course-bg.png') 0 0 no-repeat
+    background-size cover
     color $color-normal
     display flex
     flex-direction column
@@ -119,7 +246,7 @@ export default {
                 height 140px
                 position relative
                 margin-right 30px
-                background-color $color-nav-active
+                // background-color $color-nav-active
                 display flex
                 flex-direction column
                 align-items center
@@ -129,9 +256,18 @@ export default {
                   font-size $size-nav-text
                   font-weight 400
                   margin-bottom 12px
+                  text-align center
+                  width 80%
                 p
                   font-size $size-sub-title
                   font-weight 400
+                img 
+                  position absolute
+                  left 0
+                  top 0
+                  z-index -1
+                  width 250px
+                  height 140px
               .item-info-detail
                 height 140px
                 max-width 590px

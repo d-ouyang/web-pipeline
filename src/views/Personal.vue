@@ -3,8 +3,7 @@
     <el-container>
       <el-main>
         <el-aside width="190px">
-          <el-menu
-        class="el-menu-vertical-demo">
+          <el-menu class="el-menu-vertical-demo">
             <el-menu-item index="1">
               <router-link class="p-link" slot="title" to="/personal/myexam" tag="div"><i class="el-icon-menu"></i>我的考试</router-link>
             </el-menu-item>
@@ -22,25 +21,44 @@
       </el-main>
     </el-container>
     <o-footer></o-footer>
+    <o-login v-show="showLogin" v-on:cancle='bindCancle'></o-login>
   </div>
 </template>
-<script>
-import OFooter from '@/components/Footer.vue'
 
-export default {
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+<script>
+  import OFooter from '@/components/Footer.vue'
+  import OLogin from '@/components/Login.vue'
+  
+  export default {
+    props: {
+      showLogin:Boolean
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    mounted() {
+      this.Api.getUserInfo(1).then(res => {
+        console.log(res)
+      }).catch(err => {
+        this.showLogin = true
+      })
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      bindCancle() {
+        console.log('取消')
+        this.$emit('cancle')
+      }
+    },
+    components: {
+      OFooter,
+      OLogin
     }
-  },
-  components: {
-    OFooter
   }
-}
 </script>
+
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'

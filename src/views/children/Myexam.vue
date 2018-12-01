@@ -2,7 +2,7 @@
   <div class="container">
     <el-tabs type="border-card">
       <el-tab-pane label="全部考试">
-        <el-table stripe='true' :data="tableData3" style="width: 100%" height="698">
+        <el-table stripe='true' :data="tableData3" style="width: 100%" height="600">
           <el-table-column fixed prop="name" label="考试名称">
           </el-table-column>
           <el-table-column prop="date" label="考试时间">

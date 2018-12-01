@@ -1,34 +1,32 @@
 <template>
-  <el-carousel class="banner" trigger="click" height="570px" arrow="never">
-    <el-carousel-item v-for="item in 2" :key="item">
-      <div class="main-content">
+  <el-carousel class="banner" trigger="click" height="570px" arrow="never" :interval='5000'>
+    <el-carousel-item class="banner-item" :class="index == 2 ? banner2 : banner1" v-for="(item, index) in details" :key="index">
+      <div class="main-content" v-show='index != 2'>
         <el-row type="flex" justify="center" class="banner-content">
           <el-col :span="span" :push="1" tag="div">
-            <h1>D2摸底冲刺班</h1>
+            <h1>{{item.name}}</h1>
             <div class="title-line"></div>
             <ul>
               <li>
-                <span>上课时间</span>
-                <p>2018年10月20日~10月27日</p>
+                <span>考试时间</span>
+                <p>{{item.examDate}}</p>
               </li>
               <li>
-                <span>上课地点</span>
-                <p>上海市.浦东新区.浦东南路500号 41楼</p>
+                <span>考试地点</span>
+                <p>{{item.location}}</p>
               </li>
               <li>
-                <span>课程费用</span>
-                <p>￥5,800</p>
+                <span>报考费用</span>
+                <p>￥{{item.price}}</p>
               </li>
               <li>
-                <span>课程内容</span>
-                <p>由国内知名讲师：XXX担任主讲。10年授课经验，98%的考试通过率，Balalalalal</p>
+                <span>考试内容</span>
+                <p style="width:420px">{{item.description}}</p>
               </li>
             </ul>
             <div class="btn-group">
-              <button class="single-signup" @click="signup">立即报名
-                <!-- <router-link to='/signup' tag="div">立即报名</router-link> -->
-              </button>
-              <button class="group-signup">公司报名</button>
+              <button class="single-signup" @click="signup(index,'personal')">立即报名</button>
+              <button class="group-signup" @click="signup(index,'compony')">公司报名</button>
             </div>
           </el-col>
         </el-row>
@@ -40,12 +38,37 @@
 export default {
   data() {
     return {
-      span: 12
+      span: 12,
+      banner1: 'banner-item1',
+      banner2: 'banner-item2',
+      details:[]
     }
   },
+  mounted() {
+    this.getDetail()
+  },
   methods: {
-    signup() {
-      this.$emit('signup')
+    getDetail() {
+      let detail1 = this.Api.getExamDeatil(4)
+      let detail2 = this.Api.getExamDeatil(6)
+      let details = []
+      Promise.all([detail1,detail2]).then(list => {
+        list.forEach((res, i) => {
+          details.push(res)
+        })
+        details.push({})
+        console.log(details)
+        this.details = details
+      })
+    },
+    signup(index, group) {
+      console.log(index,group)
+      let params = {
+        id: this.details[index].id,
+        group: group,
+        type: "exam"
+      }
+      this.$emit('signup', params)
     }
   }
 }
@@ -55,10 +78,16 @@ export default {
 
 .banner
   min-height 542px
-  background-image url('../common/image/bg.png')
-  background-size cover
-  background-repeat no-repeat
-  background-position 50% 50%
+  .banner-item1
+    background-image url('../common/image/bg-blue.png')
+    background-size cover
+    background-repeat no-repeat
+    background-position 50% 50%
+  .banner-item2
+    background-image url('../common/image/banner2.png')
+    background-size cover
+    background-repeat no-repeat
+    background-position 50% 50%
   .el-carousel__item
     background-color transparent
     .main-content
@@ -72,10 +101,8 @@ export default {
       .banner-content
         width 100%
         height 100%
-        // background-color rgba(255, 255, 255, 0.5)
         div
           height 100%
-          // background-color rgba(255, 255, 255, 0.5)
           display flex
           flex-direction column
           align-items center

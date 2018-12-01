@@ -1,24 +1,24 @@
 <template>
   <div class="login-mask">
     <div class="login-model">
-      <div class="login-pass login-item" v-show="false">
+      <div class="login-pass login-item" v-show="loginShow">
         <h3>登录</h3>
-        <p class="error-text">账号或密码错误</p>
-        <el-form class="form" ref="form" :model="formLogin" :rules="rulesLogin">
-          <div class="form-item">
+        <!-- <p class="error-text">账号或密码错误</p> -->
+        <el-form class="form" status-icon ref="form" :model="formLogin" :rules="rulesLogin">
+          <el-form-item class="form-item" prop='user'>
             <img class="input-icon" src="./image/icon-user.png" alt="">
-            <el-input v-model="formLogin.user" placeholder='用户名'></el-input>
-          </div>
-          <div class="form-item">
+            <el-input v-model="formLogin.user" placeholder='用户名' ></el-input>
+          </el-form-item>
+          <el-form-item class="form-item" prop='pass'>
             <img class="input-icon" src="./image/icon-pass.png" alt="">
-            <el-input v-model="formLogin.pass" placeholder='密码'></el-input>
-            <img class="eye-icon" src="./image/icon-open-eye.png" alt="">
-          </div>
+            <el-input :type="loginPass ? 'password' : 'text'" v-model="formLogin.pass" placeholder='密码'></el-input>
+            <img @click="transPass" class="eye-icon" :src="loginPass ? openSrc : closeSrc" alt="">
+          </el-form-item>
           <p class="forget-text">
-            <span>忘记密码?</span>
+            <span style="cursor: pointer" @click="bindForget">忘记密码?</span>
           </p>
           <el-form-item class="submit-btn">
-            <el-button type="primary" @click="onLoginSubmit">登录</el-button>
+            <el-button type="primary" @click="onLoginSubmit('form')">登录</el-button>
           </el-form-item>
         </el-form>
         <p class="regis-entrance">
@@ -27,19 +27,19 @@
         </p>
       </div>
 
-      <div class="modify-pass login-item" v-show="false">
+      <div class="modify-pass login-item" v-show="modifyShow">
         <h3 style="margin-bottom:12px;">修改密码</h3>
         <h4>为了账号安全，您需修改初始密码才能登陆</h4>
         <p class="error-text">两次输入密码不一致</p>
         <el-form class="modify-form" ref="modify-form" :model="formModify" :rules="rulesModify">
-          <div class="form-item">
+          <el-form-item class="form-item">
             <img class="input-icon" src="./image/icon-pass.png" alt="">
             <el-input v-model="formModify.passFirst" placeholder='新密码'></el-input>
-          </div>
-          <div class="form-item">
+          </el-form-item>
+          <el-form-item class="form-item">
             <img class="input-icon" src="./image/icon-pass.png" alt="">
             <el-input v-model="formModify.passSecond" placeholder='请再次输入密码'></el-input>
-          </div>
+          </el-form-item>
           <el-form-item class="submit-btn">
             <el-button type="primary" @click="onModifySubmit">登录</el-button>
           </el-form-item>
@@ -50,23 +50,23 @@
         </p>
       </div>
 
-      <div class="find-pass login-item" v-show="true">
+      <div class="find-pass login-item" v-show="findShow">
         <h3>密码找回</h3>
         <p class="error-text">验证码已过期，请重新发送</p>
         <el-form class="find-form" ref="find-form" :model="formFind" :rules="rulesFind">
-          <div class="form-item">
+          <el-form-item class="form-item">
             <img class="input-icon" src="./image/icon-phone.png" alt="">
             <el-input v-model="formFind.phone" placeholder='手机号'></el-input>
-          </div>
-          <div class="form-item">
+          </el-form-item>
+          <el-form-item class="form-item">
             <img class="input-icon" src="./image/icon-img-code.png" alt="">
             <el-input v-model="formFind.captcha" placeholder='图形验证码'></el-input>
-          </div>
-          <div class="form-item">
+          </el-form-item>
+          <el-form-item class="form-item">
             <img class="input-icon" src="./image/icon-verify-code.png" alt="">
             <el-input v-model="formFind.msgCaptcha" placeholder='短信验证码'></el-input>
             <p class="get-captcha">获取验证码</p>
-          </div>
+          </el-form-item>
           <el-form-item class="submit-btn">
             <el-button style="margin-top:40px;" type="primary" @click="onFindSubmit">发送密码到手机</el-button>
           </el-form-item>
@@ -83,23 +83,31 @@
   </div>
 </template>
 <script>
+import {returnFormData} from '../api/config'
+
 export default {
   data () {
     return {
+      loginPass: true,
+      openSrc: require('./image/icon-open-eye.png'),
+      closeSrc: require('./image/icon-close-eye.png'),
+      // 登录
+      loginShow: true,
       formLogin: {
         user: '',
         pass: ''
       },
       rulesLogin: {
         user: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         pass: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
         ]
       },
+
+      // 修改
+      modifyShow: false,
       formModify: {
         passFirst: '',
         passSecond: ''
@@ -114,6 +122,9 @@ export default {
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
       },
+
+      // 找回密码
+      findShow: false,
       formFind: {
         phone: '',
         captcha: '',
@@ -136,9 +147,37 @@ export default {
     }
   },
 
+  mounted() {
+    
+  },
+
   methods: {
-    onLoginSubmit() {
-      console.log('登录');
+    transPass() {
+      this.loginPass = !this.loginPass
+    },
+    onLoginSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        console.log(valid)
+        if (valid) {
+          let requestStr = returnFormData({
+            username: this.formLogin.user,
+            password: this.formLogin.pass
+          })
+          console.log(requestStr)
+          this.Api.login(requestStr).then(res => {
+            console.log(res)
+            this.$emit('cancle')
+            window.localStorage.setItem('token',res)
+            return this.Api.getUserInfo(1)
+          })
+          .then(res => {
+            console.log(res)
+          })
+        } else {
+          this.showToastError('必填信息均要符合要求')
+          return false;
+        }
+      })
     },
     onModifySubmit() {
       console.log('修改密码');
@@ -148,6 +187,9 @@ export default {
     },
     cancle() {
       this.$emit('cancle')
+    },
+    bindForget() {
+      console.log('忘记密码')
     }
   }
 }
@@ -169,7 +211,7 @@ export default {
     box-sizing()
     left 50%;
     margin-left -195px
-    top 180px
+    top 100px
     width 390px
     height 486px
     padding 60px 50px 0
@@ -216,13 +258,15 @@ export default {
           text-align right
           font-size $size-news-content
           color rgba(26,26,26,0.3)
-        .form-item 
+        .el-form-item >>> .el-form-item__content
           display flex
           height 45px
           flex-direction row
           align-items center
           border-bottom 1px solid $color-border
           margin-bottom 20px
+          .el-input__inner
+            border 0
           .get-captcha
             width 120px
             text-align right
