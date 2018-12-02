@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import {
-	Loading
-} from 'element-ui'
-import {
 	Message
 } from 'element-ui'
 

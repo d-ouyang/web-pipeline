@@ -8,21 +8,48 @@
         <router-link to='/examination' tag="div">考试列表</router-link>
         <router-link to='/personal' tag="div">个人中心</router-link>
       </div>
-      <div class="header-log-reg">
+      <div class="header-log-reg" v-if="!showLogin">
         <div class="header-log active" @click="login">登录</div>
         <router-link class="header-reg" to='/register' tag="div">注册</router-link>
+      </div>
+      <div class="header-log-reg"  v-if="showLogin">
+        <el-popover placement="bottom" trigger="hover">
+          <el-button @click="bindExit" style="border:0;width:100%;text-align:center;">退出登录</el-button>
+          <span class="user-name" slot="reference">{{userInfo.name}}</span>
+        </el-popover>
+        
       </div>
     </div>
   </el-header>
 </template>
+
 <script>
-export default {
-  methods: {
-    login() {
-      this.$emit('login')
+import {isLogin} from '../common/js/utils'
+
+  export default {
+    props: {
+      showLogin: Boolean,
+      userInfo: Object
+    },
+    data() {
+      return {
+        
+      }
+    },
+    mounted() {
+     
+    },
+    methods: {
+      login() {
+        this.$emit('login')
+      },
+      bindExit() {
+        window.localStorage.removeItem('token')
+        window.localStorage.removeItem('userInfo')
+        this.$emit('exit')
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus">
@@ -68,5 +95,15 @@ export default {
       .header-reg
         cursor pointer
         margin-right 32px
+      .exit
+        border 0
+        width 100%
+        text-align center
+      .user-name
+        margin 0 32px
+        color $color-nav-active
+        cursor pointer
+        &:hover
+          text-decoration underline
 </style>
 

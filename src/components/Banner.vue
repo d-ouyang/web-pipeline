@@ -35,6 +35,8 @@
   </el-carousel>
 </template>
 <script>
+import { isLogin} from '../common/js/utils'
+
 export default {
   data() {
     return {
@@ -62,13 +64,18 @@ export default {
       })
     },
     signup(index, group) {
-      console.log(index,group)
-      let params = {
-        id: this.details[index].id,
-        group: group,
-        type: "exam"
+      if (isLogin()) {
+        console.log(index,group)
+        let params = {
+          id: this.details[index].id,
+          group: group,
+          type: "exam"
+        }
+        this.$emit('signup', params)
+      } else {
+        this.showToastError('报名请先登录')
       }
-      this.$emit('signup', params)
+      
     }
   }
 }

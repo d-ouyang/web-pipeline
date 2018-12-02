@@ -11,6 +11,7 @@ import OBanner from '@/components/Banner.vue'
 import ONews from '@/components/News.vue'
 import OFooter from '@/components/Footer.vue'
 import OLogin from '@/components/Login.vue'
+import {isLogin} from '../common/js/utils'
 
 export default {
   props: {
@@ -30,16 +31,17 @@ export default {
   mounted() {
     console.log('首页')
     console.log(this.$route)
-    this.getUserInfo()
+    // this.getUserInfo()
   },
   methods: {
-    getUserInfo() {
-      this.Api.getUserInfo(1).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
-    },
+
+    // getUserInfo() {
+    //   this.Api.getUserInfo(1).then(res => {
+    //     console.log(res)
+    //   }).catch(err => {
+    //     console.log(err)
+    //   })
+    // },
     bindSignUp(params) {
       console.log(params)
       this.$router.push({

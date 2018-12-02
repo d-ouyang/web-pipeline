@@ -30,7 +30,7 @@
                 <el-button @click="bindSignUp('personal', index)">立即报名</el-button>
                 <el-button class="compony" @click="bindSignUp('compony',index)">公司报名</el-button>
               </div>
-              
+  
             </li>
           </ul>
         </el-main>
@@ -44,6 +44,10 @@
 <script>
   import OFooter from '@/components/Footer.vue'
   import OLogin from '@/components/Login.vue'
+  import {
+    isLogin
+  } from '../common/js/utils'
+  
   export default {
     components: {
       OFooter,
@@ -85,19 +89,24 @@
           return ''
         } else {
           let arr = str.split('-')
-          return arr[0] + '年' + arr[1] + '月' +arr[2] + '日'
+          return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
         }
       },
       bindSignUp(group, id) {
-        console.log(group,id)
-        this.$router.push({
-          name: 'signup',
-          params: {
-            group: group,
-            type: 'exam',
-            id: this.exams[id].id
-          }
-        })
+        if (isLogin()) {
+          console.log(group, id)
+          this.$router.push({
+            name: 'signup',
+            params: {
+              group: group,
+              type: 'exam',
+              id: this.exams[id].id
+            }
+          })
+        } else {
+          this.showToastError('报名请先登录')
+        }
+  
       },
       bindCancle() {
         console.log('取消')

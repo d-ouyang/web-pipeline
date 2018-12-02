@@ -163,12 +163,9 @@
               trigger: 'change'
             }
           ],
-          passEnd: [{
-              required: true,
-              message: '请确认密码',
-              trigger: 'blur'
-            },
+          passEnd: [
             {
+              required: true,
               validator: (rule, value, callback) => {
                 console.log(value)
                 if (value == '') {
@@ -252,7 +249,7 @@
     methods: {
       // 选择框
       selectChange(index) {
-        if (index == this.form.companys.length - 1 && this.form.companys[index].name == '其它') {
+        if (this.form.companys[index].name == '其它') {
           this.$prompt('请输入公司', '备注', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
@@ -290,6 +287,9 @@
             console.log(data)
             this.Api.register(data).then(res => {
               console.log(res)
+              this.$router.push({
+                path: '/home'
+              })
             })
           } else {
             this.showToastError('必填信息均要符合要求')

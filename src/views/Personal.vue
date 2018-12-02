@@ -15,9 +15,8 @@
             </el-menu-item>
           </el-menu>
         </el-aside>
-        <div class="content">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
+        <!-- <router-view class="content"></router-view> -->
       </el-main>
     </el-container>
     <o-footer></o-footer>
@@ -28,19 +27,28 @@
 <script>
   import OFooter from '@/components/Footer.vue'
   import OLogin from '@/components/Login.vue'
+  import { isLogin} from '../common/js/utils'
   
   export default {
     props: {
-      showLogin:Boolean
+      showLogin: Boolean
+    },
+    data() {
+      return {
+        
+      }
     },
     mounted() {
-      this.Api.getUserInfo(1).then(res => {
-        console.log(res)
-      }).catch(err => {
-        this.showLogin = true
-      })
+      this.getPersonalOrderList()
     },
     methods: {
+      getPersonalOrderList() {
+        this.Api.getUserInfo(1).then(res => {
+          return this.Api.getPersonalOrderList(res.id)
+        }).then(res => {
+          console.log(res)
+        })
+      },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },

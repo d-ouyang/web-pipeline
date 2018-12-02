@@ -41,9 +41,19 @@ export default new Router({
           component: () => import('./views/children/Myexam.vue')
         },
         {
+          path: 'myexamdetail/:id',
+          name: 'myexamdetail',
+          component: () => import('./views/children/MyexamDetail.vue')
+        },
+        {
           path: 'mycourse',
           name: 'mycourse',
           component: () => import('./views/children/Mycourse.vue')
+        },
+        {
+          path: 'mycoursedetail/:id',
+          name: 'mycoursedetail',
+          component: () => import('./views/children/MycourseDetail.vue')
         },
         {
           path: 'myinfo',
@@ -63,12 +73,12 @@ export default new Router({
       component: () => import('./views/Signup.vue')
     },
     {
-      path: '/pay/:id',
+      path: '/pay/:group/:type/:id/:orderid',
       name: 'pay',
       component: () => import('./views/Pay.vue')
     },
     {
-      path: '/payOver/:id',
+      path: '/payOver/:group/:type/:id/',
       name: 'payOver',
       component: () => import('./views/PayOver.vue')
     }

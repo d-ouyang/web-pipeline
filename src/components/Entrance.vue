@@ -31,34 +31,45 @@
     </p>
   </el-row>
 </template>
+
 <script>
-export default {
-  data() {
-    return {
-      detail: {}
-    }
-  },
-  mounted() {
-    this.getExamDetail()
-  },
-  methods: {
-    getExamDetail() {
-      this.Api.getExamDeatil(4).then(res => {
-        this.detail = res
-      })
-    },
-    signup(group) {
-      let params = {
-        id: this.detail.id,
-        group: group,
-        type: 'exam'
+  import {
+    isLogin
+  } from '../common/js/utils'
+  
+  export default {
+    data() {
+      return {
+        detail: {}
       }
-      // console.log(params)
-      this.$emit('signup', params)
+    },
+    mounted() {
+      this.getExamDetail()
+    },
+    methods: {
+      getExamDetail() {
+        this.Api.getExamDeatil(4).then(res => {
+          this.detail = res
+        })
+      },
+      signup(group) {
+        if (isLogin()) {
+          let params = {
+            id: this.detail.id,
+            group: group,
+            type: 'exam'
+          }
+          // console.log(params)
+          this.$emit('signup', params)
+        } else {
+          this.showToastError('报名请先登录')
+        }
+  
+      }
     }
   }
-}
 </script>
+
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'

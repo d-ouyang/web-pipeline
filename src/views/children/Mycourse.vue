@@ -28,7 +28,11 @@
 </template>
 
 <script>
+
   export default {
+    props: {
+      courses: Array
+    },
     data() {
       return {
         tableData3: [{
@@ -73,6 +77,18 @@
           result: '等待审核中'
         }]
       }
+    },
+    mounted() {
+      // this.getMycourses()
+    },
+    methods: {
+      getMycourses() {
+        this.Api.getUserInfo(1).then(res => {
+          return this.Api.getPersonalCourses(res.id)
+        }).then(res => {
+          console.log(res)
+        })
+      }
     }
   }
 </script>
@@ -81,7 +97,11 @@
 @import '../../common/stylus/variable.styl'
 @import '../../common/stylus/mixin.styl'
 
-.container 
+.container
+  width 100%
+  max-width 1000px
+  background-color $color-normal
+  border-radius(8px)
   .el-tabs--border-card
     border 0
     box-shadow(none)

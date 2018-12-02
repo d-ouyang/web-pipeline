@@ -13,47 +13,72 @@
       <div class="btn-box">
         <el-button>退出账号</el-button>
       </div>
-      
+  
     </el-main>
   </div>
 </template>
+
 <script>
-export default {
-  data () {
-    return {
-      userInfo: {
-        account: {
-          key: '账号',
-          value: 'ray_6677'
-        },
-        phone: {
-          key: '手机号',
-          value: '13816776171'
-        },
-        name: {
-          key: '姓名',
-          value: '欧阳'
-        },
-        number: {
-          key: '学号',
-          value: '12084873982'
-        },
-        sex: {
-          key: '性别',
-          value: '男'
-        },
-        IDcard: {
-          key: '身份证号',
-          value: '330382199403075555'
-        },
-        compony: {
-          key: '所属公司',
-          value: '上海市第二工程有限公司'
+  export default {
+    data() {
+      return {
+        userInfo: {
+          phone: {
+            key: '手机号',
+            value: ''
+          },
+          name: {
+            key: '姓名',
+            value: ''
+          },
+          number: {
+            key: '学号',
+            value: ''
+          },
+          gender: {
+            key: '性别',
+            value: ''
+          },
+          IDcard: {
+            key: '身份证号',
+            value: ''
+          },
+          compony: {
+            key: '所属公司',
+            value: ''
+          }
         }
       }
+    },
+    mounted() {
+      this.getUserInfo()
+    },
+    methods: {
+      getUserInfo() {
+        this.Api.getUserInfo(1).then(res => {
+          console.log(res)
+          let userInfo = res
+          this.userInfo.phone.value = userInfo.phone
+          this.userInfo.name.value = userInfo.name
+          this.userInfo.number.value = userInfo.userId
+          this.userInfo.gender.value = this._returnGender(userInfo.gender)
+          this.userInfo.IDcard.value = userInfo.idNumber
+          this.userInfo.compony.value = userInfo.companyName
+        })
+      },
+  
+      _returnGender(gender) {
+        if (gender == 1) {
+          return '男'
+        } else if (gender == 2) {
+          return '女'
+        } else if (gender == 3) {
+          return '其它'
+        }
+      }
+  
     }
   }
-}
 </script>
 
 <style lang="stylus" scoped>
@@ -61,6 +86,10 @@ export default {
 @import '../../common/stylus/mixin.styl'
 
 .container
+  width 100%
+  max-width 1000px
+  background-color $color-normal
+  border-radius(8px)
   .el-header
     line-height 76px
     font-size $size-nav-text

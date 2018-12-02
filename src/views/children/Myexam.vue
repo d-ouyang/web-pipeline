@@ -7,17 +7,17 @@
           </el-table-column>
           <el-table-column prop="date" label="考试时间">
             <template slot-scope="scope">
-              <p style="font-weight: bold;">{{ scope.row.date.date }}</p>
-              <p>{{ scope.row.date.time }}</p>
-            </template>
+                <p style="font-weight: bold;">{{ scope.row.date.date }}</p>
+                <p>{{ scope.row.date.time }}</p>
+</template>
           </el-table-column>
           <el-table-column prop="status" label="当前状态">
           </el-table-column>
           <el-table-column prop="result" label="">
-            <template slot-scope="scope">
-              <span style="margin-right: 36px;font-weight:bold;">{{ scope.row.result }}</span>
-              <i class="el-icon-time"></i>
-            </template>
+<template slot-scope="scope">
+  <span style="margin-right: 36px;font-weight:bold;">{{ scope.row.result }}</span>
+  <i class="el-icon-time"></i>
+</template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -74,6 +74,18 @@
           result: '等待审核中'
         }]
       }
+    },
+    mounted() {
+      // this.getMyexams()
+    },
+    methods: {
+      getMyexams() {
+        this.Api.getUserInfo(1).then(res => {
+          return this.Api.getPersonalExams(res.id)
+        }).then(res => {
+          console.log(res)
+        })
+      }
     }
   }
 </script>
@@ -82,7 +94,11 @@
 @import '../../common/stylus/variable.styl'
 @import '../../common/stylus/mixin.styl'
 
-.container 
+.container
+  width 100%
+  max-width 1000px
+  background-color $color-normal
+  border-radius(8px)
   .el-tabs--border-card
     border 0
     box-shadow(none)

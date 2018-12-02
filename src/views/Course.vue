@@ -94,7 +94,12 @@
 <script>
   import OFooter from '@/components/Footer.vue'
   import OLogin from '@/components/Login.vue'
-  import { Loading } from 'element-ui'
+  import {
+    Loading
+  } from 'element-ui'
+  import {
+    isLogin
+  } from '../common/js/utils'
   
   export default {
     components: {
@@ -107,7 +112,7 @@
     data() {
       return {
         activeName: 'overall',
-        courses:[],
+        courses: [],
         typeOneSrc: '',
         typeTwoSrc: ''
       };
@@ -123,15 +128,20 @@
         this.getCourse(tab.name)
       },
       bindSignUp(index) {
-        console.log(index)
-        this.$router.push({
-          name: 'signup',
-          params: {
-            group:'personal',
-            type: 'course',
-            id: this.courses[index].id
-          }
-        })
+        if (isLogin()) {
+          console.log(index)
+          this.$router.push({
+            name: 'signup',
+            params: {
+              group: 'personal',
+              type: 'course',
+              id: this.courses[index].id
+            }
+          })
+        } else {
+          this.showToastError('报名请先登录')
+        }
+  
       },
       bindCancle() {
         console.log('取消')
@@ -146,7 +156,7 @@
         });
         console.log(str)
         this.Api.getCourse({
-          sortType:str
+          sortType: str
         }).then(res => {
           this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
             loading.close();
@@ -178,7 +188,7 @@
           return ''
         } else {
           let arr = str.split('-')
-          return arr[0] + '年' + arr[1] + '月' +arr[2] + '日'
+          return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
         }
       }
     }

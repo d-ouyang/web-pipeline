@@ -6,21 +6,21 @@
           <div class="pay-over">
             <img src="../common/image/success.png" alt="">
             <h3>报名成功</h3>
-            <!-- <p>请前往“个人中心”-“我的考试”中查看课程订单<br>请准时参加培训</p> -->
-            <p>资料审核通过后，您将收到短信提醒<br>考试当日需携带有效证件和准考证前往考场考试</p>
-            <span>*准考证请前往“个人中心”-“我的考试”中下载并打印</span>
+            <p v-if='!showExam'>请前往“个人中心”-“我的课程”中查看课程订单<br>请准时参加培训</p>
+            <p v-if='showExam'>资料审核通过后，您将收到短信提醒<br>考试当日需携带有效证件和准考证前往考场考试</p>
+            <span v-if='showExam'>*准考证请前往“个人中心”-“我的考试”中下载并打印</span>
           </div>
         </div>
         <div class="info-container">
           <p>
-            <span>课程名称</span>
-            <span>课程时间</span>
-            <span>待支付费用</span>
+            <span>{{title}}名称</span>
+            <span>{{title}}时间</span>
+            <span>支付费用</span>
           </p>
           <h5>
-            <span>管道初级培训</span>
-            <span>2018年10月11日</span>
-            <span>5,900 元</span>
+            <span>{{info.name}}</span>
+            <span>{{info.duration}}</span>
+            <span>{{info.price}} 元</span>
           </h5>
         </div>
       </el-main>
@@ -28,25 +28,69 @@
     <o-footer></o-footer>
   </div>
 </template>
+
 <script>
-import OFooter from '@/components/Footer.vue'
-export default {
-  data () {
-    return {
-
+  import OFooter from '@/components/Footer.vue'
+  export default {
+    data() {
+      return {
+        title: '',
+        info:{
+          name:'',
+          location:'',
+          duration:'',
+          price: ''
+        },
+        showExam: false,
+        id: this.$route.params.id,
+        group: this.$route.params.group,
+        type: this.$route.params.type,
+        isGropu: this.$route.params.isGroup
+      }
+    },
+    mounted() {
+      this.initParams()
+    },
+    methods: {
+      initParams() {
+        const id = this.id
+        const group = this.group
+        const type = this.type
+        console.log(id, group, type)
+        if (group == 'personal') {
+          this.isGropu = false
+        } else if (group == 'compony') {
+          this.isGropu = true
+        }
+        if (type == 'course') {
+          this.title = '课程'
+          this.showExam = false
+          this.Api.getCourseDetail(id).then(res => {
+            console.log(res)
+            this.handleInfo(res)
+          })
+        } else if (type == 'exam') {
+          this.title = '考试'
+          this.showExam = true
+          this.Api.getExamDeatil(id).then(res => {
+            console.log(res)
+            this.handleInfo(res)
+          })
+        }
+      },
+      handleInfo(info) {
+        console.log(info)
+        info.duration = `${info.registerStartDate}~${info.registerEndDate}`
+        this.info = info
+      },
+  
+    },
+    components: {
+      OFooter
     }
-  },
-  mounted() {
-
-  },
-  methods: {
-
-  },
-  components: {
-    OFooter
   }
-}
 </script>
+
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'

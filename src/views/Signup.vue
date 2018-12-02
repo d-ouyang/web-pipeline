@@ -5,7 +5,7 @@
         <el-header height="73px">
           <div class="signup-name">
             {{title}}报名
-            <el-tag v-show='showExam && isGropu' size="mini">企业版</el-tag>
+            <el-tag v-show='isGropu' size="mini">企业版</el-tag>
           </div>
         </el-header>
   
@@ -60,36 +60,41 @@
             <div class="upload-box">
               <h4>毕业证书</h4>
               <el-upload class="upload-box-add" 
-                action = "http://test.richepipe.com:9200/image"
+                :action = "uploadAction"
                 auto-upload 
-                drag 
+                drag
+                :headers='uploadHeader'
                 :show-file-list="false"
                 :on-success="handleGraduationSuccess"
                 :on-error="handleGraduationError"
                 :before-upload="beforeGraduationUpload">
-                <div class="upload-box-add-slot">
+                <div class="upload-box-add-slot" v-if='!graduationUploadBool'>
                   <img src="../common/image/add.png" alt="">
                   <h5>点击/拖拽 添加图片</h5>
                   <p>支持jpg/png格式</p>
                   <p>不超过5MB</p>
                 </div>
+                <img class="upload-img" :src="IMG_BASE_URL+graduationUploadSrc" alt="" v-if='graduationUploadBool'>
               </el-upload>
             </div>
             <div class="upload-box">
               <h4>上传资质证书</h4>
               <el-upload class="upload-box-add" 
+                :action = "uploadAction"
                 auto-upload 
-                drag 
+                drag
+                :headers='uploadHeader'
                 :show-file-list="false"
                 :on-success="handleIntelligenceSuccess"
                 :on-error="handleIntelligenceError"
                 :before-upload="beforeIntelligenceUpload">
-                <div class="upload-box-add-slot">
+                <div class="upload-box-add-slot" v-if='!intelligenceUploadBool'>
                   <img src="../common/image/add.png" alt="">
                   <h5>点击/拖拽 添加图片</h5>
                   <p>支持jpg/png格式</p>
                   <p>不超过5MB</p>
                 </div>
+                <img class="upload-img" :src="IMG_BASE_URL+intelligenceUploadSrc" alt="" v-if='intelligenceUploadBool'>
               </el-upload>
             </div>
           </div>
@@ -108,11 +113,20 @@
 <script>
 import OFooter from '@/components/Footer.vue'
 import OExamNotes from '@/components/ExamNotes.vue'
+import {config} from '../api/config'
+const IMG_BASE_URL = config.IMG_BASE_URL
 
   export default {
 
     data() {
       return {
+        IMG_BASE_URL: config.IMG_BASE_URL,
+        uploadAction: `${config.BASE_URL}/image`,
+        graduationUploadSrc: '',
+        graduationUploadBool: false,
+        intelligenceUploadSrc: '',
+        intelligenceUploadBool: false,
+        uploadHeader: {},
         info:{
           name:'',
           location:'',
@@ -140,6 +154,13 @@ import OExamNotes from '@/components/ExamNotes.vue'
       }
     },
     methods: {
+      setUploadHeader() {
+        let token = window.localStorage.getItem('token')
+        let uploadHeader = {
+          token: token
+        }
+        this.uploadHeader = uploadHeader
+      },
       initParams() {
         const id = this.id
         const group = this.group
@@ -163,15 +184,101 @@ import OExamNotes from '@/components/ExamNotes.vue'
             this.handleInfo(res)
           })
         }
+
+        // 设置上传的请求头
+        this.setUploadHeader()
       },
+
       handleInfo(info) {
         console.log(info)
         info.duration = `${info.registerStartDate}~${info.registerEndDate}`
         this.info = info
       },
+      // 生成订单
       goToPay() {
+        console.log(this.id)
+        console.log(this.group)
+        console.log(this.type)
+        console.log(this.isGropu)
+        // 判断要生成个什么订单
+        if (this.isGropu) { // 公司 一定是 公司统一订单
+          this.Api.getUserInfo(1).then(res => {
+            console.log(res)
+            console.log('公司')
+            let data = {
+              companyId: res.companyId,
+              userId: res.id,
+              examId: this.id,
+              attachment: "empty",
+              price: this.info.price
+            }
+            console.log(data)
+            return this.Api.createCompanyExamOrder(data)
+          })
+          .then(res => {
+            console.log(res)
+            let params = {
+              group: this.group,
+              type: this.type,
+              id: this.id,
+              orderid: res.id
+            }
+            this._goToOrderPage(params)
+          })
+        } else {
+          if (this.type == 'exam') { // 个人 考试订单
+            this.Api.getUserInfo(1).then(res => {
+              console.log(res)
+              console.log('个人考试')
+              let data = {
+                userId: res.id,
+                examId: this.id,
+                price: this.info.price,
+                graduationCertificate: this.graduationUploadSrc,
+                qualificationCertificate: this.intelligenceUploadSrc
+              }
+              console.log(data)
+              return this.Api.createPersonalExamOrder(data)
+            })
+            .then(res => {
+              console.log(res)
+              let params = {
+                group: this.group,
+                type: this.type,
+                id: this.id,
+                orderid: res.id
+              }
+              this._goToOrderPage(params)
+            })
+          } else if (this.type == 'course') { // 个人 课程订单
+            this.Api.getUserInfo(1).then(res => {
+              console.log(res)
+              console.log('个人课程')
+              let data = {
+                userId: res.id,
+                price: this.info.price,
+                curriculumId: this.id
+              }
+              console.log(data)
+              return this.Api.createPersonalCourseOrder(data)
+            })
+            .then(res => {
+              console.log(res)
+              let params = {
+                group: this.group,
+                type: this.type,
+                id: this.id,
+                orderid: res.id
+              }
+              this._goToOrderPage(params)
+            })
+          }
+        }
+      },
+      _goToOrderPage(params) {
         this.$router.push({
-          path: '/pay/nihao'
+          name: 'pay',
+          params: params
         })
       },
       bindNotes() {
@@ -181,14 +288,33 @@ import OExamNotes from '@/components/ExamNotes.vue'
       bindCancle() {
         this.showNotes = false
       },
-      //  上传证书
+      // 上传毕业证书
       handleGraduationSuccess(response, file, fileList) {
         console.log(response)
+        this.graduationUploadSrc = response.data.path
+        this.graduationUploadBool = true
       },
       handleGraduationError(err, file, fileList) {
         consol.elog(err)
+        this.graduationUploadBool = false
+        this.showToastError('上传失败')
       },
       beforeGraduationUpload(file) {
+        console.log(file)
+      },
+
+      // 上传资质证书
+      handleIntelligenceSuccess(response, file, fileList) {
+        console.log(response)
+        this.intelligenceUploadSrc = response.data.path
+        this.intelligenceUploadBool = true
+      },
+      handleIntelligenceError(err, file, fileList) {
+        consol.elog(err)
+        this.intelligenceUploadBool = false
+        this.showToastError('上传失败')
+      },
+      beforeIntelligenceUpload(file) {
         console.log(file)
       }
 
@@ -321,6 +447,10 @@ import OExamNotes from '@/components/ExamNotes.vue'
             height 180px
             border 2px dashed $color-upload-border
             background-color $color-upload-bg
+            .upload-img
+              width 240px
+              height 180px
+              background-color $color-normal
             .upload-box-add-slot
               display flex 
               flex-direction column
