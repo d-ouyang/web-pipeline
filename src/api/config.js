@@ -1,7 +1,7 @@
 export const config = {
-  BASE_URL: 'http://www.richepipe.com:9200',
+  BASE_URL: 'https://www.richepipe.com:9000',
   // BASE_URL: 'http://test.richepipe.com:9200',
-  IMG_BASE_URL: 'http:www.//richepipe.com',
+  IMG_BASE_URL: 'https://www.richepipe.com',
   // IMG_BASE_URL: 'http://test.richepipe.com',
   ERR_OK: 200
 }

@@ -22,7 +22,10 @@
   
           <el-form-item class="captcha-item" label="图形验证码" prop="captcha">
             <el-input maxlength="4" class="captcha" v-model="form.captcha"></el-input>
-            <img @click="getImgCaptcha" class="img-captcha" :src="IMG_BASE_URL+imgCaptcha.imageUrl" alt="">
+            <el-tooltip class="item" effect="dark" content="点击更换图形验证码" placement="right-start">
+              <img @click="getImgCaptcha" class="img-captcha" :src="IMG_BASE_URL+imgCaptcha.imageUrl" alt="">
+            </el-tooltip>
+            
           </el-form-item>
   
           <el-form-item class="captcha-item" label="短信验证码" prop="msgCaptcha">
@@ -60,7 +63,7 @@
   
       <div class="clause">
         <p class="clause-link">
-          <span>您同意管道e生</span>
+          <span>注册表示您已同意管道e生</span>
           <a href="javascript:;" @click="bindService">服务条款</a>
           <span> 和 </span>
           <a href="javascript:;" @click="bindService">隐私政策</a>
@@ -316,7 +319,7 @@
           this.second--
             this.msgValue = this.second + ' s'
           if (this.second < 0) {
-            this.msgValue = '获取验证码'
+            this.msgValue = '重新获取'
             this.canGetMsg = true
             this.second = 30
             clearInterval(interval)
@@ -426,7 +429,7 @@
             border-radius 8px
             background-color $color-nav-active
     .clause
-      width 240px
+      width 300px
       font-size $size-clause
       color $color-clause
       .clause-link

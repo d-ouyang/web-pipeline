@@ -4,31 +4,46 @@ import Home from './views/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home',
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/home',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/course',
       name: 'course',
-      component: () => import('./views/Course.vue')
+      component: () => import('./views/Course.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/examination',
       name: 'examination',
-      component: () => import('./views/Examination.vue')
+      component: () => import('./views/Examination.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/personal',
       name: 'personal',
       component: () => import('./views/Personal.vue'),
+      meta: {
+        title: '管道E生培训'
+      },
       children: [
         {
           path: '',
@@ -65,22 +80,43 @@ export default new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import('./views/Register.vue')
+      component: () => import('./views/Register.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/signup/:group/:type/:id',
       name: 'signup',
-      component: () => import('./views/Signup.vue')
+      component: () => import('./views/Signup.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/pay/:group/:type/:id/:orderid',
       name: 'pay',
-      component: () => import('./views/Pay.vue')
+      component: () => import('./views/Pay.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     },
     {
       path: '/payOver/:group/:type/:id/',
       name: 'payOver',
-      component: () => import('./views/PayOver.vue')
+      component: () => import('./views/PayOver.vue'),
+      meta: {
+        title: '管道E生培训'
+      }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
+})
+
+export default router

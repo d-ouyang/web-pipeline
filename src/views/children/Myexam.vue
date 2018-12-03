@@ -2,22 +2,19 @@
   <div class="container">
     <el-tabs type="border-card">
       <el-tab-pane label="全部考试">
-        <el-table stripe='true' :data="tableData3" style="width: 100%" height="600">
-          <el-table-column fixed prop="name" label="考试名称">
+        <el-table :stripe='true' :data="tableDataAll" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="curriculmName" label="考试名称">
           </el-table-column>
-          <el-table-column prop="date" label="考试时间">
+          <el-table-column prop="startDate" label="考试时间">
+          </el-table-column>
+          <el-table-column prop="statusText1" label="当前状态">
+          </el-table-column>
+          <el-table-column prop="statusText2" label="">
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
             <template slot-scope="scope">
-                <p style="font-weight: bold;">{{ scope.row.date.date }}</p>
-                <p>{{ scope.row.date.time }}</p>
-</template>
-          </el-table-column>
-          <el-table-column prop="status" label="当前状态">
-          </el-table-column>
-          <el-table-column prop="result" label="">
-<template slot-scope="scope">
-  <span style="margin-right: 36px;font-weight:bold;">{{ scope.row.result }}</span>
-  <i class="el-icon-time"></i>
-</template>
+              <i class="el-icon-arrow-right"></i>
+            </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -32,59 +29,74 @@
   export default {
     data() {
       return {
-        tableData3: [{
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
+        tableDataAll: [],
+        tableDataPart1:[],
+        tableDataPart2:[],
+        tableDataPart3:[],
+
+        // 测试数组
+        testArr:[{
+          orderId: 18,
+          userExamId: 3,
+          userId: 2,
+          examId: 9,
+          examName: '压力管道培训A',
+          payAt:null,
+          bookAt:"2018-09-19T07:36:23",
+          status: 2,
+          graduation: '123.png',
+          quality: '456.png',
+          price: 0.01,
+          registerNumber:'2938487625267',
+          examStatus:2,
+          examGrade: 70,
+          examResult:'未通过',
+          examSeat: '24',
+          examRoom: 'D101',
+          examDate:"2018-09-29T10:10:10",
+          examDateDay:"2018-09-29",
+          examDateTime:"10:10:10",
+          location: '徐汇商务大厦'
+        },{
+          orderId: 19,
+          userCurriculmId: 3,
+          userId: 2,
+          curriculmId: 19,
+          curriculmName: '压力管道培训B',
+          payAt:null,
+          bookAt:"2018-09-19T07:36:23",
+          status: 1,
+          price: 0.01,
+          startDate:"2018-09-29",
+          location: '徐汇商务大厦哈哈哈'
         }]
       }
     },
     mounted() {
-      // this.getMyexams()
+      this.getMyexams()
     },
     methods: {
+      selectRow(row, column, cell, event) {
+        console.log(row)
+        console.log(column)
+        console.log(cell)
+      },
       getMyexams() {
         this.Api.getUserInfo(1).then(res => {
           return this.Api.getPersonalExams(res.id)
         }).then(res => {
-          console.log(res)
+          // console.log(res)
+          this._handleArr(res)
         })
+      },
+      _handleArr(arr) {
+        let dataAll = []
+        let dataPart1 = []
+        let dataPart2 = []
+        let dataPart3 = []
+        for (let i in arr) {
+          console.log(arr[i])
+        }
       }
     }
   }

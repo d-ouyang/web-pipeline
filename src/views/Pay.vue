@@ -147,7 +147,7 @@
         timer = setInterval(() => {
           this.Api.pollingPay(id).then(res => {
             console.log(res)
-            if (res.status == 0) {
+            if (res.status == 1) {
               clearInterval(timer)
               this.$router.push({
                 name: 'payOver',

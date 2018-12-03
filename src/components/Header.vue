@@ -44,8 +44,7 @@ import {isLogin} from '../common/js/utils'
         this.$emit('login')
       },
       bindExit() {
-        window.localStorage.removeItem('token')
-        window.localStorage.removeItem('userInfo')
+        window.localStorage.clear()
         this.$emit('exit')
       }
     }

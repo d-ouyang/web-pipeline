@@ -11,7 +11,7 @@
         </p>
       </div>
       <div class="btn-box">
-        <el-button>退出账号</el-button>
+        <el-button @click="exit">退出账号</el-button>
       </div>
   
     </el-main>
@@ -75,6 +75,13 @@
         } else if (gender == 3) {
           return '其它'
         }
+      },
+
+      // 退出
+      exit() {
+        window.localStorage.clear()
+        // this.$router.push('/home')
+        this.$emit('exit')
       }
   
     }
@@ -120,8 +127,8 @@
       align-items center
       margin-top 50px
       .el-button
-        width 362px
-        height 68px
+        width 290px
+        height 48px
         border-radius(8px)
         background-color $color-nav-active
         color $color-normal

@@ -148,25 +148,25 @@
         this.$emit('cancle')
       },
       getCourse(str) {
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+        // const loading = this.$loading({
+        //   lock: true,
+        //   text: 'Loading',
+        //   spinner: 'el-icon-loading',
+        //   background: 'rgba(0, 0, 0, 0.7)'
+        // });
         console.log(str)
         this.Api.getCourse({
           sortType: str
         }).then(res => {
-          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-            loading.close();
-          });
+          // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+          //   loading.close();
+          // });
           console.log(res)
           this._handleCourse(res)
         }).catch(err => {
-          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-            loading.close();
-          });
+          // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+          //   loading.close();
+          // });
         })
       },
       _handleCourse(arr) {

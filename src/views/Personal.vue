@@ -15,7 +15,7 @@
             </el-menu-item>
           </el-menu>
         </el-aside>
-        <router-view></router-view>
+        <router-view v-on:exit='bindExit'></router-view>
         <!-- <router-view class="content"></router-view> -->
       </el-main>
     </el-container>
@@ -39,16 +39,16 @@
       }
     },
     mounted() {
-      this.getPersonalOrderList()
+      // this.getPersonalOrderList()
     },
     methods: {
-      getPersonalOrderList() {
-        this.Api.getUserInfo(1).then(res => {
-          return this.Api.getPersonalOrderList(res.id)
-        }).then(res => {
-          console.log(res)
-        })
-      },
+      // getPersonalOrderList() {
+      //   this.Api.getUserInfo(1).then(res => {
+      //     return this.Api.getPersonalOrderList(res.id)
+      //   }).then(res => {
+      //     console.log(res)
+      //   })
+      // },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -58,6 +58,9 @@
       bindCancle() {
         console.log('取消')
         this.$emit('cancle')
+      },
+      bindExit() {
+        this.$emit('exit')
       }
     },
     components: {

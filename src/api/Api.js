@@ -90,16 +90,16 @@ export default {
 				return requestClient.fetch(request.METHOD_POST, `/order/pay`, data, options)
 			},
 			// 用户订单列表
-			getPersonalOrderList(id) {
-				return requestClient.fetch(request.METHOD_GET, `/order/user_id/${id}`)
-			},
+			// getPersonalOrderList(id) {
+			// 	return requestClient.fetch(request.METHOD_GET, `/order/user_id/${id}`)
+			// },
 			// 个人课程列表
 			getPersonalCourses(id) {
-				return requestClient.fetch(request.METHOD_GET, `/user_curriculum/id/${id}`)
+				return requestClient.fetch(request.METHOD_GET, `/student/curriculum/${id}`)
 			},
 			// 个人考试列表
 			getPersonalExams(id) {
-				return requestClient.fetch(request.METHOD_GET, `/user_exam/id/${id}`)
+				return requestClient.fetch(request.METHOD_GET, `/student/exam/${id}`)
 			},
 			// 订单轮询接口
 			pollingPay(id) {

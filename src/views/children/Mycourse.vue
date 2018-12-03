@@ -2,27 +2,65 @@
   <div class="container">
     <el-tabs type="border-card">
       <el-tab-pane label="全部课程">
-        <el-table stripe='true' :data="tableData3" style="width: 100%" height="698">
-          <el-table-column fixed prop="name" label="考试名称">
+        <el-table :stripe='true' :data="tableDataAll" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="curriculumName" label="课程名称">
           </el-table-column>
-          <el-table-column prop="date" label="考试时间">
+          <el-table-column prop="startDate" label="开课时间">
+          </el-table-column>
+          <el-table-column prop="location" label="开课地址">
+          </el-table-column>
+           <el-table-column prop="statusText" label="">
             <template slot-scope="scope">
-              <p style="font-weight: bold;">{{ scope.row.date.date }}</p>
-              <p>{{ scope.row.date.time }}</p>
+              <span style="font-weight:bold;" :style="{color: scope.row.color}">{{ scope.row.statusText }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="当前状态">
-          </el-table-column>
-          <el-table-column prop="result" label="">
+          <el-table-column prop="" label="" width="40">
             <template slot-scope="scope">
-              <span style="margin-right: 36px;font-weight:bold;">{{ scope.row.result }}</span>
-              <i class="el-icon-time"></i>
+              <i class="el-icon-arrow-right"></i>
             </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="待开课">待开课</el-tab-pane>
-      <el-tab-pane label="已结业">已结业</el-tab-pane>
+      <el-tab-pane label="待开课">
+        <el-table :stripe='true' :data="tableDataPart1" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="curriculumName" label="课程名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="开课时间">
+          </el-table-column>
+          <el-table-column prop="location" label="开课地址">
+          </el-table-column>
+           <el-table-column prop="statusText" label="">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.color}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="已结业">
+        <el-table :stripe='true' :data="tableDataPart2" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="curriculumName" label="课程名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="开课时间">
+          </el-table-column>
+          <el-table-column prop="location" label="开课地址">
+          </el-table-column>
+          <el-table-column prop="statusText" label="">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.color}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -31,64 +69,63 @@
 
   export default {
     props: {
-      courses: Array
+      
     },
     data() {
       return {
-        tableData3: [{
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }, {
-          name: '管道 D3 考试',
-          date: {
-            date: '2018年10月11日',
-            time: '16:30 ~ 18:00'
-          },
-          status: '已付款',
-          result: '等待审核中'
-        }]
+        tableDataAll: [],
+        tableDataPart1:[],
+        tableDataPart2:[],
       }
     },
     mounted() {
-      // this.getMycourses()
+      this.getMycourses()
+      // this._handleArr(this.testArr)
     },
     methods: {
+      selectRow(row, column, cell, event) {
+        console.log(row)
+        console.log(column)
+        console.log(cell)
+      },
       getMycourses() {
         this.Api.getUserInfo(1).then(res => {
           return this.Api.getPersonalCourses(res.id)
         }).then(res => {
           console.log(res)
+          this._handleArr(res)
         })
-      }
+      },
+
+      _handleArr(arr) {
+        let dataAll = []
+        let dataPart1 = []
+        let dataPart2 = []
+        for (let i in arr) {
+          let obj = {}
+          // obj.name = arr[i].curriculumName
+          // obj.location = arr[i].location
+          // obj.status = arr[i].status
+          if (arr[i].status == 0) {
+            obj.statusText = '待上课'
+            obj.color = '#F5A623'
+            obj = Object.assign({},obj,arr[i])
+            dataPart1.push(obj)
+          } else if (arr[i].status == 1) {
+            obj.statusText = '已结业'
+            obj.color = '#C6D2E0'
+            obj = Object.assign({},obj,arr[i])
+            dataPart2.push(obj)
+          }
+          dataAll.push(obj)
+        }
+        console.log(dataAll)
+        console.log(dataPart1)
+        console.log(dataPart2)
+        this.tableDataAll = dataAll
+        this.tableDataPart1 = dataPart1
+        this.tableDataPart2 = dataPart2
+      },
     }
   }
 </script>
