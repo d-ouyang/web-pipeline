@@ -25,7 +25,7 @@
 </template>
 <script>
 export default {
-  
+
 }
 </script>
 <style lang="stylus" scoped>
@@ -50,11 +50,11 @@ export default {
     h2
       display flex
       align-items center
-      img 
+      img
         width 30px
         height 30px
         margin-right 4px
-      span 
+      span
         font-size $size-news-title
         color $color-news-title
         font-weight 500
@@ -72,9 +72,7 @@ export default {
         color $color-news-value
         font-size $size-news-content
         no-wrap()
-      span 
+      span
         color $color-news-key
         font-size $size-news-date
 </style>
-
-

@@ -46,7 +46,7 @@
 4．结束服务后，考生使用与网上报名相关的一切服务的权利即刻中止，考生没有权利要求，我方也没有义务对其网上查询、报考负任何责任。
 八、关于信息发布
 我方将通过网上公告形式向考生发布提供权威资讯，先告知服务条款的修改、服务变更或其它重要事项。
-九、法律 
+九、法律
 网上报考及查询等服务条款均要遵守国家的法律、法规，考生和我方一致同意服从有管辖权法院管辖。若我方部分服务条款与法律、法规相抵触，并不影响其他条款的法律效力。
             </p>
         </div>
@@ -59,7 +59,7 @@
 <script>
 export default {
   methods: {
-    cancle() {
+    cancle () {
       this.$emit('cancle')
     }
   }
@@ -87,8 +87,8 @@ export default {
     top 50%
     margin-top -290px
     border-radius(4px)
-    background-color $color-normal 
-    padding 0 50px 
+    background-color $color-normal
+    padding 0 50px
     .content
       width 100%
       height 100%
@@ -107,7 +107,7 @@ export default {
         box-sizing()
         padding 0 20px
         overflow-y scroll
-        background-color $color-note-bg 
+        background-color $color-note-bg
         margin 20px 0 40px
         p
           padding-top 20px
@@ -129,4 +129,3 @@ export default {
     color $color-normal
     cursor pointer
 </style>
-

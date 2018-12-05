@@ -11,15 +11,15 @@ import OBanner from '@/components/Banner.vue'
 import ONews from '@/components/News.vue'
 import OFooter from '@/components/Footer.vue'
 import OLogin from '@/components/Login.vue'
-import {isLogin} from '../common/js/utils'
+import { isLogin } from '../common/js/utils'
 
 export default {
   props: {
-    showLogin:Boolean
+    showLogin: Boolean
   },
-  data() {
+  data () {
     return {
-      
+
     }
   },
   components: {
@@ -28,7 +28,7 @@ export default {
     OFooter,
     OLogin
   },
-  mounted() {
+  mounted () {
     console.log('首页')
     console.log(this.$route)
     // this.getUserInfo()
@@ -42,18 +42,17 @@ export default {
     //     console.log(err)
     //   })
     // },
-    bindSignUp(params) {
+    bindSignUp (params) {
       console.log(params)
       this.$router.push({
         name: 'signup',
         params: params
       })
     },
-    bindCancle() {
+    bindCancle () {
       console.log('取消')
       this.$emit('cancle')
     }
   }
 }
 </script>
-

@@ -3,13 +3,17 @@
     <el-tabs type="border-card">
       <el-tab-pane label="全部考试">
         <el-table :stripe='true' :data="tableDataAll" style="width: 100%" height="600" @cell-click='selectRow'>
-          <el-table-column fixed prop="curriculmName" label="考试名称">
+          <el-table-column fixed prop="examName" label="考试名称">
           </el-table-column>
           <el-table-column prop="startDate" label="考试时间">
+            <template slot-scope="scope">
+              <p>{{scope.row.examDateDay}}</p>
+              <p>{{scope.row.examDateStartTime}} ~ {{scope.row.examDateEndTime}}</p>
+            </template>
           </el-table-column>
-          <el-table-column prop="statusText1" label="当前状态">
+          <el-table-column prop="statusText" label="当前状态">
           </el-table-column>
-          <el-table-column prop="statusText2" label="">
+          <el-table-column prop="result" label="">
           </el-table-column>
           <el-table-column prop="" label="" width="40">
             <template slot-scope="scope">
@@ -26,80 +30,104 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        tableDataAll: [],
-        tableDataPart1:[],
-        tableDataPart2:[],
-        tableDataPart3:[],
-
-        // 测试数组
-        testArr:[{
-          orderId: 18,
-          userExamId: 3,
-          userId: 2,
-          examId: 9,
-          examName: '压力管道培训A',
-          payAt:null,
-          bookAt:"2018-09-19T07:36:23",
-          status: 2,
-          graduation: '123.png',
-          quality: '456.png',
-          price: 0.01,
-          registerNumber:'2938487625267',
-          examStatus:2,
-          examGrade: 70,
-          examResult:'未通过',
-          examSeat: '24',
-          examRoom: 'D101',
-          examDate:"2018-09-29T10:10:10",
-          examDateDay:"2018-09-29",
-          examDateTime:"10:10:10",
-          location: '徐汇商务大厦'
-        },{
-          orderId: 19,
-          userCurriculmId: 3,
-          userId: 2,
-          curriculmId: 19,
-          curriculmName: '压力管道培训B',
-          payAt:null,
-          bookAt:"2018-09-19T07:36:23",
-          status: 1,
-          price: 0.01,
-          startDate:"2018-09-29",
-          location: '徐汇商务大厦哈哈哈'
-        }]
-      }
+export default {
+  data () {
+    return {
+      tableDataAll: [],
+      tableDataPart1: [],
+      tableDataPart2: [],
+      tableDataPart3: [],
+    }
+  },
+  mounted () {
+    this.getMyexams()
+  },
+  methods: {
+    selectRow (row, column, cell, event) {
+      console.log(row)
+      console.log(column)
+      console.log(cell)
     },
-    mounted() {
-      this.getMyexams()
+    getMyexams () {
+      this.Api.getUserInfo(1).then(res => {
+        return this.Api.getPersonalExams(res.id)
+      }).then(res => {
+        this._handleArr(res)
+      })
     },
-    methods: {
-      selectRow(row, column, cell, event) {
-        console.log(row)
-        console.log(column)
-        console.log(cell)
-      },
-      getMyexams() {
-        this.Api.getUserInfo(1).then(res => {
-          return this.Api.getPersonalExams(res.id)
-        }).then(res => {
-          // console.log(res)
-          this._handleArr(res)
-        })
-      },
-      _handleArr(arr) {
-        let dataAll = []
-        let dataPart1 = []
-        let dataPart2 = []
-        let dataPart3 = []
-        for (let i in arr) {
-          console.log(arr[i])
+    _handleArr (arr) {
+      let dataAll = []
+      let dataPart1 = [] // 审核中
+      let dataPart2 = [] // 待考试
+      let dataPart3 = [] // 考试结果
+      for (let i in arr) {
+        console.log(arr[i])
+        let obj = {}
+        obj.examDateDay = arr[i].examDate.split('T')[0]
+        obj.examDateStartTime = arr[i].examDate.split('T')[1]
+        console.log(obj.examDateStartTime)
+        let endTimeArr = arr[i].examDate.split('T')[1].split(':')
+        endTimeArr[0] = (Number(endTimeArr[0]) + 2) < 10 ? '0' + (Number(endTimeArr[0]) + 2) : (Number(endTimeArr[0]) + 2)
+        console.log(endTimeArr)
+        obj.examDateEndTime = endTimeArr.join(':')
+        console.log(obj.examDateEndTime)
+        if (arr[i].status == 0) {
+          obj.statusText = '未付款'
+          obj.statusColor = '#FF475D'
+          obj.result = ''
+          obj.resultColor = ''
+          obj = Object.assign({}, obj, arr[i])
+        } else if (arr[i].status == 1) {
+          obj.statusText = '已付款'
+          obj.statusColor = '#4B6796'
+          obj.result = '等待审核中'
+          obj.resultColor = '#F5A623'
+          obj = Object.assign({}, obj, arr[i])
+          dataPart1.push(obj)
+        } else if (arr[i].status == 2 && arr[i].examGrade == null) {
+          obj.statusText = '等待考试'
+          obj.statusColor = '#4B6796'
+          obj.result = '下载准考证'
+          obj.resultColor = '#4C84FF'
+          obj = Object.assign({}, obj, arr[i])
+          dataPart2.push(obj)
+        } else if (arr[i].status == 2) {
+          if (arr[i].examGrade >= 90) {
+            obj.statusText = '考试已通过'
+            obj.statusColor = '#4B6796'
+            obj.result = '制证中'
+            obj.resultColor = '#0FD6AB'
+            obj = Object.assign({}, obj, arr[i])
+            dataPart3.push(obj)
+          } else if (arr[i].examGrade < 90) {
+            obj.statusText = '考试未通过'
+            obj.statusColor = '#FF475D'
+            obj.result = ''
+            obj.resultColor = ''
+            obj = Object.assign({}, obj, arr[i])
+            dataPart3.push(obj)
+          }
+        } else if (arr[i].status == 3) {
+          obj.statusText = '审核未通过'
+          obj.statusColor = '#FF475D'
+          obj.result = '重新上传资料'
+          obj.resultColor = '#4C84FF'
+          obj = Object.assign({}, obj, arr[i])
+          dataPart1.push(obj)
         }
+        dataAll.push(obj)
       }
+      console.log(dataAll)
+      console.log(dataPart1)
+      console.log(dataPart2)
+      console.log(dataPart3)
+      this.tableDataAll = dataAll
+      this.tableDataPart1 = dataPart1
+      this.tableDataPart2 = dataPart2
+      this.tableDataPart3 = dataPart3
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -158,6 +186,5 @@
           height 96px
           .cell
             font-weight bold
-        
-</style>
 
+</style>

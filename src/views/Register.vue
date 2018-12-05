@@ -3,7 +3,7 @@
     <el-row class="register-box">
       <img class="register-box-bg" src="../common/image/register.png" alt="">
       <h2 class="register-header">注册账号</h2>
-  
+
       <el-form class="form" status-icon ref="form" :model="form" :rules="rules" :label-position="labelPosition">
         <div class="form-model form-left">
           <el-form-item label="真实姓名" prop="name">
@@ -15,26 +15,26 @@
           <el-form-item label="确认密码" prop="passEnd">
             <el-input type="password" v-model="form.passEnd"></el-input>
           </el-form-item>
-  
+
           <el-form-item label="手机号" prop="phone">
             <el-input maxlength="11" v-model="form.phone"></el-input>
           </el-form-item>
-  
+
           <el-form-item class="captcha-item" label="图形验证码" prop="captcha">
             <el-input maxlength="4" class="captcha" v-model="form.captcha"></el-input>
             <el-tooltip class="item" effect="dark" content="点击更换图形验证码" placement="right-start">
               <img @click="getImgCaptcha" class="img-captcha" :src="IMG_BASE_URL+imgCaptcha.imageUrl" alt="">
             </el-tooltip>
-            
+
           </el-form-item>
-  
+
           <el-form-item class="captcha-item" label="短信验证码" prop="msgCaptcha">
             <el-input class="captcha" v-model="form.msgCaptcha"></el-input>
             <el-tooltip class="item" effect="dark" content="优先填写手机号和图形验证码" placement="right-start">
               <span class="get-captcha" @click="getMsgCaptcha">{{msgValue}}</span>
             </el-tooltip>
           </el-form-item>
-  
+
           <el-form-item class="submit-btn">
             <el-button type="primary" @click="onSubmit('form')">立即注册</el-button>
           </el-form-item>
@@ -43,14 +43,14 @@
           <el-form-item label="身份证号码" prop="idCard">
             <el-input v-model="form.idCard"></el-input>
           </el-form-item>
-  
+
           <el-form-item label="公司（若没记录选择其他）" prop="company">
             <el-select v-model="form.company" placeholder="请选公司" clearable @change='selectChange'>
               <el-option v-for="(item, index) in form.companys" :key="item.id" :label="item.name" :value="index">
               </el-option>
             </el-select>
           </el-form-item>
-  
+
           <el-form-item label="性别" prop="gender">
             <el-radio-group v-model="form.gender">
               <el-radio label="1">男</el-radio>
@@ -60,7 +60,7 @@
           </el-form-item>
         </div>
       </el-form>
-  
+
       <div class="clause">
         <p class="clause-link">
           <span>注册表示您已同意管道e生</span>
@@ -73,7 +73,7 @@
           <router-link class="login" to='/home' tag="div">立即登录</router-link>
         </p>
       </div>
-  
+
     </el-row>
     <o-footer></o-footer>
     <o-service v-show="showService" v-on:cancle='bindCancle'></o-service>
@@ -81,285 +81,285 @@
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  import OService from '@/components/Service'
-  import {
-    config
-  } from '../api/config'
-  
-  export default {
-    components: {
-      OFooter,
-      OService
-    },
-  
-    data() {
-      var validatePhone = (rule, value, callback) => {
-        var reg = /^1[34578][0-9]{9}$/
-        if (value === '') {
-          callback(new Error('请填写手机号码'))
-        } else if (!reg.test(value) && value.length <= 11) {
-          callback(new Error('请填写正确手机号码'))
-        } else if (value.length > 11) {
-          callback(new Error('手机号码不能超过11位'));
-        } else {
-          callback()
-        }
-      }
-      var validateIdCard = (rule, value, callback) => {
-        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-        if (value === '') {
-          callback(new Error('请填写身份证号码'))
-        } else if (!reg.test(value)) {
-          callback(new Error('请填写正确的身份证号码'))
-        } else {
-          callback()
-        }
-      }
-      return {
-        showService: false,
-        imgCaptcha: {
-          imageUrl: '',
-          requestId: ''
-        },
-        second: 30,
-        IMG_BASE_URL: config.IMG_BASE_URL,
-        canGetMsg: true,
-        msgValue: '获取验证码',
-        labelPosition: 'top',
-        form: {
-          name: '',
-          passStart: '',
-          passEnd: '',
-          phone: '',
-          captcha: '',
-          msgCaptcha: '',
-          company: '',
-          companys: [],
-          idCard: '',
-          gender: '1',
-          type: 3,
+import OFooter from '@/components/Footer.vue'
+import OService from '@/components/Service'
+import {
+  config
+} from '../api/config'
 
-        },
-        rules: {
-          name: [{
-              required: true,
-              message: '请输入真实姓名',
-              trigger: 'change'
-            },
-            {
-              min: 2,
-              max: 4,
-              message: '长度在 2 到 4 个汉字',
-              trigger: 'change'
-            }
-          ],
-          passStart: [{
-              required: true,
-              message: '请输入密码',
-              trigger: 'change'
-            },
-            {
-              min: 8,
-              max: 24,
-              message: '长度为 8 ~ 24 个字符',
-              trigger: 'change'
-            }
-          ],
-          passEnd: [
-            {
-              required: true,
-              validator: (rule, value, callback) => {
-                console.log(value)
-                if (value == '') {
-                  callback(new Error('请再次输入密码'))
-                } else if (value !== this.form.passStart) {
-                  callback(new Error('两次输入密码不一致'))
-                } else {
-                  callback()
-                }
-              },
-              trigger: 'change'
-            }
-          ],
-          phone: [{
-            required: true,
-            validator: validatePhone,
-            trigger: 'change'
-          }],
-          captcha: [{
-            required: true,
-            validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('请输入图形验证码'))
-              } else if (value.length !== 4) {
-                callback(new Error('请输入 4 位图形验证码'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'change'
-          }],
-          msgCaptcha: [{
-            required: true,
-            validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('请输入短信验证码'))
-              } else if (value.length !== 6) {
-                callback(new Error('请输入 6 位短信验证码'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }],
-          company: [{
-            required: true,
-            validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('请选择公司'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'change'
-          }],
-          idCard: [{
-            required: true,
-            validator: validateIdCard,
-            trigger: 'change'
-          }],
-          gender: [{
-            required: true,
-            trigger: 'change'
-          }]
-        }
-      }
-    },
-  
-    created() {
-  
-    },
-    mounted() {
-      this.getImgCaptcha()
-      this.getCompanys()
-    },
-  
-    computed: {
-  
-    },
-  
-    methods: {
-      // 选择框
-      selectChange(index) {
-        if (this.form.companys[index].name == '其它') {
-          this.$prompt('请输入公司', '备注', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消'
-          }).then(({
-            value
-          }) => {
-            console.log(value)
-            if (value) {
-              this.form.companys[index].name = value
-            }
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消输入'
-            });
-          });
-        }
-      },
-      onSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          console.log(valid)
-          if (valid) {
-            let form = this.form
-            let data = {
-              name: form.name,
-              companyId: form.companys[form.company].id,
-              companyName: form.companys[form.company].name,
-              code: form.msgCaptcha,
-              idNumber: form.idCard,
-              phone: form.phone,
-              password: form.passEnd,
-              type: form.type,
-              gender: form.gender
-            }
-            console.log(data)
-            this.Api.register(data).then(res => {
-              console.log(res)
-              this.$router.push({
-                path: '/home'
-              })
-            })
-          } else {
-            this.showToastError('必填信息均要符合要求')
-            return false;
-          }
-        });
-      },
-      getCompanys() {
-        this.Api.getCompanys().then(res => {
-          console.log(res)
-          this.form.companys = res
-        })
-      },
-      getImgCaptcha() {
-        this.Api.getImgCap().then(res => {
-          console.log(res)
-          this.imgCaptcha = res
-        }).catch(err => {
-  
-        })
-      },
-      _countDown() {
-        let interval = setInterval(() => {
-          this.second--
-            this.msgValue = this.second + ' s'
-          if (this.second < 0) {
-            this.msgValue = '重新获取'
-            this.canGetMsg = true
-            this.second = 30
-            clearInterval(interval)
-          }
-        }, 1000)
-      },
-      getMsgCaptcha() {
-        if (this.canGetMsg) {
-          const phone = this.form.phone
-          const requestId = this.imgCaptcha.requestId
-          const code = this.form.captcha
-  
-          if (phone == '') {
-            this.showToastError('请填写手机号')
-          } else if (code == '') {
-            this.showToastError('请填写图形验证码')
-          } else {
-            let data = {
-              code: code,
-              requestId: requestId,
-              phone: phone
-            }
-            this.Api.getMsgCap(data).then(res => {
-              console.log(res)
-              this._countDown()
-            })
-          }
-        } else {
-          return
-        }
-      },
-      // 隐私条款
-      bindService() {
-        this.showService = true
-      },
-      bindCancle() {
-        this.showService = false
+export default {
+  components: {
+    OFooter,
+    OService
+  },
+
+  data () {
+    var validatePhone = (rule, value, callback) => {
+      var reg = /^1[34578][0-9]{9}$/
+      if (value === '') {
+        callback(new Error('请填写手机号码'))
+      } else if (!reg.test(value) && value.length <= 11) {
+        callback(new Error('请填写正确手机号码'))
+      } else if (value.length > 11) {
+        callback(new Error('手机号码不能超过11位'))
+      } else {
+        callback()
       }
     }
+    var validateIdCard = (rule, value, callback) => {
+      var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+      if (value === '') {
+        callback(new Error('请填写身份证号码'))
+      } else if (!reg.test(value)) {
+        callback(new Error('请填写正确的身份证号码'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      showService: false,
+      imgCaptcha: {
+        imageUrl: '',
+        requestId: ''
+      },
+      second: 30,
+      IMG_BASE_URL: config.IMG_BASE_URL,
+      canGetMsg: true,
+      msgValue: '获取验证码',
+      labelPosition: 'top',
+      form: {
+        name: '',
+        passStart: '',
+        passEnd: '',
+        phone: '',
+        captcha: '',
+        msgCaptcha: '',
+        company: '',
+        companys: [],
+        idCard: '',
+        gender: '1',
+        type: 3
+
+      },
+      rules: {
+        name: [{
+          required: true,
+          message: '请输入真实姓名',
+          trigger: 'change'
+        },
+        {
+          min: 2,
+          max: 4,
+          message: '长度在 2 到 4 个汉字',
+          trigger: 'change'
+        }
+        ],
+        passStart: [{
+          required: true,
+          message: '请输入密码',
+          trigger: 'change'
+        },
+        {
+          min: 8,
+          max: 24,
+          message: '长度为 8 ~ 24 个字符',
+          trigger: 'change'
+        }
+        ],
+        passEnd: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              console.log(value)
+              if (value == '') {
+                callback(new Error('请再次输入密码'))
+              } else if (value !== this.form.passStart) {
+                callback(new Error('两次输入密码不一致'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'change'
+          }
+        ],
+        phone: [{
+          required: true,
+          validator: validatePhone,
+          trigger: 'change'
+        }],
+        captcha: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入图形验证码'))
+            } else if (value.length !== 4) {
+              callback(new Error('请输入 4 位图形验证码'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'change'
+        }],
+        msgCaptcha: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入短信验证码'))
+            } else if (value.length !== 6) {
+              callback(new Error('请输入 6 位短信验证码'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }],
+        company: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请选择公司'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'change'
+        }],
+        idCard: [{
+          required: true,
+          validator: validateIdCard,
+          trigger: 'change'
+        }],
+        gender: [{
+          required: true,
+          trigger: 'change'
+        }]
+      }
+    }
+  },
+
+  created () {
+
+  },
+  mounted () {
+    this.getImgCaptcha()
+    this.getCompanys()
+  },
+
+  computed: {
+
+  },
+
+  methods: {
+    // 选择框
+    selectChange (index) {
+      if (this.form.companys[index].name == '其它') {
+        this.$prompt('请输入公司', '备注', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({
+          value
+        }) => {
+          console.log(value)
+          if (value) {
+            this.form.companys[index].name = value
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+      }
+    },
+    onSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        console.log(valid)
+        if (valid) {
+          let form = this.form
+          let data = {
+            name: form.name,
+            companyId: form.companys[form.company].id,
+            companyName: form.companys[form.company].name,
+            code: form.msgCaptcha,
+            idNumber: form.idCard,
+            phone: form.phone,
+            password: form.passEnd,
+            type: form.type,
+            gender: form.gender
+          }
+          console.log(data)
+          this.Api.register(data).then(res => {
+            console.log(res)
+            this.$router.push({
+              path: '/home'
+            })
+          })
+        } else {
+          this.showToastError('必填信息均要符合要求')
+          return false
+        }
+      })
+    },
+    getCompanys () {
+      this.Api.getCompanys().then(res => {
+        console.log(res)
+        this.form.companys = res
+      })
+    },
+    getImgCaptcha () {
+      this.Api.getImgCap().then(res => {
+        console.log(res)
+        this.imgCaptcha = res
+      }).catch(err => {
+
+      })
+    },
+    _countDown () {
+      let interval = setInterval(() => {
+        this.second--
+        this.msgValue = this.second + ' s'
+        if (this.second < 0) {
+          this.msgValue = '重新获取'
+          this.canGetMsg = true
+          this.second = 30
+          clearInterval(interval)
+        }
+      }, 1000)
+    },
+    getMsgCaptcha () {
+      if (this.canGetMsg) {
+        const phone = this.form.phone
+        const requestId = this.imgCaptcha.requestId
+        const code = this.form.captcha
+
+        if (phone == '') {
+          this.showToastError('请填写手机号')
+        } else if (code == '') {
+          this.showToastError('请填写图形验证码')
+        } else {
+          let data = {
+            code: code,
+            requestId: requestId,
+            phone: phone
+          }
+          this.Api.getMsgCap(data).then(res => {
+            console.log(res)
+            this._countDown()
+          })
+        }
+      } else {
+
+      }
+    },
+    // 隐私条款
+    bindService () {
+      this.showService = true
+    },
+    bindCancle () {
+      this.showService = false
+    }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -392,7 +392,7 @@
       color $color-news-title
       font-weight 500
       margin-bottom 40px
-    .form 
+    .form
       display flex
       flex-direction row
       justify-content space-between
@@ -434,7 +434,7 @@
       color $color-clause
       .clause-link
         padding-bottom 11px
-        border-bottom 1px solid $color-clause 
+        border-bottom 1px solid $color-clause
         a
           color $color-nav-active
       .clause-login
@@ -448,4 +448,3 @@
   .footer
     margin-top 19px
 </style>
-

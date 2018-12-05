@@ -33,41 +33,40 @@
 </template>
 
 <script>
-  import {
-    isLogin
-  } from '../common/js/utils'
-  
-  export default {
-    data() {
-      return {
-        detail: {}
-      }
+import {
+  isLogin
+} from '../common/js/utils'
+
+export default {
+  data () {
+    return {
+      detail: {}
+    }
+  },
+  mounted () {
+    this.getExamDetail()
+  },
+  methods: {
+    getExamDetail () {
+      this.Api.getExamDeatil(4).then(res => {
+        this.detail = res
+      })
     },
-    mounted() {
-      this.getExamDetail()
-    },
-    methods: {
-      getExamDetail() {
-        this.Api.getExamDeatil(4).then(res => {
-          this.detail = res
-        })
-      },
-      signup(group) {
-        if (isLogin()) {
-          let params = {
-            id: this.detail.id,
-            group: group,
-            type: 'exam'
-          }
-          // console.log(params)
-          this.$emit('signup', params)
-        } else {
-          this.showToastError('报名请先登录')
+    signup (group) {
+      if (isLogin()) {
+        let params = {
+          id: this.detail.id,
+          group: group,
+          type: 'exam'
         }
-  
+        // console.log(params)
+        this.$emit('signup', params)
+      } else {
+        this.showToastError('报名请先登录')
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -91,16 +90,16 @@
     h2
       display flex
       align-items center
-      img 
+      img
         width 30px
         height 30px
         margin-right 4px
-      span 
+      span
         font-size $size-news-title
         color $color-news-title
         font-weight 500
         line-height 1.0
-    button 
+    button
       height 32px
       border 2px solid $color-nav-active
       color $color-nav-active
@@ -117,7 +116,7 @@
       margin-bottom 24px
       &:last-child
         margin-bottom 0
-      span 
+      span
         color $color-news-key
         margin-right 28px
       p
@@ -131,14 +130,12 @@
     flex-direction row-reverse
     align-items center
     cursor pointer
-    img 
+    img
       width 15px
       height 17px
       margin-right 4px
-    span 
+    span
       font-size $size-news-content
       color $color-nav-active
       line-height 1.0
 </style>
-
-

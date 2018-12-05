@@ -8,10 +8,10 @@
 </template>
 <script>
 import OHeader from '@/components/Header.vue'
-import {isLogin} from './common/js/utils'
+import { isLogin } from './common/js/utils'
 
 export default {
-  data() {
+  data () {
     return {
       showLogin: false,
       userInfo: {},
@@ -19,12 +19,12 @@ export default {
     }
   },
   components: {
-    OHeader,
+    OHeader
   },
-  created() {
+  created () {
     // window.localStorage.clear()
   },
-  mounted() {
+  mounted () {
     console.log(isLogin())
     if (isLogin()) {
       this.showLogin = false
@@ -36,14 +36,14 @@ export default {
     }
   },
   methods: {
-    getUserInfo() {
+    getUserInfo () {
       this.Api.getUserInfo(1).then(res => {
         console.log(res)
-        window.localStorage.setItem('userInfo',res)
+        window.localStorage.setItem('userInfo', res)
         this.userInfo = res
       })
     },
-    bindLogin() {
+    bindLogin () {
       this.showLogin = true
     },
     bindCancle () {
@@ -61,13 +61,13 @@ export default {
       this.$router.push('/home')
     }
   }
-};
+}
 </script>
 
 <style lang="stylus">
 @import './common/stylus/index.styl'
 
-#app 
+#app
   background-color: $color-background
-  
+
 </style>

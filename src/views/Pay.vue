@@ -8,7 +8,7 @@
             <el-tag v-show='isGropu' size="mini">企业版</el-tag>
           </div>
         </el-header>
-  
+
         <div class="info-container">
           <p>
             <span>{{title}}名称</span>
@@ -21,7 +21,7 @@
             <span>{{info.price}} 元</span>
           </h5>
         </div>
-  
+
         <div class="info-container">
           <h4 class="info-header">
             <span>支付方式</span>
@@ -45,7 +45,7 @@
                   <img src="../common/image/wechat.png" alt="">微信支付
                 </span>
               <div class="pay-box">
-                
+
                 <!-- <h4>共需支付</h4>
                 <h3>
                   <span>￥</span> 5,900
@@ -57,117 +57,117 @@
           </el-tabs>
         </div>
       </el-main>
-  
+
     </el-container>
     <o-footer></o-footer>
   </div>
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  import {config} from '../api/config'
-  
-  export default {
-    data() {
-      return {
-        tabPosition: 'left',
-        title: '',
-        info:{
-          name:'',
-          location:'',
-          duration:'',
-          price: ''
-        },
-        orderid: this.$route.params.orderid,
-        id: this.$route.params.id,
-        group: this.$route.params.group,
-        type: this.$route.params.type,
-        isGropu: this.$route.params.isGroup,
-        AlipayQrcode:'',
-        WxpayQrcode: ''
-      }
-    },
-    mounted() {
-      console.log(this.$route)
-      this.initParams()
-    },
-    methods: {
-      goToPay() {
-        this.$router.push('/payOver/123')
-      },
-      initParams() {
-        const id = this.id
-        const group = this.group
-        const type = this.type
-        const orderid = this.orderid
-        console.log(id, group, type, orderid)
-        if (group == 'personal') {
-          this.isGropu = false
-        } else if (group == 'compony') {
-          this.isGropu = true
-        }
-        if (type == 'course') {
-          this.title = '课程'
-          this.showExam = false
-          this.Api.getCourseDetail(id).then(res => {
-            this.handleInfo(res)
-          })
-        } else if (type == 'exam') {
-          this.title = '考试'
-          this.showExam = true
-          this.Api.getExamDeatil(id).then(res => {
-            this.handleInfo(res)
-          })
-        }
+import OFooter from '@/components/Footer.vue'
+import { config } from '../api/config'
 
-        this._createRQcode(this.orderid,'Alipay')
+export default {
+  data () {
+    return {
+      tabPosition: 'left',
+      title: '',
+      info: {
+        name: '',
+        location: '',
+        duration: '',
+        price: ''
       },
-
-      // 生成二维码
-      _createRQcode(id,payType) {
-        let data = {
-          orderId: id,
-          payType:payType
-        }
-        this.Api.createQrCodeImg(data).then(res => {
-          console.log(res)
-          this.AlipayQrcode = res
-          this._pollingPay(id)
-        })
-      },
-      handleInfo(info) {
-        console.log(info)
-        info.duration = `${info.registerStartDate}~${info.registerEndDate}`
-        this.info = info
-      },
-
-      // 轮询订单
-      _pollingPay(id) {
-        var timer = null
-        timer = setInterval(() => {
-          this.Api.pollingPay(id).then(res => {
-            console.log(res)
-            if (res.status == 1) {
-              clearInterval(timer)
-              this.$router.push({
-                name: 'payOver',
-                params: {
-                  group: this.group,
-                  type: this.type,
-                  id: this.id,
-                }
-              })
-            }
-          }).catch(err => {
-
-          })
-        },8000)
-      }
-    },
-    components: {
-      OFooter
+      orderid: this.$route.params.orderid,
+      id: this.$route.params.id,
+      group: this.$route.params.group,
+      type: this.$route.params.type,
+      isGropu: this.$route.params.isGroup,
+      AlipayQrcode: '',
+      WxpayQrcode: ''
     }
+  },
+  mounted () {
+    console.log(this.$route)
+    this.initParams()
+  },
+  methods: {
+    goToPay () {
+      this.$router.push('/payOver/123')
+    },
+    initParams () {
+      const id = this.id
+      const group = this.group
+      const type = this.type
+      const orderid = this.orderid
+      console.log(id, group, type, orderid)
+      if (group == 'personal') {
+        this.isGropu = false
+      } else if (group == 'compony') {
+        this.isGropu = true
+      }
+      if (type == 'course') {
+        this.title = '课程'
+        this.showExam = false
+        this.Api.getCourseDetail(id).then(res => {
+          this.handleInfo(res)
+        })
+      } else if (type == 'exam') {
+        this.title = '考试'
+        this.showExam = true
+        this.Api.getExamDeatil(id).then(res => {
+          this.handleInfo(res)
+        })
+      }
+
+      this._createRQcode(this.orderid, 'Alipay')
+    },
+
+    // 生成二维码
+    _createRQcode (id, payType) {
+      let data = {
+        orderId: id,
+        payType: payType
+      }
+      this.Api.createQrCodeImg(data).then(res => {
+        console.log(res)
+        this.AlipayQrcode = res
+        this._pollingPay(id)
+      })
+    },
+    handleInfo (info) {
+      console.log(info)
+      info.duration = `${info.registerStartDate}~${info.registerEndDate}`
+      this.info = info
+    },
+
+    // 轮询订单
+    _pollingPay (id) {
+      var timer = null
+      timer = setInterval(() => {
+        this.Api.pollingPay(id).then(res => {
+          console.log(res)
+          if (res.status == 1) {
+            clearInterval(timer)
+            this.$router.push({
+              name: 'payOver',
+              params: {
+                group: this.group,
+                type: this.type,
+                id: this.id
+              }
+            })
+          }
+        }).catch(err => {
+          clearInterval(timer)
+        })
+      }, 8000)
+    }
+  },
+  components: {
+    OFooter
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -177,7 +177,7 @@
 .signup-container
   padding-top 60px
   margin-bottom 102px
-  .el-main 
+  .el-main
     width 100%;
     max-width 1200px
     position relative
@@ -201,17 +201,17 @@
       p, h5
         display flex
         flex-direction row
-        align-items center 
+        align-items center
         justify-content space-around
       p
         height 58px
         border-bottom 1px solid $color-border
-        span 
+        span
           font-size $size-sub-title
           color $color-upload-border
-      h5 
+      h5
         height 116px
-        span 
+        span
           font-size $size-nav-text
           color $color-td-value-text
       .info-header
@@ -238,19 +238,19 @@
           border 0
           height 60px
           line-height 60px
-          span 
+          span
             display flex
             flex-direction row
             align-items center
             font-size $size-sub-title
             color $color-td-value-text
-            img 
+            img
               width 20px
               height 20px
               margin-right 10px
       .el-tabs--border-card >>> .el-tabs__content
         padding 0
-        .pay-box 
+        .pay-box
           display flex
           flex-direction column
           align-items center
@@ -267,9 +267,9 @@
             display flex
             flex-direction row
             align-items baseline
-            span 
+            span
               font-size $size-news-title
-          img 
+          img
             width 190px
             height 190px
             margin-bottom 16px

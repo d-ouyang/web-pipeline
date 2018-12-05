@@ -30,7 +30,7 @@
                 <el-button @click="bindSignUp('personal', index)">立即报名</el-button>
                 <el-button class="compony" @click="bindSignUp('compony',index)">公司报名</el-button>
               </div>
-  
+
             </li>
           </ul>
         </el-main>
@@ -42,78 +42,77 @@
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  import OLogin from '@/components/Login.vue'
-  import {
-    isLogin
-  } from '../common/js/utils'
-  
-  export default {
-    components: {
-      OFooter,
-      OLogin
+import OFooter from '@/components/Footer.vue'
+import OLogin from '@/components/Login.vue'
+import {
+  isLogin
+} from '../common/js/utils'
+
+export default {
+  components: {
+    OFooter,
+    OLogin
+  },
+  props: {
+    showLogin: Boolean
+  },
+  data () {
+    return {
+      exams: []
+    }
+  },
+  mounted () {
+    this.getExams()
+  },
+  methods: {
+    getExams () {
+      this.Api.getExams().then(res => {
+        this._handleExams(res)
+      })
     },
-    props: {
-      showLogin: Boolean
-    },
-    data() {
-      return {
-        exams: []
-      };
-    },
-    mounted() {
-      this.getExams()
-    },
-    methods: {
-      getExams() {
-        this.Api.getExams().then(res => {
-          this._handleExams(res)
-        })
-      },
-      _handleExams(arr) {
-        for (let i in arr) {
-          arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
-          arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
-          if (arr[i].type == 1) {
-            arr[i].src = require('../common/image/course1.png')
-          } else if (arr[i].type == 2) {
-            arr[i].src = require('../common/image/course2.png')
-          } else {
-            arr[i].src = require('../common/image/course-default.png')
-          }
-        }
-        this.exams = arr
-      },
-      _handleDate(str) {
-        if (str == null) {
-          return ''
+    _handleExams (arr) {
+      for (let i in arr) {
+        arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
+        arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
+        if (arr[i].type == 1) {
+          arr[i].src = require('../common/image/course1.png')
+        } else if (arr[i].type == 2) {
+          arr[i].src = require('../common/image/course2.png')
         } else {
-          let arr = str.split('-')
-          return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
+          arr[i].src = require('../common/image/course-default.png')
         }
-      },
-      bindSignUp(group, id) {
-        if (isLogin()) {
-          console.log(group, id)
-          this.$router.push({
-            name: 'signup',
-            params: {
-              group: group,
-              type: 'exam',
-              id: this.exams[id].id
-            }
-          })
-        } else {
-          this.showToastError('报名请先登录')
-        }
-  
-      },
-      bindCancle() {
-        console.log('取消')
-        this.$emit('cancle')
       }
+      this.exams = arr
+    },
+    _handleDate (str) {
+      if (str == null) {
+        return ''
+      } else {
+        let arr = str.split('-')
+        return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
+      }
+    },
+    bindSignUp (group, id) {
+      if (isLogin()) {
+        console.log(group, id)
+        this.$router.push({
+          name: 'signup',
+          params: {
+            group: group,
+            type: 'exam',
+            id: this.exams[id].id
+          }
+        })
+      } else {
+        this.showToastError('报名请先登录')
+      }
+    },
+    bindCancle () {
+      console.log('取消')
+      this.$emit('cancle')
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -135,7 +134,7 @@
       font-weight 500
       margin-bottom 30px
       margin-top 102px
-    p 
+    p
       width 100%
       max-width 690px
       line-height 1.5
@@ -179,7 +178,7 @@
               p
                 font-size $size-sub-title
                 font-weight 400
-              img 
+              img
                 position absolute
                 left 0
                 top 0
@@ -210,7 +209,7 @@
                 p
                   font-size $size-sub-title
                   color $color-sub-title
-          .btn-wrap 
+          .btn-wrap
             display flex
             flex-direction column
             .el-button
@@ -221,8 +220,4 @@
               background-color $color-nav-active
               color $color-normal
 
-
-      
 </style>
-
-

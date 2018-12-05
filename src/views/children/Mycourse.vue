@@ -67,67 +67,80 @@
 
 <script>
 
-  export default {
-    props: {
-      
-    },
-    data() {
-      return {
-        tableDataAll: [],
-        tableDataPart1:[],
-        tableDataPart2:[],
-      }
-    },
-    mounted() {
-      this.getMycourses()
-      // this._handleArr(this.testArr)
-    },
-    methods: {
-      selectRow(row, column, cell, event) {
-        console.log(row)
-        console.log(column)
-        console.log(cell)
-      },
-      getMycourses() {
-        this.Api.getUserInfo(1).then(res => {
-          return this.Api.getPersonalCourses(res.id)
-        }).then(res => {
-          console.log(res)
-          this._handleArr(res)
-        })
-      },
+export default {
+  props: {
 
-      _handleArr(arr) {
-        let dataAll = []
-        let dataPart1 = []
-        let dataPart2 = []
-        for (let i in arr) {
-          let obj = {}
-          // obj.name = arr[i].curriculumName
-          // obj.location = arr[i].location
-          // obj.status = arr[i].status
-          if (arr[i].status == 0) {
-            obj.statusText = '待上课'
-            obj.color = '#F5A623'
-            obj = Object.assign({},obj,arr[i])
-            dataPart1.push(obj)
-          } else if (arr[i].status == 1) {
-            obj.statusText = '已结业'
-            obj.color = '#C6D2E0'
-            obj = Object.assign({},obj,arr[i])
-            dataPart2.push(obj)
-          }
-          dataAll.push(obj)
+  },
+  data () {
+    return {
+      tableDataAll: [],
+      tableDataPart1: [],
+      tableDataPart2: []
+    }
+  },
+  mounted () {
+    this.getMycourses()
+    // this._handleArr(this.testArr)
+  },
+  methods: {
+    selectRow (row, column, cell, event) {
+      console.log(row)
+      console.log(column)
+      console.log(cell)
+    },
+    getMycourses () {
+      this.Api.getUserInfo(1).then(res => {
+        return this.Api.getPersonalCourses(res.id)
+      }).then(res => {
+        console.log(res)
+        this._handleArr(res)
+      })
+    },
+
+    _handleArr (arr) {
+      let dataAll = []
+      let dataPart1 = []
+      let dataPart2 = []
+      let currentTime = new Date().getTime()
+      for (let i in arr) {
+        let obj = {}
+        console.log(arr[i])
+        if (arr[i].status == 0) {
+          obj.statusText = '未付款'
+          obj.color = '#F5A623'
+          obj = Object.assign({}, obj, arr[i])
+          dataPart1.push(obj)
+        } else if (arr[i].status == 1) {
+          let startTime = new Date(arr[i].startDate).getTime()
+          // let endTime = new Date(arr[i].endDate).getTime()
+          // if (currentTime < startTime) {
+          //   obj.statusText = '待开课'
+          //   obj.color = '#C6D2E0'
+          //   obj = Object.assign({}, obj, arr[i])
+          //   dataPart2.push(obj)
+          // } else if (currentTime >= startTime && currentTime <= endTime) {
+          //   obj.statusText = '开课中'
+          //   obj.color = '#C6D2E0'
+          //   obj = Object.assign({}, obj, arr[i])
+          //   dataPart2.push(obj)
+          // } else {
+          //   obj.statusText = '已结业'
+          //   obj.color = '#C6D2E0'
+          //   obj = Object.assign({}, obj, arr[i])
+          //   dataPart2.push(obj)
+          // }
         }
-        console.log(dataAll)
-        console.log(dataPart1)
-        console.log(dataPart2)
-        this.tableDataAll = dataAll
-        this.tableDataPart1 = dataPart1
-        this.tableDataPart2 = dataPart2
-      },
+        dataAll.push(obj)
+      }
+      console.log(dataAll)
+      console.log(dataPart1)
+      console.log(dataPart2)
+      this.tableDataAll = dataAll
+      this.tableDataPart1 = dataPart1
+      this.tableDataPart2 = dataPart2
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -185,6 +198,5 @@
           height 96px
           .cell
             font-weight bold
-        
-</style>
 
+</style>

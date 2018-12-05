@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import {
-	Message
+  Message
 } from 'element-ui'
 
 export default {
-  install(Vue, options) {
+  install (Vue, options) {
     Vue.prototype.showToastSuccess = (str) => {
       Message({
         showClose: true,

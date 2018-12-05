@@ -25,49 +25,49 @@
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  import OLogin from '@/components/Login.vue'
-  import { isLogin} from '../common/js/utils'
-  
-  export default {
-    props: {
-      showLogin: Boolean
-    },
-    data() {
-      return {
-        
-      }
-    },
-    mounted() {
-      // this.getPersonalOrderList()
-    },
-    methods: {
-      // getPersonalOrderList() {
-      //   this.Api.getUserInfo(1).then(res => {
-      //     return this.Api.getPersonalOrderList(res.id)
-      //   }).then(res => {
-      //     console.log(res)
-      //   })
-      // },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      bindCancle() {
-        console.log('取消')
-        this.$emit('cancle')
-      },
-      bindExit() {
-        this.$emit('exit')
-      }
-    },
-    components: {
-      OFooter,
-      OLogin
+import OFooter from '@/components/Footer.vue'
+import OLogin from '@/components/Login.vue'
+import { isLogin } from '../common/js/utils'
+
+export default {
+  props: {
+    showLogin: Boolean
+  },
+  data () {
+    return {
+
     }
+  },
+  mounted () {
+    // this.getPersonalOrderList()
+  },
+  methods: {
+    // getPersonalOrderList() {
+    //   this.Api.getUserInfo(1).then(res => {
+    //     return this.Api.getPersonalOrderList(res.id)
+    //   }).then(res => {
+    //     console.log(res)
+    //   })
+    // },
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    bindCancle () {
+      console.log('取消')
+      this.$emit('cancle')
+    },
+    bindExit () {
+      this.$emit('exit')
+    }
+  },
+  components: {
+    OFooter,
+    OLogin
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -98,7 +98,7 @@
             align-items center
           .router-link-active
             color $color-nav-active
-            i 
+            i
               color $color-nav-active
     .content
       width 100%
@@ -106,5 +106,3 @@
       background-color $color-normal
       border-radius(8px)
 </style>
-
-

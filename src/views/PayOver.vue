@@ -30,65 +30,65 @@
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  export default {
-    data() {
-      return {
-        title: '',
-        info:{
-          name:'',
-          location:'',
-          duration:'',
-          price: ''
-        },
-        showExam: false,
-        id: this.$route.params.id,
-        group: this.$route.params.group,
-        type: this.$route.params.type,
-        isGropu: this.$route.params.isGroup
+import OFooter from '@/components/Footer.vue'
+export default {
+  data () {
+    return {
+      title: '',
+      info: {
+        name: '',
+        location: '',
+        duration: '',
+        price: ''
+      },
+      showExam: false,
+      id: this.$route.params.id,
+      group: this.$route.params.group,
+      type: this.$route.params.type,
+      isGropu: this.$route.params.isGroup
+    }
+  },
+  mounted () {
+    this.initParams()
+  },
+  methods: {
+    initParams () {
+      const id = this.id
+      const group = this.group
+      const type = this.type
+      console.log(id, group, type)
+      if (group == 'personal') {
+        this.isGropu = false
+      } else if (group == 'compony') {
+        this.isGropu = true
+      }
+      if (type == 'course') {
+        this.title = '课程'
+        this.showExam = false
+        this.Api.getCourseDetail(id).then(res => {
+          console.log(res)
+          this.handleInfo(res)
+        })
+      } else if (type == 'exam') {
+        this.title = '考试'
+        this.showExam = true
+        this.Api.getExamDeatil(id).then(res => {
+          console.log(res)
+          this.handleInfo(res)
+        })
       }
     },
-    mounted() {
-      this.initParams()
-    },
-    methods: {
-      initParams() {
-        const id = this.id
-        const group = this.group
-        const type = this.type
-        console.log(id, group, type)
-        if (group == 'personal') {
-          this.isGropu = false
-        } else if (group == 'compony') {
-          this.isGropu = true
-        }
-        if (type == 'course') {
-          this.title = '课程'
-          this.showExam = false
-          this.Api.getCourseDetail(id).then(res => {
-            console.log(res)
-            this.handleInfo(res)
-          })
-        } else if (type == 'exam') {
-          this.title = '考试'
-          this.showExam = true
-          this.Api.getExamDeatil(id).then(res => {
-            console.log(res)
-            this.handleInfo(res)
-          })
-        }
-      },
-      handleInfo(info) {
-        console.log(info)
-        info.duration = `${info.registerStartDate}~${info.registerEndDate}`
-        this.info = info
-      },
-  
-    },
-    components: {
-      OFooter
+    handleInfo (info) {
+      console.log(info)
+      info.duration = `${info.registerStartDate}~${info.registerEndDate}`
+      this.info = info
     }
+
+  },
+  components: {
+    OFooter
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -97,7 +97,7 @@
 
 .signup-container
   padding-top 60px
-  .el-main 
+  .el-main
     width 100%;
     max-width 1200px
     position relative
@@ -113,7 +113,7 @@
         display flex
         flex-direction column
         align-items center
-        img 
+        img
           width 56px
           height 56px
           margin-top 64px
@@ -130,26 +130,25 @@
           line-height 1.5
           text-align center
           border-bottom 0
-        span 
+        span
           font-size $size-sub-title
           color $color-error
           margin-bottom 60px
       p, h5
         display flex
         flex-direction row
-        align-items center 
+        align-items center
         justify-content space-around
       p
         height 58px
         border-bottom 1px solid $color-border
-        span 
+        span
           font-size $size-sub-title
           color $color-upload-border
-      h5 
+      h5
         height 116px
-        span 
+        span
           font-size $size-nav-text
           color $color-td-value-text
-    
-</style>
 
+</style>

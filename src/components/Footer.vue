@@ -11,16 +11,16 @@ export default {
       default: '#bbb'
     }
   },
-  data() {
+  data () {
     return {
 
     }
   },
-  created() {
-    
+  created () {
+
   },
-  mounted() {
-    
+  mounted () {
+
   },
   computed: {
 
@@ -29,13 +29,13 @@ export default {
 
   },
   methods: {
-    
+
   },
   updated () {
-    
+
   },
   destroyed () {
-    
+
   }
 }
 </script>
@@ -47,5 +47,3 @@ export default {
     font-size 12px
     text-align center
 </style>
-
-

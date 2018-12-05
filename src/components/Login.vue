@@ -26,7 +26,7 @@
           <router-link class="register" to='/register' tag="div">立即注册</router-link>
         </p>
       </div>
-  
+
       <div class="modify-pass login-item" v-show="modifyShow">
         <h3 style="margin-bottom:12px;">修改密码</h3>
         <h4>为了账号安全，您需修改初始密码才能登陆</h4>
@@ -49,7 +49,7 @@
           <router-link class="register" to='/register' tag="div">立即注册</router-link>
         </p>
       </div>
-  
+
       <div class="find-pass login-item" v-show="findShow">
         <h3>密码找回</h3>
         <p class="error-text">验证码已过期，请重新发送</p>
@@ -75,211 +75,211 @@
           <span style="cursor:pointer;">登录</span>
         </p>
       </div>
-  
+
       <!-- cancle -->
       <i class="el-icon-close cancle" @click="cancle"></i>
     </div>
-  
+
   </div>
 </template>
 
 <script>
-  import {
-    returnFormData
-  } from '../api/config'
-  
-  export default {
-    data() {
-      return {
-        loginPass: true,
-        openSrc: require('./image/icon-open-eye.png'),
-        closeSrc: require('./image/icon-close-eye.png'),
-        // 登录
-        loginShow: true,
-        formLogin: {
-          user: '',
-          pass: ''
+import {
+  returnFormData
+} from '../api/config'
+
+export default {
+  data () {
+    return {
+      loginPass: true,
+      openSrc: require('./image/icon-open-eye.png'),
+      closeSrc: require('./image/icon-close-eye.png'),
+      // 登录
+      loginShow: true,
+      formLogin: {
+        user: '',
+        pass: ''
+      },
+      rulesLogin: {
+        user: [{
+          required: true,
+          message: '请输入身份证',
+          trigger: 'blur'
+        } ],
+        pass: [{
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        } ]
+      },
+
+      // 修改
+      modifyShow: false,
+      formModify: {
+        passFirst: '',
+        passSecond: ''
+      },
+      rulesModify: {
+        passFirst: [{
+          required: true,
+          message: '请输入新密码',
+          trigger: 'change'
         },
-        rulesLogin: {
-          user: [{
-            required: true,
-            message: '请输入身份证',
-            trigger: 'blur'
-          }, ],
-          pass: [{
-            required: true,
-            message: '请输入密码',
-            trigger: 'blur'
-          }, ]
-        },
-  
-        // 修改
-        modifyShow: false,
-        formModify: {
-          passFirst: '',
-          passSecond: ''
-        },
-        rulesModify: {
-          passFirst: [{
-              required: true,
-              message: '请输入新密码',
-              trigger: 'change'
-            },
-            {
-              min: 6,
-              max: 16,
-              message: '长度为 6 ~ 16 个字符',
-              trigger: 'change'
-            }
-          ],
-          passSecond: [{
-            required: true,
-            validator: (rule, value, callback) => {
-              console.log(value)
-              if (value == '') {
-                callback(new Error('请再次输入密码'))
-              } else if (value !== this.formModify.passFirst) {
-                callback(new Error('两次输入密码不一致'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'change'
-          }]
-        },
-  
-        // 找回密码
-        findShow: false,
-        formFind: {
-          phone: '',
-          captcha: '',
-          msgCaptcha: ''
-        },
-        rulesFind: {
-          phone: [{
-              required: true,
-              message: '请输入活动名称',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
-              trigger: 'blur'
-            }
-          ],
-          captcha: [{
-              required: true,
-              message: '请输入活动名称',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
-              trigger: 'blur'
-            }
-          ],
-          msgCaptcha: [{
-              required: true,
-              message: '请输入活动名称',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
-              trigger: 'blur'
-            }
-          ]
+        {
+          min: 6,
+          max: 16,
+          message: '长度为 6 ~ 16 个字符',
+          trigger: 'change'
         }
-      }
-    },
-  
-    mounted() {
-  
-    },
-  
-    methods: {
-      transPass() {
-        this.loginPass = !this.loginPass
-      },
-      onLoginSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          console.log(valid)
-          if (valid) {
-            let requestStr = returnFormData({
-              username: this.formLogin.user,
-              password: this.formLogin.pass
-            })
-            console.log(requestStr)
-            this.Api.login(requestStr).then(res => {
-                console.log(res)
-                window.localStorage.setItem('token', res)
-                return this.Api.getUserInfo(1)
-              })
-              .then(res => {
-                console.log(res)
-                window.localStorage.setItem('userInfo', res)
-                this.userInfo = res
-                if (res.passwordType == 0) {
-                  this.loginShow = false
-                  this.modifyShow = true
-                  this.findShow = false
-                } else if (res.passwordType == 1) {
-                  this.$emit('cancle')
-                }
-              })
-          } else {
-            this.showToastError('必填信息均要符合要求')
-            return false;
-          }
-        })
-      },
-      onModifySubmit(formName) {
-        console.log('修改密码');
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let data = {
-              //  modifyPassword
-              password: this.formModify.passSecond
+        ],
+        passSecond: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            console.log(value)
+            if (value == '') {
+              callback(new Error('请再次输入密码'))
+            } else if (value !== this.formModify.passFirst) {
+              callback(new Error('两次输入密码不一致'))
+            } else {
+              callback()
             }
-            this.Api.modifyPassword(data).then(res => {
-              console.log(res)
-              this.showToastSuccess('密码修改成功')
-              this.loginShow = true
-              this.modifyShow = false
-              this.findShow = false
-              this.$emit('cancle')
-            }).catch(err => {
-              this.showToastSuccess('密码修改失败')
-            })
-          } else {
-            this.showToastError('必填信息均要符合要求')
-            return false;
-          }
-        })
+          },
+          trigger: 'change'
+        }]
       },
-      onFindSubmit() {
-        console.log('发送密码到手机');
+
+      // 找回密码
+      findShow: false,
+      formFind: {
+        phone: '',
+        captcha: '',
+        msgCaptcha: ''
       },
-      cancle() {
-        this.$emit('cancle')
-      },
-      // bindForget() {
-      //   this.loginShow = false
-      //   this.modifyShow = false
-      //   this.findShow = true
-      // }
+      rulesFind: {
+        phone: [{
+          required: true,
+          message: '请输入活动名称',
+          trigger: 'blur'
+        },
+        {
+          min: 3,
+          max: 5,
+          message: '长度在 3 到 5 个字符',
+          trigger: 'blur'
+        }
+        ],
+        captcha: [{
+          required: true,
+          message: '请输入活动名称',
+          trigger: 'blur'
+        },
+        {
+          min: 3,
+          max: 5,
+          message: '长度在 3 到 5 个字符',
+          trigger: 'blur'
+        }
+        ],
+        msgCaptcha: [{
+          required: true,
+          message: '请输入活动名称',
+          trigger: 'blur'
+        },
+        {
+          min: 3,
+          max: 5,
+          message: '长度在 3 到 5 个字符',
+          trigger: 'blur'
+        }
+        ]
+      }
     }
+  },
+
+  mounted () {
+
+  },
+
+  methods: {
+    transPass () {
+      this.loginPass = !this.loginPass
+    },
+    onLoginSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        console.log(valid)
+        if (valid) {
+          let requestStr = returnFormData({
+            username: this.formLogin.user,
+            password: this.formLogin.pass
+          })
+          console.log(requestStr)
+          this.Api.login(requestStr).then(res => {
+            console.log(res)
+            window.localStorage.setItem('token', res)
+            return this.Api.getUserInfo(1)
+          })
+            .then(res => {
+              console.log(res)
+              window.localStorage.setItem('userInfo', res)
+              this.userInfo = res
+              if (res.passwordType == 0) {
+                this.loginShow = false
+                this.modifyShow = true
+                this.findShow = false
+              } else if (res.passwordType == 1) {
+                this.$emit('cancle')
+              }
+            })
+        } else {
+          this.showToastError('必填信息均要符合要求')
+          return false
+        }
+      })
+    },
+    onModifySubmit (formName) {
+      console.log('修改密码')
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let data = {
+            //  modifyPassword
+            password: this.formModify.passSecond
+          }
+          this.Api.modifyPassword(data).then(res => {
+            console.log(res)
+            this.showToastSuccess('密码修改成功')
+            this.loginShow = true
+            this.modifyShow = false
+            this.findShow = false
+            this.$emit('cancle')
+          }).catch(err => {
+            this.showToastSuccess('密码修改失败')
+          })
+        } else {
+          this.showToastError('必填信息均要符合要求')
+          return false
+        }
+      })
+    },
+    onFindSubmit () {
+      console.log('发送密码到手机')
+    },
+    cancle () {
+      this.$emit('cancle')
+    }
+    // bindForget() {
+    //   this.loginShow = false
+    //   this.modifyShow = false
+    //   this.findShow = true
+    // }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
 @import '../common/stylus/variable.styl'
 @import '../common/stylus/mixin.styl'
 
-.login-mask 
+.login-mask
   position fixed
   width 100vw
   height 100vh
@@ -311,7 +311,7 @@
         color $color-news-title
         margin-bottom 16px
         font-weight 500
-      h4 
+      h4
         font-size $size-sub-title
         color $color-news-title
         margin-bottom 16px
@@ -326,7 +326,7 @@
         margin-top 10px
       .modify-form
         margin-top 12px
-      .find-form 
+      .find-form
         margin-top 10px
       form
         margin-top 10px
@@ -372,8 +372,5 @@
           font-size $size-news-content
         .register
           cursor pointer
-          
 
 </style>
-
-

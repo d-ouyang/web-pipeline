@@ -8,25 +8,25 @@
             <div class="title-line"></div>
             <ul>
               <li>
-                <span>考试时间</span>
-                <p>{{item.examDate}}</p>
+                <span>{{item.title}}时间</span>
+                <p>{{item.duration}}</p>
               </li>
               <li>
-                <span>考试地点</span>
+                <span>{{item.title}}地点</span>
                 <p>{{item.location}}</p>
               </li>
               <li>
-                <span>报考费用</span>
+                <span>{{item.title}}费用</span>
                 <p>￥{{item.price}}</p>
               </li>
               <li>
-                <span>考试内容</span>
-                <p style="width:420px">{{item.description}}</p>
+                <span>{{item.title}}内容</span>
+                <p class='description'>{{item.description}}</p>
               </li>
             </ul>
             <div class="btn-group">
-              <button class="single-signup" @click="signup(index,'personal')">立即报名</button>
-              <button class="group-signup" @click="signup(index,'compony')">公司报名</button>
+              <button class="single-signup" @click="signup(index,'personal',item.type)">立即报名</button>
+              <button class="group-signup" @click="signup(index,'compony',item.type)">公司报名</button>
             </div>
           </el-col>
         </el-row>
@@ -35,47 +35,69 @@
   </el-carousel>
 </template>
 <script>
-import { isLogin} from '../common/js/utils'
+import { isLogin } from '../common/js/utils'
 
 export default {
-  data() {
+  data () {
     return {
       span: 12,
       banner1: 'banner-item1',
       banner2: 'banner-item2',
-      details:[]
+      details: []
     }
   },
-  mounted() {
+  mounted () {
     this.getDetail()
   },
   methods: {
-    getDetail() {
-      let detail1 = this.Api.getExamDeatil(4)
-      let detail2 = this.Api.getExamDeatil(6)
+    getDetail () {
+      // let detail1 = this.Api.bannerCourse()
+      // let detail2 = this.Api.bannerExam()
       let details = []
-      Promise.all([detail1,detail2]).then(list => {
-        list.forEach((res, i) => {
-          details.push(res)
-        })
-        details.push({})
-        console.log(details)
+      this.Api.bannerCourse().then(res => {
+        console.log(res)
+        let item1 = this.handleDetail(res[0])
+        let item2 = this.handleDetail(res[1])
+        details.push(item1,item2,{})
         this.details = details
       })
+      // Promise.all([detail1, detail2]).then(list => {
+        // list.forEach((res, i) => {
+        //   console.log(res)
+        //   // details.push(res)
+        // })
+        // details.push({})
+        // console.log(details)
+        // this.details = details
+      // })
     },
-    signup(index, group) {
+    handleDetail(item) {
+      if (item.type == 1) {// 考试
+        item.title = '考试'
+        item.duration = `${item.examDate}~${item.endDate}`
+      } else if (item.type == 2) { // 课程
+        item.title = '课程'
+        item.duration = `${item.startDate}~${item.endDate}`
+      }
+      return item
+    },
+    signup (index, group,type) {
       if (isLogin()) {
-        console.log(index,group)
-        let params = {
-          id: this.details[index].id,
-          group: group,
-          type: "exam"
+        console.log(index, group)
+
+        if (type == 2 && group == 'compony') {
+          this.showToastSuccess('敬请期待')
+        } else {
+          let params = {
+            id: this.details[index].id,
+            group: group,
+            type: type == 1 ? "exam" : "course"
+          }
+          this.$emit('signup', params)
         }
-        this.$emit('signup', params)
       } else {
         this.showToastError('报名请先登录')
       }
-      
     }
   }
 }
@@ -135,16 +157,23 @@ export default {
               flex-direction row
               line-height 25px
               margin-bottom 20px
-              span 
+              span
                 margin-right 97px
               p
                 max-width 420px
+              .description
+                overflow hidden
+                text-overflow ellipsis
+                display -webkit-box
+                -webkit-line-clamp 2
+                -webkit-box-orient vertical
+                
           .btn-group
             width 100%
             height 56px
             display flex
             flex-direction row
-            button 
+            button
               width 190px
               height 56px
               border-radius 8px
@@ -161,7 +190,5 @@ export default {
             .group-signup
               background-color transparent
               color $color-normal
-               
+
 </style>
-
-

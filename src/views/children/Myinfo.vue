@@ -13,79 +13,79 @@
       <div class="btn-box">
         <el-button @click="exit">退出账号</el-button>
       </div>
-  
+
     </el-main>
   </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        userInfo: {
-          phone: {
-            key: '手机号',
-            value: ''
-          },
-          name: {
-            key: '姓名',
-            value: ''
-          },
-          number: {
-            key: '学号',
-            value: ''
-          },
-          gender: {
-            key: '性别',
-            value: ''
-          },
-          IDcard: {
-            key: '身份证号',
-            value: ''
-          },
-          compony: {
-            key: '所属公司',
-            value: ''
-          }
+export default {
+  data () {
+    return {
+      userInfo: {
+        phone: {
+          key: '手机号',
+          value: ''
+        },
+        name: {
+          key: '姓名',
+          value: ''
+        },
+        number: {
+          key: '学号',
+          value: ''
+        },
+        gender: {
+          key: '性别',
+          value: ''
+        },
+        IDcard: {
+          key: '身份证号',
+          value: ''
+        },
+        compony: {
+          key: '所属公司',
+          value: ''
         }
       }
-    },
-    mounted() {
-      this.getUserInfo()
-    },
-    methods: {
-      getUserInfo() {
-        this.Api.getUserInfo(1).then(res => {
-          console.log(res)
-          let userInfo = res
-          this.userInfo.phone.value = userInfo.phone
-          this.userInfo.name.value = userInfo.name
-          this.userInfo.number.value = userInfo.userId
-          this.userInfo.gender.value = this._returnGender(userInfo.gender)
-          this.userInfo.IDcard.value = userInfo.idNumber
-          this.userInfo.compony.value = userInfo.companyName
-        })
-      },
-  
-      _returnGender(gender) {
-        if (gender == 1) {
-          return '男'
-        } else if (gender == 2) {
-          return '女'
-        } else if (gender == 3) {
-          return '其它'
-        }
-      },
-
-      // 退出
-      exit() {
-        window.localStorage.clear()
-        // this.$router.push('/home')
-        this.$emit('exit')
-      }
-  
     }
+  },
+  mounted () {
+    this.getUserInfo()
+  },
+  methods: {
+    getUserInfo () {
+      this.Api.getUserInfo(1).then(res => {
+        console.log(res)
+        let userInfo = res
+        this.userInfo.phone.value = userInfo.phone
+        this.userInfo.name.value = userInfo.name
+        this.userInfo.number.value = userInfo.userId
+        this.userInfo.gender.value = this._returnGender(userInfo.gender)
+        this.userInfo.IDcard.value = userInfo.idNumber
+        this.userInfo.compony.value = userInfo.companyName
+      })
+    },
+
+    _returnGender (gender) {
+      if (gender == 1) {
+        return '男'
+      } else if (gender == 2) {
+        return '女'
+      } else if (gender == 3) {
+        return '其它'
+      }
+    },
+
+    // 退出
+    exit () {
+      window.localStorage.clear()
+      // this.$router.push('/home')
+      this.$emit('exit')
+    }
+
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -134,6 +134,5 @@
         color $color-normal
         font-size $size-nav-text
         font-weight bold
-
 
 </style>

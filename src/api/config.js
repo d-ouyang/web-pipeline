@@ -6,15 +6,12 @@ export const config = {
   ERR_OK: 200
 }
 
-export function getCookie(name) {
-  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)")
-  if (arr = document.cookie.match(reg))
-    return (arr[2])
-  else
-    return null
+export function getCookie (name) {
+  var arr, reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+  if (arr = document.cookie.match(reg)) { return (arr[2]) } else { return null }
 }
 
-export function returnFormData(obj) {
+export function returnFormData (obj) {
   let str = ''
   for (let key in obj) {
     str += `&${key}=${obj[key]}`
@@ -22,7 +19,7 @@ export function returnFormData(obj) {
   return str.substr(1)
 }
 
-export function inArr(url) {
+export function inArr (url) {
   const urlArr = [
     '/login',
     '/student/id/1'

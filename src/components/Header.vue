@@ -17,44 +17,44 @@
           <el-button @click="bindExit" style="border:0;width:100%;text-align:center;">退出登录</el-button>
           <span class="user-name" slot="reference">{{userInfo.name}}</span>
         </el-popover>
-        
+
       </div>
     </div>
   </el-header>
 </template>
 
 <script>
-import {isLogin} from '../common/js/utils'
+import { isLogin } from '../common/js/utils'
 
-  export default {
-    props: {
-      showLogin: Boolean,
-      userInfo: Object
+export default {
+  props: {
+    showLogin: Boolean,
+    userInfo: Object
+  },
+  data () {
+    return {
+
+    }
+  },
+  mounted () {
+
+  },
+  methods: {
+    login () {
+      this.$emit('login')
     },
-    data() {
-      return {
-        
-      }
-    },
-    mounted() {
-     
-    },
-    methods: {
-      login() {
-        this.$emit('login')
-      },
-      bindExit() {
-        window.localStorage.clear()
-        this.$emit('exit')
-      }
+    bindExit () {
+      window.localStorage.clear()
+      this.$emit('exit')
     }
   }
+}
 </script>
 
 <style lang="stylus">
 @import '../common/stylus/variable.styl';
 
-.header 
+.header
   position fixed
   z-index 10
   width 100%
@@ -68,7 +68,7 @@ import {isLogin} from '../common/js/utils'
   background-color: #fff
   color $color-nav-text
   font-size $size-nav-text
-  img 
+  img
     width 40px
     height 43px
     margin-left 32px
@@ -105,4 +105,3 @@ import {isLogin} from '../common/js/utils'
         &:hover
           text-decoration underline
 </style>
-

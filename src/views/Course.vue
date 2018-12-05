@@ -92,107 +92,106 @@
 </template>
 
 <script>
-  import OFooter from '@/components/Footer.vue'
-  import OLogin from '@/components/Login.vue'
-  import {
-    Loading
-  } from 'element-ui'
-  import {
-    isLogin
-  } from '../common/js/utils'
-  
-  export default {
-    components: {
-      OFooter,
-      OLogin
+import OFooter from '@/components/Footer.vue'
+import OLogin from '@/components/Login.vue'
+import {
+  Loading
+} from 'element-ui'
+import {
+  isLogin
+} from '../common/js/utils'
+
+export default {
+  components: {
+    OFooter,
+    OLogin
+  },
+  props: {
+    showLogin: Boolean
+  },
+  data () {
+    return {
+      activeName: 'overall',
+      courses: [],
+      typeOneSrc: '',
+      typeTwoSrc: ''
+    }
+  },
+  mounted () {
+    this.getCourse('overall')
+  },
+  methods: {
+    handleClick (tab, event) {
+      console.log(tab.name)
+      console.log(this.activeName)
+      this.courses = []
+      this.getCourse(tab.name)
     },
-    props: {
-      showLogin: Boolean
-    },
-    data() {
-      return {
-        activeName: 'overall',
-        courses: [],
-        typeOneSrc: '',
-        typeTwoSrc: ''
-      };
-    },
-    mounted() {
-      this.getCourse('overall')
-    },
-    methods: {
-      handleClick(tab, event) {
-        console.log(tab.name);
-        console.log(this.activeName)
-        this.courses = []
-        this.getCourse(tab.name)
-      },
-      bindSignUp(index) {
-        if (isLogin()) {
-          console.log(index)
-          this.$router.push({
-            name: 'signup',
-            params: {
-              group: 'personal',
-              type: 'course',
-              id: this.courses[index].id
-            }
-          })
-        } else {
-          this.showToastError('报名请先登录')
-        }
-  
-      },
-      bindCancle() {
-        console.log('取消')
-        this.$emit('cancle')
-      },
-      getCourse(str) {
-        // const loading = this.$loading({
-        //   lock: true,
-        //   text: 'Loading',
-        //   spinner: 'el-icon-loading',
-        //   background: 'rgba(0, 0, 0, 0.7)'
-        // });
-        console.log(str)
-        this.Api.getCourse({
-          sortType: str
-        }).then(res => {
-          // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-          //   loading.close();
-          // });
-          console.log(res)
-          this._handleCourse(res)
-        }).catch(err => {
-          // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-          //   loading.close();
-          // });
-        })
-      },
-      _handleCourse(arr) {
-        for (let i in arr) {
-          arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
-          arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
-          if (arr[i].type == 1) {
-            arr[i].src = require('../common/image/course1.png')
-          } else if (arr[i].type == 2) {
-            arr[i].src = require('../common/image/course2.png')
-          } else {
-            arr[i].src = require('../common/image/course-default.png')
+    bindSignUp (index) {
+      if (isLogin()) {
+        console.log(index)
+        this.$router.push({
+          name: 'signup',
+          params: {
+            group: 'personal',
+            type: 'course',
+            id: this.courses[index].id
           }
-        }
-        this.courses = arr
-      },
-      _handleDate(str) {
-        if (str == null) {
-          return ''
+        })
+      } else {
+        this.showToastError('报名请先登录')
+      }
+    },
+    bindCancle () {
+      console.log('取消')
+      this.$emit('cancle')
+    },
+    getCourse (str) {
+      // const loading = this.$loading({
+      //   lock: true,
+      //   text: 'Loading',
+      //   spinner: 'el-icon-loading',
+      //   background: 'rgba(0, 0, 0, 0.7)'
+      // });
+      console.log(str)
+      this.Api.getCourse({
+        sortType: str
+      }).then(res => {
+        // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        //   loading.close();
+        // });
+        console.log(res)
+        this._handleCourse(res)
+      }).catch(err => {
+        // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        //   loading.close();
+        // });
+      })
+    },
+    _handleCourse (arr) {
+      for (let i in arr) {
+        arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
+        arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
+        if (arr[i].type == 1) {
+          arr[i].src = require('../common/image/course1.png')
+        } else if (arr[i].type == 2) {
+          arr[i].src = require('../common/image/course2.png')
         } else {
-          let arr = str.split('-')
-          return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
+          arr[i].src = require('../common/image/course-default.png')
         }
+      }
+      this.courses = arr
+    },
+    _handleDate (str) {
+      if (str == null) {
+        return ''
+      } else {
+        let arr = str.split('-')
+        return arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
       }
     }
   }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -214,7 +213,7 @@
       font-weight 500
       margin-bottom 30px
       margin-top 102px
-    p 
+    p
       width 100%
       max-width 690px
       line-height 1.5
@@ -271,7 +270,7 @@
                 p
                   font-size $size-sub-title
                   font-weight 400
-                img 
+                img
                   position absolute
                   left 0
                   top 0
@@ -305,8 +304,4 @@
             .el-button
               padding 10px 22px
 
-
-      
 </style>
-
-

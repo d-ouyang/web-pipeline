@@ -10,10 +10,10 @@
               <br /><br />
               2.进入考场务必出示准考证、身份证（无证不得进入考场）。
               <br /><br />
-              3.进入考场后务必关闭手机，考试过程中如手机响起将根据相关考务规定当作弊处理。 
+              3.进入考场后务必关闭手机，考试过程中如手机响起将根据相关考务规定当作弊处理。
               <br /><br />
               4.听从监考老师提示，启动并检测电脑、确认考试正常等。
-              <br /><br /> 
+              <br /><br />
               5.考试前务必关闭Office文件、IE网页及其他与考试相关的软件，否则考试无法正常进行。
               <br /><br />
               6.考试中出现死机或特殊情况时，可以重启电脑或更换电脑（进入考试系统后由死机时的题目继续做题，7.如更换了电脑则试卷会重置并从第一题开始）。
@@ -40,7 +40,7 @@
 <script>
 export default {
   methods: {
-    cancle() {
+    cancle () {
       this.$emit('cancle')
     }
   }
@@ -68,8 +68,8 @@ export default {
     top 50%
     margin-top -290px
     border-radius(4px)
-    background-color $color-normal 
-    padding 0 50px 
+    background-color $color-normal
+    padding 0 50px
     .content
       width 100%
       height 100%
@@ -110,4 +110,3 @@ export default {
     color $color-normal
     cursor pointer
 </style>
-

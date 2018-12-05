@@ -8,13 +8,13 @@
             <span class="back">返回上一级</span>
           </div>
         </el-header>
-  
+
         <div class="info-container">
           <h4 class="info-header">
             <span>等待考试</span>
             <!-- <span class="examination-notes" @click="bindNotes">考试须知</span> -->
           </h4>
-  
+
           <div class="info-wrapper">
             <div class="error-warming">
               <span class="error-info">1、照片信息不够清晰，请重新上传</span>
@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="info-container">
           <h4 class="info-header">
             <span>支付情况</span>
@@ -78,17 +78,17 @@
 </template>
 
 <script>
-  import {
-    config
-  } from '../../api/config'
-  
-  export default {
-    data() {
-      return {
-  
-      }
+import {
+  config
+} from '../../api/config'
+
+export default {
+  data () {
+    return {
+
     }
   }
+}
 </script>
 
 <style lang="stylus">
@@ -152,17 +152,17 @@
             background-color $color-nav-active
             color $color-normal
             font-size $size-nav-text
-            border-radius(8px) 
+            border-radius(8px)
         .error-warming
           display flex
           flex-direction row
           align-items center
           justify-content center
           height 28px
-          width 100% 
+          width 100%
           background-color $color-error-bg
           margin-bottom 50px
-          span 
+          span
             font-size $size-clause
             color $color-error-pass
           .error-info
@@ -195,12 +195,12 @@
               font-weight 400
       .pay-info-wrapper
         padding 30px 50px
-        p 
+        p
           display flex
           flex-direction row
           align-items center
           margin-bottom 20px
-          span 
+          span
             font-size $size-sub-title
           .pay-key
             color $color-td-name-text
@@ -208,8 +208,5 @@
           .pay-value
             color $color-td-value-text
             font-weight 500
-          
+
 </style>
-
-
-
