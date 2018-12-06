@@ -26,7 +26,7 @@ const router = new Router({
       name: 'course',
       component: () => import('./views/Course.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '课程列表'
       }
     },
     {
@@ -34,7 +34,7 @@ const router = new Router({
       name: 'examination',
       component: () => import('./views/Examination.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '考试列表'
       }
     },
     {
@@ -42,38 +42,56 @@ const router = new Router({
       name: 'personal',
       component: () => import('./views/Personal.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '个人中心'
       },
       children: [
         {
           path: '',
           redirect: 'myexam',
-          component: () => import('./views/children/Myexam.vue')
+          component: () => import('./views/children/Myexam.vue'),
+          meta: {
+            title: '我的考试'
+          }
         },
         {
           path: 'myexam',
           name: 'myexam',
-          component: () => import('./views/children/Myexam.vue')
+          component: () => import('./views/children/Myexam.vue'),
+          meta: {
+            title: '我的考试'
+          }
         },
         {
           path: 'myexamdetail/:id',
           name: 'myexamdetail',
-          component: () => import('./views/children/MyexamDetail.vue')
+          component: () => import('./views/children/MyexamDetail.vue'),
+          meta: {
+            title: '考试详情'
+          }
         },
         {
           path: 'mycourse',
           name: 'mycourse',
-          component: () => import('./views/children/Mycourse.vue')
+          component: () => import('./views/children/Mycourse.vue'),
+          meta: {
+            title: '我的课程'
+          }
         },
         {
-          path: 'mycoursedetail/:id',
+          path: 'mycoursedetail/:id/:orderid/:status',
           name: 'mycoursedetail',
-          component: () => import('./views/children/MycourseDetail.vue')
+          component: () => import('./views/children/MycourseDetail.vue'),
+          meta: {
+            title: '课程详情'
+          }
         },
         {
           path: 'myinfo',
           name: 'myinfo',
-          component: () => import('./views/children/Myinfo.vue')
+          component: () => import('./views/children/Myinfo.vue'),
+          meta: {
+            title: '个人信息'
+          }
         }
       ]
     },
@@ -82,7 +100,7 @@ const router = new Router({
       name: 'register',
       component: () => import('./views/Register.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '注册'
       }
     },
     {
@@ -90,7 +108,7 @@ const router = new Router({
       name: 'signup',
       component: () => import('./views/Signup.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '报名'
       }
     },
     {
@@ -98,7 +116,7 @@ const router = new Router({
       name: 'pay',
       component: () => import('./views/Pay.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '支付'
       }
     },
     {
@@ -106,7 +124,7 @@ const router = new Router({
       name: 'payOver',
       component: () => import('./views/PayOver.vue'),
       meta: {
-        title: '管道E生培训'
+        title: '支付完成'
       }
     }
   ]

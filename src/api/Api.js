@@ -81,15 +81,15 @@ export default {
       getExamDeatil (id) {
         return requestClient.fetch(request.METHOD_GET, `/exam/id/${id}`, {})
       },
-      // 公司统一订单（考试）
+      // 生成公司统一订单（考试）
       createCompanyExamOrder (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/company`, data, options)
       },
-      // 个人考试订单
+      // 生成个人考试订单
       createPersonalExamOrder (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/exam`, data, options)
       },
-      // 个人课程订单
+      // 生成个人课程订单
       createPersonalCourseOrder (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/curriculum`, data, options)
       },
@@ -97,19 +97,23 @@ export default {
       createQrCodeImg (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/pay`, data, options)
       },
+      // 获取订单信息详情
+      getOrderDetail (id) {
+        return
+      },
       // 用户订单列表
       // getPersonalOrderList(id) {
       // 	return requestClient.fetch(request.METHOD_GET, `/order/user_id/${id}`)
       // },
-      // 个人课程列表
+      // 获取个人课程列表
       getPersonalCourses (id) {
         return requestClient.fetch(request.METHOD_GET, `/student/curriculum/${id}`)
       },
-      // 个人考试列表
+      // 获取个人考试列表
       getPersonalExams (id) {
         return requestClient.fetch(request.METHOD_GET, `/student/exam/${id}`)
       },
-      // 订单轮询接口
+      // 查询订单接口 （轮询、个人中心）
       pollingPay (id) {
         return requestClient.fetch(request.METHOD_GET, `/order/id/${id}`)
       }

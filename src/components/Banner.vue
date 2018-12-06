@@ -25,8 +25,8 @@
               </li>
             </ul>
             <div class="btn-group">
-              <button class="single-signup" @click="signup(index,'personal',item.type)">立即报名</button>
-              <button class="group-signup" @click="signup(index,'compony',item.type)">公司报名</button>
+              <button class="single-signup" @click="signup(index,'personal',item.kind)">立即报名</button>
+              <button class="group-signup" @click="signup(index,'compony',item.kind)">公司报名</button>
             </div>
           </el-col>
         </el-row>
@@ -51,31 +51,27 @@ export default {
   },
   methods: {
     getDetail () {
-      // let detail1 = this.Api.bannerCourse()
-      // let detail2 = this.Api.bannerExam()
+      let detail1 = this.Api.bannerCourse()
+      let detail2 = this.Api.bannerExam()
       let details = []
-      this.Api.bannerCourse().then(res => {
-        console.log(res)
-        let item1 = this.handleDetail(res[0])
-        let item2 = this.handleDetail(res[1])
-        details.push(item1,item2,{})
+      Promise.all([detail1, detail2]).then(list => {
+        console.log(list)
+        list.forEach((res, i) => {
+          let item = this.handleDetail(list[i][0], i)
+          details.push(item)
+        })
+        details.push({})
+        console.log(details)
         this.details = details
       })
-      // Promise.all([detail1, detail2]).then(list => {
-        // list.forEach((res, i) => {
-        //   console.log(res)
-        //   // details.push(res)
-        // })
-        // details.push({})
-        // console.log(details)
-        // this.details = details
-      // })
     },
-    handleDetail(item) {
-      if (item.type == 1) {// 考试
+    handleDetail(item,index) {
+      if (index == 1) {// 考试
+        item.kind = 1
         item.title = '考试'
         item.duration = `${item.examDate}~${item.endDate}`
-      } else if (item.type == 2) { // 课程
+      } else if (index == 0) { // 课程
+        item.kind = 2
         item.title = '课程'
         item.duration = `${item.startDate}~${item.endDate}`
       }
@@ -83,7 +79,7 @@ export default {
     },
     signup (index, group,type) {
       if (isLogin()) {
-        console.log(index, group)
+        console.log(index, group, type)
 
         if (type == 2 && group == 'compony') {
           this.showToastSuccess('敬请期待')

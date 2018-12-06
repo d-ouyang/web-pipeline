@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     getExamDetail () {
-      this.Api.getExamDeatil(4).then(res => {
-        this.detail = res
+      this.Api.bannerExam().then( res => {
+        this.detail = res[0]
       })
     },
     signup (group) {
@@ -123,7 +123,7 @@ export default {
         display inline-block
         color $color-news-value
       .address
-        width 65%
+        max-width 65%
         no-wrap()
   p
     display flex

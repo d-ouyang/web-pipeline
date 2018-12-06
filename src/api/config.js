@@ -31,3 +31,8 @@ export function inArr (url) {
   }
   return false
 }
+
+export function retrunDuration (date) {
+  let arr = date.split('-')
+  return arr.join('/')
+}

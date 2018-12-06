@@ -78,6 +78,7 @@ export default {
         duration: '',
         price: ''
       },
+      timer:null,
       orderid: this.$route.params.orderid,
       id: this.$route.params.id,
       group: this.$route.params.group,
@@ -92,9 +93,9 @@ export default {
     this.initParams()
   },
   methods: {
-    goToPay () {
-      this.$router.push('/payOver/123')
-    },
+    // goToPay () {
+    //   this.$router.push('/payOver/123')
+    // },
     initParams () {
       const id = this.id
       const group = this.group
@@ -143,10 +144,11 @@ export default {
 
     // 轮询订单
     _pollingPay (id) {
-      var timer = null
+      let timer = this.timer
       timer = setInterval(() => {
         this.Api.pollingPay(id).then(res => {
           console.log(res)
+          this.timer = timer
           if (res.status == 1) {
             clearInterval(timer)
             this.$router.push({

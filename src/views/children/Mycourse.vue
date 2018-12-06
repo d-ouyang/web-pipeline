@@ -41,8 +41,28 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="已结业">
+      <el-tab-pane label="开课中">
         <el-table :stripe='true' :data="tableDataPart2" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="curriculumName" label="课程名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="开课时间">
+          </el-table-column>
+          <el-table-column prop="location" label="开课地址">
+          </el-table-column>
+           <el-table-column prop="statusText" label="">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.color}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="已结业">
+        <el-table :stripe='true' :data="tableDataPart3" style="width: 100%" height="600" @cell-click='selectRow'>
           <el-table-column fixed prop="curriculumName" label="课程名称">
           </el-table-column>
           <el-table-column prop="startDate" label="开课时间">
@@ -75,7 +95,8 @@ export default {
     return {
       tableDataAll: [],
       tableDataPart1: [],
-      tableDataPart2: []
+      tableDataPart2: [],
+      tableDataPart3: []
     }
   },
   mounted () {
@@ -87,6 +108,41 @@ export default {
       console.log(row)
       console.log(column)
       console.log(cell)
+      if (row.status == 0) {
+        this.$confirm('此课程未完成支付，立即支付？', '提示', {
+          confirmButtonText: '前往支付',
+          cancelButtonText: '暂不支付',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+            group: 'personal',
+            type: 'course',
+            id: row.curriculumId,
+            orderid: row.orderId
+          }
+          console.log(params)
+          this.$router.push({
+            name: 'pay',
+            params: params
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消支付',
+            showClose: true,
+          });          
+        });
+      } else if (row.status == 1) {
+        let params = {
+          id: row.curriculumId,
+          orderid: row.orderId,
+          status: row.timing
+        }
+        this.$router.push({
+          name: 'mycoursedetail',
+          params: params
+        })
+      }
     },
     getMycourses () {
       this.Api.getUserInfo(1).then(res => {
@@ -101,6 +157,7 @@ export default {
       let dataAll = []
       let dataPart1 = []
       let dataPart2 = []
+      let dataPart3 = []
       let currentTime = new Date().getTime()
       for (let i in arr) {
         let obj = {}
@@ -109,26 +166,29 @@ export default {
           obj.statusText = '未付款'
           obj.color = '#F5A623'
           obj = Object.assign({}, obj, arr[i])
-          dataPart1.push(obj)
+          // dataPart1.push(obj)
         } else if (arr[i].status == 1) {
           let startTime = new Date(arr[i].startDate).getTime()
-          // let endTime = new Date(arr[i].endDate).getTime()
-          // if (currentTime < startTime) {
-          //   obj.statusText = '待开课'
-          //   obj.color = '#C6D2E0'
-          //   obj = Object.assign({}, obj, arr[i])
-          //   dataPart2.push(obj)
-          // } else if (currentTime >= startTime && currentTime <= endTime) {
-          //   obj.statusText = '开课中'
-          //   obj.color = '#C6D2E0'
-          //   obj = Object.assign({}, obj, arr[i])
-          //   dataPart2.push(obj)
-          // } else {
-          //   obj.statusText = '已结业'
-          //   obj.color = '#C6D2E0'
-          //   obj = Object.assign({}, obj, arr[i])
-          //   dataPart2.push(obj)
-          // }
+          let endTime = new Date(arr[i].endDate).getTime()
+          if (currentTime < startTime) {
+            obj.timing = 1
+            obj.statusText = '待开课'
+            obj.color = '#C6D2E0'
+            obj = Object.assign({}, obj, arr[i])
+            dataPart1.push(obj)
+          } else if (currentTime >= startTime && currentTime <= endTime) {
+            obj.timing = 2
+            obj.statusText = '开课中'
+            obj.color = '#C6D2E0'
+            obj = Object.assign({}, obj, arr[i])
+            dataPart2.push(obj)
+          } else {
+            obj.timing = 3
+            obj.statusText = '已结业'
+            obj.color = '#C6D2E0'
+            obj = Object.assign({}, obj, arr[i])
+            dataPart3.push(obj)
+          }
         }
         dataAll.push(obj)
       }
@@ -138,6 +198,7 @@ export default {
       this.tableDataAll = dataAll
       this.tableDataPart1 = dataPart1
       this.tableDataPart2 = dataPart2
+      this.tableDataPart3 = dataPart3
     }
   }
 }

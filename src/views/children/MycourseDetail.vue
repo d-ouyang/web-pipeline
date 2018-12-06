@@ -4,50 +4,38 @@
       <el-main>
         <el-header height="73px">
           <div class="signup-name">
-            <span>考试详情</span>
-            <span class="back">返回上一级</span>
+            <span>课程详情</span>
+            <span class="back" @click="goBack">返回我的课程</span>
           </div>
         </el-header>
 
         <div class="info-container">
           <h4 class="info-header">
-            <span>等待考试</span>
-            <!-- <span class="examination-notes" @click="bindNotes">考试须知</span> -->
+            <span>课程信息</span>
           </h4>
 
           <div class="info-wrapper">
-            <div class="error-warming">
-              <span class="error-info">1、照片信息不够清晰，请重新上传</span>
-              <span >2、未找到毕业信息，请核查后重新上传</span>
-            </div>
             <div class="info-wrapper-box">
               <table class="info-box">
                 <tr>
-                  <td class="name">考试名称</td>
-                  <!-- <td class="value">{{info.name}}</td> -->
-                  <td class="value"></td>
+                  <td class="name">课程名称</td>
+                  <td class="value">{{info.name}}</td>
                 </tr>
                 <tr>
-                  <td class="name">考试费用</td>
-                  <!-- <td class="value">￥{{info.price}}</td> -->
-                  <td class="value"></td>
+                  <td class="name">课程状态</td>
+                  <td class="value">{{info.title}}</td>
                 </tr>
               </table>
               <table class="info-box">
                 <tr>
-                  <td class="name">考试时间</td>
-                  <!-- <td class="value">{{info.duration}}</td> -->
-                  <td class="value"></td>
+                  <td class="name">课程时间</td>
+                  <td class="value">{{info.duration}}</td>
                 </tr>
                 <tr>
-                  <td class="name">考试地点</td>
-                  <!-- <td class="value">{{info.location}}</td> -->
-                  <td class="value"></td>
+                  <td class="name">课程地点</td>
+                  <td class="value">{{info.location}}</td>
                 </tr>
               </table>
-            </div>
-            <div class="btn-wrapper">
-              <el-button>重新上传资料</el-button>
             </div>
           </div>
         </div>
@@ -55,20 +43,19 @@
         <div class="info-container">
           <h4 class="info-header">
             <span>支付情况</span>
-            <!-- <span class="examination-notes" @click="bindNotes">考试须知</span> -->
           </h4>
           <div class="pay-info-wrapper">
             <p>
               <span class="pay-key">支付渠道</span>
-              <span class="pay-value">支付宝</span>
+              <span class="pay-value">{{orderInfo.payText}}</span>
             </p>
             <p>
               <span class="pay-key">支付金额</span>
-              <span class="pay-value">￥400</span>
+              <span class="pay-value">￥{{orderInfo.price}}</span>
             </p>
             <p>
               <span class="pay-key">支付时间</span>
-              <span class="pay-value">2018年9月29日 24:33:23</span>
+              <span class="pay-value">{{orderInfo.time}}</span>
             </p>
           </div>
         </div>
@@ -79,13 +66,75 @@
 
 <script>
 import {
-  config
+  config,
+  retrunDuration
 } from '../../api/config'
 
 export default {
   data () {
     return {
-
+      info: {
+        name: '',
+        location: '',
+        duration: '',
+        price: '',
+        title: ''
+      },
+      orderInfo: {
+        payText: '',
+        price: '',
+        time: ''
+      },
+      orderid: this.$route.params.orderid,
+      id: this.$route.params.id,
+      status: this.$route.params.status
+    }
+  },
+  mounted() {
+    this.initParams()
+  },
+  methods: {
+    initParams() {
+      let id = this.id
+      let orderid = this.orderid
+      let status = this.status
+      console.log(id, orderid)
+      this.Api.getCourseDetail(id).then(res => {
+        console.log(res)
+        if (status == 1) {
+          res.title = '待开课'
+        } else if (status == 2) {
+          res.title = '开课中'
+        } else if (status == 3) {
+          res.title = '已结业'
+        } 
+        res.duration = `${retrunDuration(res.startDate)} ~ ${retrunDuration(res.endDate)}`
+        this.info = Object.assign({},res)
+      })
+      this.Api.pollingPay(orderid).then(res => {
+        console.log(res)
+        if (res.payMethod == 'alipay') { // 支付宝
+          res.payText = '支付宝'
+        } else if (res.payMethod == 'wxpay') { // 微信
+          res.payText = '微信'
+        } else { // 其它
+          res.payText = '其它'
+        }
+        res.time = this._returnYND(res.bookAt)
+        
+        this.orderInfo = Object.assign({},res)
+      })
+    },
+    // 年月日
+    _returnYND(date) {
+      let arr = date.split(' ')
+      let arr1 = arr[0].split('-')
+      return `${arr1[0]}年${arr1[1]}月${arr1[2]}日 ${arr[1]}`
+    },
+    // 返回上一级
+    //  this.$router.go(-1)
+    goBack() {
+      this.$router.go(-1)
     }
   }
 }
