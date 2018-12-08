@@ -78,21 +78,29 @@ export default {
       return item
     },
     signup (index, group,type) {
-      if (isLogin()) {
-        console.log(index, group, type)
-
-        if (type == 2 && group == 'compony') {
+      console.log(index, group, type)
+      if (group == 'compony') {
+        if (type == 2) { // 课程
           this.showToastSuccess('敬请期待')
-        } else {
+        } else if (type == 1) { // 考试
+          let params = {
+            id: this.details[index].id,
+            group: group,
+            type: "exam"
+          }
+          this.$emit('signup', params)
+        }
+      } else if (group == 'personal') {
+        if (isLogin()) {
           let params = {
             id: this.details[index].id,
             group: group,
             type: type == 1 ? "exam" : "course"
           }
           this.$emit('signup', params)
+        } else {
+          this.showToastError('个人报名请先登录')
         }
-      } else {
-        this.showToastError('报名请先登录')
       }
     }
   }
@@ -161,7 +169,7 @@ export default {
                 overflow hidden
                 text-overflow ellipsis
                 display -webkit-box
-                -webkit-line-clamp 2
+                -webkit-line-clamp 3
                 -webkit-box-orient vertical
                 
           .btn-group

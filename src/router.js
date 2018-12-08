@@ -39,7 +39,6 @@ const router = new Router({
     },
     {
       path: '/personal',
-      name: 'personal',
       component: () => import('./views/Personal.vue'),
       meta: {
         title: '个人中心'

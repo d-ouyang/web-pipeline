@@ -28,7 +28,7 @@
             <table class="info-box">
               <tr>
                 <td class="name">{{title}}时间</td>
-                <td class="value">{{info.duration}}</td>
+                <td class="value">{{showExam ? info.examDate : info.duration}}</td>
               </tr>
               <tr>
                 <td class="name">{{title}}地点</td>
@@ -191,7 +191,7 @@ export default {
 
     handleInfo (info) {
       console.log(info)
-      info.duration = `${info.registerStartDate}~${info.registerEndDate}`
+      info.duration = `${info.startDate}~${info.endDate}`
       this.info = info
     },
     // 生成订单

@@ -61,17 +61,18 @@ export default {
       let dataPart2 = [] // 待考试
       let dataPart3 = [] // 考试结果
       for (let i in arr) {
-        console.log(arr[i])
+        // console.log(arr[i])
         let obj = {}
         obj.examDateDay = arr[i].examDate.split('T')[0]
         obj.examDateStartTime = arr[i].examDate.split('T')[1]
-        console.log(obj.examDateStartTime)
+        // console.log(obj.examDateStartTime)
         let endTimeArr = arr[i].examDate.split('T')[1].split(':')
         endTimeArr[0] = (Number(endTimeArr[0]) + 2) < 10 ? '0' + (Number(endTimeArr[0]) + 2) : (Number(endTimeArr[0]) + 2)
-        console.log(endTimeArr)
+        // console.log(endTimeArr)
         obj.examDateEndTime = endTimeArr.join(':')
-        console.log(obj.examDateEndTime)
+        // console.log(obj.examDateEndTime)
         if (arr[i].status == 0) {
+          // obj.timing = 
           obj.statusText = '未付款'
           obj.statusColor = '#FF475D'
           obj.result = ''

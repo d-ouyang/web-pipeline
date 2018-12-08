@@ -290,8 +290,10 @@ export default {
           console.log(data)
           this.Api.register(data).then(res => {
             console.log(res)
+            window.localStorage.setItem('token', res.token)
+            window.localStorage.setItem('userInfo', res.user)
             this.$router.push({
-              path: '/home'
+              path: '/'
             })
           })
         } else {

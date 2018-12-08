@@ -4,12 +4,12 @@
       <el-main>
         <el-header height="73px">
           <div class="signup-name">
-            {{title}}报名
+            您正在报名以下{{title}}
             <el-tag v-show='isGropu' size="mini">企业版</el-tag>
           </div>
         </el-header>
 
-        <div class="info-container">
+        <div class="info-container" v-show='!isGropu'>
           <p>
             <span>{{title}}名称</span>
             <span>{{title}}时间</span>
@@ -17,8 +17,25 @@
           </p>
           <h5>
             <span>{{info.name}}</span>
-            <span>{{info.duration}}</span>
+            <span>{{showExam ? info.examDate : info.duration}}</span>
             <span>{{info.price}} 元</span>
+          </h5>
+        </div>
+
+        <div class="info-container" v-show='isGropu'>
+          <p>
+            <span>{{title}}名称</span>
+            <span>{{title}}时间</span>
+            <span>单价</span>
+            <span>数量</span>
+            <span>总价</span>
+          </p>
+          <h5>
+            <span>{{info.name}}</span>
+            <span>{{info.examDate}}</span>
+            <span>{{info.price}} 元</span>
+            <el-input-number size="mini" v-model="num" :min='1'></el-input-number>
+            <span style="color:#FF475D;">￥ {{num*info.price}}</span>
           </h5>
         </div>
 
@@ -26,7 +43,7 @@
           <h4 class="info-header">
             <span>支付方式</span>
           </h4>
-          <el-tabs :tab-position="tabPosition" type="border-card">
+          <el-tabs :tab-position="tabPosition" type="border-card" v-show="!isGropu">
             <el-tab-pane>
               <span slot="label">
                   <img src="../common/image/alipay.png" alt="">支付宝支付
@@ -55,6 +72,29 @@
               </div>
             </el-tab-pane>
           </el-tabs>
+
+          <el-tabs :tab-position="tabPosition" type="border-card" v-show="isGropu">
+            <el-tab-pane>
+              <span slot="label">
+                  <img src="../common/image/wechat.png" alt="">银行支付
+                </span>
+              <div class="pay-box-card">
+                <div class="info-content">
+                  <h4>转账支付流程说明</h4>
+                  <div>1、将上述金额转账至 ：</div>
+                  <div style="text-indent :30px;">公司开户名：上海xxxxxx有限公司 </div>
+                  <div style="text-indent :30px;">公司账户：xxxx xxxx xxxx xxx</div>
+                  <div style="text-indent :30px;">公司开户行：xxxxxxxxx </div>
+                  <div>2、将贵公司名称，转账记录及报名员工统计表发送至邮箱：xxxxxxx@xxx.com </div>
+                  <div style="margin-bottom:70px;">3、报名成功后，您将收到确认邮件和员工报考报</div>
+                  <span>
+                    <i class="el-icon-download"></i>
+                    员工统计表
+                  </span>
+                </div>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </el-main>
 
@@ -72,6 +112,7 @@ export default {
     return {
       tabPosition: 'left',
       title: '',
+      num: 1,
       info: {
         name: '',
         location: '',
@@ -92,6 +133,9 @@ export default {
     console.log(this.$route)
     this.initParams()
   },
+  filters: {
+
+  },
   methods: {
     // goToPay () {
     //   this.$router.push('/payOver/123')
@@ -104,6 +148,7 @@ export default {
       console.log(id, group, type, orderid)
       if (group == 'personal') {
         this.isGropu = false
+        this._createRQcode(this.orderid, 'Alipay')
       } else if (group == 'compony') {
         this.isGropu = true
       }
@@ -120,8 +165,6 @@ export default {
           this.handleInfo(res)
         })
       }
-
-      this._createRQcode(this.orderid, 'Alipay')
     },
 
     // 生成二维码
@@ -252,6 +295,30 @@ export default {
               margin-right 10px
       .el-tabs--border-card >>> .el-tabs__content
         padding 0
+        .pay-box-card
+          width 100%
+          height 452px
+          .info-content
+            position relative
+            max-width 540px
+            top 88px
+            left 50%
+            transform translateX(-50%)
+            h4
+              font-size 20px
+              color #4B6796
+              font-weight 500
+              margin-bottom 30px
+            div
+              text-align left
+              font-size 15px
+              line-height 30px
+              color #4B6796
+              border-bottom 0
+            span 
+              color #4264FB
+              font-size 14px
+              cursor pointer
         .pay-box
           display flex
           flex-direction column

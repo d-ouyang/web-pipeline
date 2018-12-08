@@ -24,7 +24,7 @@
                       </div>
                       <div class="detail-bottom">
                         <h4>￥{{item.price}}</h4>
-                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                        <p>报名时间：{{item.startDate}}-{{item.endDate}}</p>
                       </div>
                     </div>
                   </div>
@@ -49,7 +49,7 @@
                       </div>
                       <div class="detail-bottom">
                         <h4>￥{{item.price}}</h4>
-                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                        <p>报名时间：{{item.startDate}}-{{item.endDate}}</p>
                       </div>
                     </div>
                   </div>
@@ -74,7 +74,7 @@
                       </div>
                       <div class="detail-bottom">
                         <h4>￥{{item.price}}</h4>
-                        <p>报名时间：{{item.registerStartDate}}-{{registerEndDate}}</p>
+                        <p>报名时间：{{item.startDate}}-{{item.endDate}}</p>
                       </div>
                     </div>
                   </div>
@@ -114,7 +114,9 @@ export default {
       activeName: 'overall',
       courses: [],
       typeOneSrc: '',
-      typeTwoSrc: ''
+      typeTwoSrc: '',
+      firstHeatClick: true, // 表示还没点或者说第一次点
+      firstPriceClick: true // 表示还没点或者说第一次点
     }
   },
   mounted () {
@@ -122,8 +124,10 @@ export default {
   },
   methods: {
     handleClick (tab, event) {
+      console.log(tab)
       console.log(tab.name)
       console.log(this.activeName)
+      console.log(this.firstPriceClick)
       this.courses = []
       this.getCourse(tab.name)
     },
@@ -170,8 +174,8 @@ export default {
     },
     _handleCourse (arr) {
       for (let i in arr) {
-        arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
-        arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
+        arr[i].startDate = this._handleDate(arr[i].startDate)
+        arr[i].endDate = this._handleDate(arr[i].endDate)
         if (arr[i].type == 1) {
           arr[i].src = require('../common/image/course1.png')
         } else if (arr[i].type == 2) {
@@ -293,6 +297,11 @@ export default {
                     font-size $size-sub-title
                     color $color-sub-title
                     line-height 1.5
+                    overflow hidden
+                    text-overflow ellipsis
+                    display -webkit-box
+                    -webkit-line-clamp 3
+                    -webkit-box-orient vertical
                 .detail-bottom
                   h4
                     font-size $size-sub-title

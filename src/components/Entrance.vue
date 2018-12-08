@@ -53,17 +53,26 @@ export default {
       })
     },
     signup (group) {
-      if (isLogin()) {
+      if (group == 'compony') {
         let params = {
           id: this.detail.id,
           group: group,
           type: 'exam'
         }
-        // console.log(params)
         this.$emit('signup', params)
-      } else {
-        this.showToastError('报名请先登录')
+      } else if (group == 'personal') {
+        if (isLogin()) {
+          let params = {
+            id: this.detail.id,
+            group: group,
+            type: 'exam'
+          }
+          this.$emit('signup', params)
+        } else {
+          this.showToastError('报名请先登录')
+        }
       }
+      
     }
   }
 }
