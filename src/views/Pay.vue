@@ -119,6 +119,7 @@ export default {
         duration: '',
         price: ''
       },
+      showExam: false,
       timer:null,
       orderid: this.$route.params.orderid,
       id: this.$route.params.id,

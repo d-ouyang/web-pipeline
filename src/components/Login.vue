@@ -20,9 +20,9 @@
             <el-input :type="loginPass ? 'password' : 'text'" v-model="formLogin.pass" placeholder='密码'></el-input>
             <img @click="transPass" class="eye-icon" :src="loginPass ? openSrc : closeSrc" alt="">
           </el-form-item>
-          <p class="forget-text">
+          <!-- <p class="forget-text">
             <span style="cursor: pointer" @click="bindForget">忘记密码?</span>
-          </p>
+          </p> -->
           <el-form-item class="submit-btn" style="margin-top:66px;">
             <el-button type="primary" @click="onLoginSubmit('form')">登录</el-button>
           </el-form-item>
@@ -95,9 +95,8 @@
         </p>
       </div>
 
-      <div class="find-pass login-item" v-show="findShow">
+      <!-- <div class="find-pass login-item" v-show="findShow">
         <h3>密码找回</h3>
-        <!-- <p class="error-text">验证码已过期，请重新发送</p> -->
         <el-form status-icon class="find-form" ref="find-form" :model="formFind" :rules="rulesFind">
           <el-form-item class="form-item" prop="phone">
             <img class="input-icon" src="./image/icon-phone.png" alt="">
@@ -124,7 +123,7 @@
         <p class="regis-entrance" style="flex-direction:row-reverse;">
           <span style="cursor:pointer;" @click="toLogin">登录</span>
         </p>
-      </div>
+      </div> -->
 
       <!-- cancle -->
       <i class="el-icon-close cancle" @click="cancle"></i>
@@ -515,16 +514,16 @@ export default {
     },
 
     // 点击忘记密码
-    bindForget() {
-      this.loginShow = false
-      this.findShow = true
-      this.getImgCaptcha('find')
-    },
+    // bindForget() {
+    //   this.loginShow = false
+    //   this.findShow = true
+    //   this.getImgCaptcha('find')
+    // },
 
     // 找回密码
-    onFindSubmit () {
-      console.log('发送密码到手机')
-    },
+    // onFindSubmit () {
+    //   console.log('发送密码到手机')
+    // },
 
     // 从找回密码回到登录
     toLogin() {

@@ -81,6 +81,10 @@ export default {
       getExamDeatil (id) {
         return requestClient.fetch(request.METHOD_GET, `/exam/id/${id}`, {})
       },
+      // 重新上传证书
+      reUpload (data) {
+        return requestClient.fetch(request.METHOD_POST, `/order/material`, data, {})
+      },
       // 生成公司统一订单（考试）
       createCompanyExamOrder (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/company`, data, options)
@@ -96,10 +100,6 @@ export default {
       // 生成订单二维码
       createQrCodeImg (data, options = {}) {
         return requestClient.fetch(request.METHOD_POST, `/order/pay`, data, options)
-      },
-      // 获取订单信息详情
-      getOrderDetail (id) {
-        return
       },
       // 用户订单列表
       // getPersonalOrderList(id) {

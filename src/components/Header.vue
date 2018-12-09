@@ -6,7 +6,7 @@
         <router-link to='/home' tag="div">首页</router-link>
         <router-link to='/course' tag="div">课程列表</router-link>
         <router-link to='/examination' tag="div">考试列表</router-link>
-        <router-link to='/personal' tag="div">个人中心</router-link>
+        
       </div>
       <div class="header-log-reg" v-if="!showLogin">
         <div class="header-log active" @click="login">登录</div>
@@ -14,6 +14,9 @@
       </div>
       <div class="header-log-reg"  v-if="showLogin">
         <el-popover placement="bottom" trigger="hover">
+          <router-link to='/personal' tag="div">
+            <el-button style="border:0;width:100%;text-align:center;">个人中心</el-button>
+          </router-link>
           <el-button @click="bindExit" style="border:0;width:100%;text-align:center;">退出登录</el-button>
           <span class="user-name" slot="reference">{{userInfo.name}}</span>
         </el-popover>

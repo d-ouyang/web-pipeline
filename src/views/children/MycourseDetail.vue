@@ -111,6 +111,7 @@ export default {
         res.duration = `${retrunDuration(res.startDate)} ~ ${retrunDuration(res.endDate)}`
         this.info = Object.assign({},res)
       })
+      
       this.Api.pollingPay(orderid).then(res => {
         console.log(res)
         if (res.payMethod == 'alipay') { // 支付宝
@@ -132,7 +133,6 @@ export default {
       return `${arr1[0]}年${arr1[1]}月${arr1[2]}日 ${arr[1]}`
     },
     // 返回上一级
-    //  this.$router.go(-1)
     goBack() {
       this.$router.go(-1)
     }

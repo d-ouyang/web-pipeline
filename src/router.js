@@ -61,7 +61,7 @@ const router = new Router({
           }
         },
         {
-          path: 'myexamdetail/:id',
+          path: 'myexamdetail/:id/:orderid/:status/:number/:url',
           name: 'myexamdetail',
           component: () => import('./views/children/MyexamDetail.vue'),
           meta: {
@@ -125,11 +125,20 @@ const router = new Router({
       meta: {
         title: '支付完成'
       }
+    },
+    {
+      path: '/reupload/:orderid',
+      name:'reupload',
+      component: () => import('./views/Reupload.vue'),
+      meta: {
+        title: '重新上传'
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(from)
   if (to.meta.title) {
     document.title = to.meta.title
   }
