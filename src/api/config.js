@@ -3,6 +3,7 @@ export const config = {
   // BASE_URL: 'http://test.richepipe.com:9200',
   IMG_BASE_URL: 'https://www.richepipe.com',
   // IMG_BASE_URL: 'http://test.richepipe.com',
+  USER_SHEET: 'https://www.richepipe.com/dist/excel/员工报名表.xlsx',
   ERR_OK: 200
 }
 

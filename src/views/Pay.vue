@@ -25,14 +25,14 @@
         <div class="info-container" v-show='isGropu'>
           <p>
             <span>{{title}}名称</span>
-            <span>{{title}}时间</span>
+            <span>{{title}}编号</span>
             <span>单价</span>
             <span>数量</span>
             <span>总价</span>
           </p>
           <h5>
             <span>{{info.name}}</span>
-            <span>{{info.examDate}}</span>
+            <span>{{info.id}}</span>
             <span>{{info.price}} 元</span>
             <el-input-number size="mini" v-model="num" :min='1'></el-input-number>
             <span style="color:#FF475D;">￥ {{num*info.price}}</span>
@@ -76,18 +76,19 @@
           <el-tabs :tab-position="tabPosition" type="border-card" v-show="isGropu">
             <el-tab-pane>
               <span slot="label">
-                  <img src="../common/image/wechat.png" alt="">银行支付
+                  <img src="../common/image/unionPay.png" alt="">银行支付
                 </span>
               <div class="pay-box-card">
                 <div class="info-content">
                   <h4>转账支付流程说明</h4>
                   <div>1、将上述金额转账至 ：</div>
-                  <div style="text-indent :30px;">公司开户名：上海xxxxxx有限公司 </div>
-                  <div style="text-indent :30px;">公司账户：xxxx xxxx xxxx xxx</div>
-                  <div style="text-indent :30px;">公司开户行：xxxxxxxxx </div>
-                  <div>2、将贵公司名称，转账记录及报名员工统计表发送至邮箱：xxxxxxx@xxx.com </div>
-                  <div style="margin-bottom:70px;">3、报名成功后，您将收到确认邮件和员工报考报</div>
-                  <span>
+                  <div style="text-indent :30px;">公司开户名：锐驰高科股份有限公司 </div>
+                  <div style="text-indent :30px;">公司账户：257202709096</div>
+                  <div style="text-indent :30px;">公司开户行：中国银行濮阳科技新村支行 </div>
+                  <div>2、将贵公司名称，转账记录及报名员工统计表发送至邮箱：richht@163.com  </div>
+                  <div>3、统计表里面备注考试编号和报名公司</div>
+                  <div style="margin-bottom:60px;">4、报名成功后，您将收到确认邮件和员工报考表</div>
+                  <span @click="downLoadSheet">
                     <i class="el-icon-download"></i>
                     员工统计表
                   </span>
@@ -208,6 +209,11 @@ export default {
           clearInterval(timer)
         })
       }, 8000)
+    },
+
+    // 下载员工表
+    downLoadSheet() {
+      window.location.href = config.USER_SHEET
     }
   },
   components: {

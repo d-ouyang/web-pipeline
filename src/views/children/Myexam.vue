@@ -32,9 +32,99 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="审核中">配置管理</el-tab-pane>
-      <el-tab-pane label="等待考试">角色管理</el-tab-pane>
-      <el-tab-pane label="考试结果">定时任务补偿</el-tab-pane>
+      <el-tab-pane label="审核中">
+        <el-table :stripe='true' :data="tableDataPart1" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="examName" label="考试名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="考试时间">
+            <template slot-scope="scope">
+              <p style="font-weight:bold;">{{scope.row.examDateDay}}</p>
+              <p style="font-weight:bold;">{{scope.row.examDateStartTime}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="statusText" label="当前状态">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.statusColor}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="result" label="">
+            <template slot-scope="scope">
+              <div v-if="scope.row.isBtn">
+                <el-button size="small" @click.stop="bindBtn(scope.row)">{{scope.row.result}}</el-button>
+                <p v-if="scope.row.timing == 2" style="color:#FF475D;font-size:10px;">*需打印后携带</p>
+              </div>
+              <span v-else style="font-weight:bold;" :style="{color: scope.row.resultColor}">{{ scope.row.result }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="等待考试">
+        <el-table :stripe='true' :data="tableDataPart2" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="examName" label="考试名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="考试时间">
+            <template slot-scope="scope">
+              <p style="font-weight:bold;">{{scope.row.examDateDay}}</p>
+              <p style="font-weight:bold;">{{scope.row.examDateStartTime}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="statusText" label="当前状态">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.statusColor}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="result" label="">
+            <template slot-scope="scope">
+              <div v-if="scope.row.isBtn">
+                <el-button size="small" @click.stop="bindBtn(scope.row)">{{scope.row.result}}</el-button>
+                <p v-if="scope.row.timing == 2" style="color:#FF475D;font-size:10px;">*需打印后携带</p>
+              </div>
+              <span v-else style="font-weight:bold;" :style="{color: scope.row.resultColor}">{{ scope.row.result }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="考试结果">
+        <el-table :stripe='true' :data="tableDataPart3" style="width: 100%" height="600" @cell-click='selectRow'>
+          <el-table-column fixed prop="examName" label="考试名称">
+          </el-table-column>
+          <el-table-column prop="startDate" label="考试时间">
+            <template slot-scope="scope">
+              <p style="font-weight:bold;">{{scope.row.examDateDay}}</p>
+              <p style="font-weight:bold;">{{scope.row.examDateStartTime}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="statusText" label="当前状态">
+            <template slot-scope="scope">
+              <span style="font-weight:bold;" :style="{color: scope.row.statusColor}">{{ scope.row.statusText }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="result" label="">
+            <template slot-scope="scope">
+              <div v-if="scope.row.isBtn">
+                <el-button size="small" @click.stop="bindBtn(scope.row)">{{scope.row.result}}</el-button>
+                <p v-if="scope.row.timing == 2" style="color:#FF475D;font-size:10px;">*需打印后携带</p>
+              </div>
+              <span v-else style="font-weight:bold;" :style="{color: scope.row.resultColor}">{{ scope.row.result }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="" label="" width="40">
+            <template slot-scope="scope">
+              <i class="el-icon-arrow-right"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -130,6 +220,7 @@ export default {
       let currentTime = new Date().getTime()
       for (let i in arr) {
         let obj = {}
+        console.log(arr[i])
         obj.examDateDay = arr[i].examDate.split('T')[0]
         obj.examDateStartTime = arr[i].examDate.split('T')[1]
         let examDateTime = new Date(`${obj.examDateDay} ${obj.examDateStartTime}`).getTime()
@@ -147,7 +238,7 @@ export default {
           obj.result = ''
           obj.resultColor = ''
           obj = Object.assign({}, obj, arr[i])
-        } else if (arr[i].status == 1) {
+        } else if (arr[i].status == 1 || arr[i].status == 4) {
           obj.timing = 1 // 已付款  待审核
           obj.statusText = '已付款'
           obj.statusColor = '#4B6796'

@@ -68,7 +68,7 @@
       reUpload() {
         console.log('重新上传')
         let params = {
-          orderId: parseInt(this.orderid),
+          id: parseInt(this.orderid),
           graduationCertificate: this.graduationUploadSrc,
           qualificationCertificate: this.intelligenceUploadSrc
         }
@@ -77,7 +77,7 @@
           return false
         }
         this.Api.reUpload(params).then(res => {
-          this.showToastSuccess('重新上传成功')
+          this.showToastSuccess('上传成功')
           this.$router.push({
             name: 'myexam'
           })

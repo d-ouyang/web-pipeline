@@ -45,7 +45,7 @@
           <div class="info-box-wrapper">
             <div class="info-content">
               <p>1、通过在线支付或公司转账支付报名费用，报名费用为每人价格 </p>
-              <p>2、将贵公司名称及报名员工统计表发送至邮箱：xxxxxxx@xxx.com </p>
+              <p>2、将贵公司名称及报名员工统计表发送至邮箱：richht@163.com  </p>
               <P>3、报名成功后，您将收到确认邮件和员工报考证</P>
             </div>
           </div>
@@ -101,7 +101,7 @@
         </div>
 
         <div class="comfirm-btn">
-          <el-button @click="goToPay">确认并支付</el-button>
+          <el-button @click="goToPay">{{isGropu ? "下一步" : "确认并支付"}}</el-button>
         </div>
       </el-main>
     </el-container>
@@ -114,6 +114,7 @@
 import OFooter from '@/components/Footer.vue'
 import OExamNotes from '@/components/ExamNotes.vue'
 import { config } from '../api/config'
+import { isLogin } from '../common/js/utils'
 const IMG_BASE_URL = config.IMG_BASE_URL
 
 export default {
@@ -202,29 +203,35 @@ export default {
       console.log(this.isGropu)
       // 判断要生成个什么订单
       if (this.isGropu) { // 公司 一定是 公司统一订单
-        this.Api.getUserInfo(1).then(res => {
-          console.log(res)
-          console.log('公司')
-          let data = {
-            companyId: res.companyId,
-            userId: res.id,
-            examId: this.id,
-            attachment: 'empty',
-            price: this.info.price
-          }
-          console.log(data)
-          return this.Api.createCompanyExamOrder(data)
-        })
-          .then(res => {
-            console.log(res)
-            let params = {
-              group: this.group,
-              type: this.type,
-              id: this.id,
-              orderid: res.id
-            }
-            this._goToOrderPage(params)
-          })
+        let params = {
+          group: this.group,
+          type: this.type,
+          id: this.id,
+          orderid: null
+        }
+        this._goToOrderPage(params)
+        // this.Api.getUserInfo(1).then(res => {
+        //   console.log(res)
+        //   console.log('公司')
+        //   let data = {
+        //     companyId: res.companyId,
+        //     userId: res.id,
+        //     examId: this.id,
+        //     attachment: 'empty',
+        //     price: this.info.price
+        //   }
+        //   console.log(data)
+        //   return this.Api.createCompanyExamOrder(data)
+        // }).then(res => {
+        //   console.log(res)
+        //   let params = {
+        //     group: this.group,
+        //     type: this.type,
+        //     id: this.id,
+        //     orderid: res.id
+        //   }
+        //   this._goToOrderPage(params)
+        // })
       } else {
         if (this.type == 'exam') { // 个人 考试订单
           this.Api.getUserInfo(1).then(res => {

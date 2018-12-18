@@ -26,12 +26,12 @@ export default {
   },
   mounted () {
     console.log(isLogin())
+    // 初始化 默认不显示登录框
+    this.showLogin = false
     if (isLogin()) {
-      this.showLogin = false
       this.isLogin = true
       this.getUserInfo()
     } else {
-      this.showLogin = true
       this.isLogin = false
     }
   },
