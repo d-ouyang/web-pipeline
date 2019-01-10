@@ -9,7 +9,7 @@
           </el-table-column>
           <el-table-column prop="location" label="开课地址">
           </el-table-column>
-           <el-table-column prop="statusText" label="">
+          <el-table-column prop="statusText" label="">
             <template slot-scope="scope">
               <span style="font-weight:bold;" :style="{color: scope.row.color}">{{ scope.row.statusText }}</span>
             </template>

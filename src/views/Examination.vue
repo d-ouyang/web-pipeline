@@ -22,7 +22,7 @@
                   </div>
                   <div class="detail-bottom">
                     <h4>￥{{item.price}}</h4>
-                    <p>报名时间：{{item.examDate}}</p>
+                    <p>报名时间：{{item.registerStartDate}} - {{item.registerEndDate}}</p>
                   </div>
                 </div>
               </div>
@@ -72,6 +72,8 @@ export default {
     },
     _handleExams (arr) {
       for (let i in arr) {
+        arr[i].registerStartDate = this._handleDate(arr[i].registerStartDate)
+        arr[i].registerEndDate = this._handleDate(arr[i].registerEndDate)
         if (arr[i].type == 1) {
           arr[i].src = require('../common/image/course1.png')
         } else if (arr[i].type == 2) {

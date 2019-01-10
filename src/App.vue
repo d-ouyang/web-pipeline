@@ -3,7 +3,7 @@
     <!-- <o-header v-on:login='bindLogin'></o-header> -->
     <o-header v-on:exit='bindExit' v-on:login='bindLogin' v-bind:showLogin='isLogin' v-bind:userInfo='userInfo'></o-header>
     <header style="height:60px;"></header>
-	  <router-view v-bind:showLogin='showLogin' v-on:cancle='bindCancle' v-on:exit='bindExit'></router-view>
+	  <router-view v-bind:showLogin='showLogin' v-on:cancle='bindCancle' v-on:exit='bindExit' v-on:registerOver='registerOver'></router-view>
   </div>
 </template>
 <script>
@@ -59,6 +59,10 @@ export default {
       this.showLogin = true
       this.userInfo = {}
       this.$router.push('/home')
+    },
+    registerOver () {
+      this.isLogin = true
+      this.showLogin = false
     }
   }
 }

@@ -302,12 +302,15 @@ export default {
       this.graduationUploadBool = true
     },
     handleGraduationError (err, file, fileList) {
-      consol.elog(err)
+      console.log(err)
       this.graduationUploadBool = false
       this.showToastError('上传失败')
     },
     beforeGraduationUpload (file) {
-      console.log(file)
+      if (file.size >= 5 * 1024 * 1024) {
+        this.showToastError('文件超过 5M')
+        return false
+      }
     },
 
     // 上传资质证书
@@ -317,12 +320,15 @@ export default {
       this.intelligenceUploadBool = true
     },
     handleIntelligenceError (err, file, fileList) {
-      consol.elog(err)
+      console.log(err)
       this.intelligenceUploadBool = false
       this.showToastError('上传失败')
     },
     beforeIntelligenceUpload (file) {
-      console.log(file)
+      if (file.size >= 5 * 1024 * 1024) {
+        this.showToastError('文件超过 5M')
+        return false
+      }
     }
 
   },

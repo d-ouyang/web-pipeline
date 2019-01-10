@@ -292,6 +292,7 @@ export default {
             console.log(res)
             window.localStorage.setItem('token', res.token)
             window.localStorage.setItem('userInfo', res.user)
+            this.$emit('registerOver')
             this.$router.push({
               path: '/'
             })

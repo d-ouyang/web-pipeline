@@ -35,7 +35,7 @@
             <span>{{info.id}}</span>
             <span>{{info.price}} 元</span>
             <el-input-number size="mini" v-model="num" :min='1'></el-input-number>
-            <span style="color:#FF475D;">￥ {{num*info.price}}</span>
+            <span style="color:#FF475D;">￥ {{(num*info.price).toFixed(2)}}</span>
           </h5>
         </div>
 
@@ -190,9 +190,9 @@ export default {
     // 轮询订单
     _pollingPay (id) {
       let timer = this.timer
+      clearInterval(timer)
       timer = setInterval(() => {
         this.Api.pollingPay(id).then(res => {
-          console.log(res)
           this.timer = timer
           if (res.status == 1) {
             clearInterval(timer)
