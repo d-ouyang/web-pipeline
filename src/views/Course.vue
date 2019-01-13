@@ -33,7 +33,9 @@
               </ul>
             </el-tab-pane>
             <el-tab-pane name="heat">
-              <span slot="label">人气 <i class="el-icon-sort-down"></i></span>
+              <span slot="label">人气 
+                <!-- <i class="el-icon-sort-down"></i> -->
+              </span>
               <ul class="list">
                 <li class="item" v-for="(item, index) in courses" :key='index'>
                   <div class="item-info">
@@ -58,7 +60,9 @@
               </ul>
             </el-tab-pane>
             <el-tab-pane name="price">
-              <span slot="label">价格 <i class="el-icon-d-caret"></i></span>
+              <span slot="label">价格 
+                <!-- <i class="el-icon-d-caret"></i> -->
+              </span>
               <ul class="list">
                 <li class="item" v-for="(item, index) in courses" :key='index'>
                   <div class="item-info">

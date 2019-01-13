@@ -5,11 +5,10 @@
         <h3>
           <span class="login-title">登录</span>
           <div class="phone-login" @click="toPhoneLogin">
-            <span>手机验证快捷登录</span>
+            <span>手机验证码登录</span>
             <i class="el-icon-arrow-right"></i>
           </div>
         </h3>
-        <!-- <p class="error-text">账号或密码错误</p> -->
         <el-form class="form" status-icon ref="form" :model="formLogin" :rules="rulesLogin">
           <el-form-item class="form-item" prop='user'>
             <img class="input-icon" src="./image/icon-user.png" alt="">
@@ -42,7 +41,7 @@
             <i class="el-icon-arrow-right"></i>
           </div>
         </h3>
-
+        <p class="error-text">登录需优先注册</p>
         <el-form class="form" status-icon ref="phone-form" :model="formPhoneLogin" :rules="rulesPhoneLogin">
           <el-form-item class="form-item" prop='phone'>
             <img class="input-icon" src="./image/icon-phone.png" alt="">

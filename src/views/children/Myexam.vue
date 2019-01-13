@@ -148,6 +148,14 @@ export default {
   methods: {
     selectRow (row, column, cell, event) {
       console.log(row)
+      if (row.examId == null) {
+        this.$message({
+          type: 'error',
+          message: '暂时无法查看详情',
+          showClose: true,
+        }); 
+        return false
+      }
       if (row.timing == 0) { // 未付款
         this.$confirm('此考试未完成支付，立即支付？', '提示', {
           confirmButtonText: '前往支付',
@@ -218,9 +226,11 @@ export default {
       let dataPart2 = [] // 待考试
       let dataPart3 = [] // 考试结果
       let currentTime = new Date().getTime()
+      console.log(arr)
+
       for (let i in arr) {
         let obj = {}
-        console.log(arr[i])
+        // console.log(arr[i])
         obj.examDateDay = arr[i].examDate.split('T')[0]
         obj.examDateStartTime = arr[i].examDate.split('T')[1]
         let examDateTime = new Date(`${obj.examDateDay} ${obj.examDateStartTime}`).getTime()
@@ -238,7 +248,7 @@ export default {
           obj.result = ''
           obj.resultColor = ''
           obj = Object.assign({}, obj, arr[i])
-        } else if (arr[i].status == 1 || arr[i].status == 4) {
+        } else if (arr[i].status == 1 || arr[i].status == 4 || arr[i].status == null) {
           obj.timing = 1 // 已付款  待审核
           obj.statusText = '已付款'
           obj.statusColor = '#4B6796'
@@ -256,7 +266,7 @@ export default {
           obj.resultColor = '#4C84FF'
           obj = Object.assign({}, obj, arr[i])
           dataPart2.push(obj)
-        } else if (arr[i].status == 2) {
+        } else if (arr[i].status == 2 && currentTime >= examDateTime) {
           if (arr[i].examResult == '通过') {
             obj.timing = 3 // 已付款  审核通过  考试通过
             obj.statusText = '考试已通过'
@@ -265,7 +275,7 @@ export default {
             obj.resultColor = '#0FD6AB'
             obj = Object.assign({}, obj, arr[i])
             dataPart3.push(obj)
-          } else if (arr[i].examResult == '未通过') {
+          } else if (arr[i].examResult == '未通过' || arr[i].examResult == null) {
             obj.timing = 4 // 已付款  审核通过  考试未通过
             obj.statusText = '考试未通过'
             obj.statusColor = '#FF475D'
@@ -287,9 +297,9 @@ export default {
         dataAll.push(obj)
       }
       console.log(dataAll)
-      console.log(dataPart1)
-      console.log(dataPart2)
-      console.log(dataPart3)
+      // console.log(dataPart1)
+      // console.log(dataPart2)
+      // console.log(dataPart3)
       this.tableDataAll = dataAll
       this.tableDataPart1 = dataPart1
       this.tableDataPart2 = dataPart2

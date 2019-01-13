@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class="info-container">
+        <div class="info-container" v-if='orderinfoShow'>
           <h4 class="info-header">
             <span>支付情况</span>
           </h4>
@@ -80,6 +80,7 @@ export default {
         price: '',
         title: ''
       },
+      orderinfoShow: true,
       orderInfo: {
         payText: '',
         price: '',
@@ -122,8 +123,10 @@ export default {
           res.payText = '其它'
         }
         res.time = this._returnYND(res.bookAt)
-        
+        this.orderinfoShow = true
         this.orderInfo = Object.assign({},res)
+      }).catch(err => {
+        this.orderinfoShow = false
       })
     },
     // 年月日

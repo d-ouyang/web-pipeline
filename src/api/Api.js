@@ -71,7 +71,7 @@ export default {
       },
       // 获取考试列表
       getExams () {
-        return requestClient.fetch(request.METHOD_GET, `/exam/id/0`, {})
+        return requestClient.fetch(request.METHOD_GET, `/exam`, {})
       },
       // 获取课程详情
       getCourseDetail (id) {

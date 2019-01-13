@@ -12,7 +12,7 @@
         <div class="info-container">
           <h4 class="info-header">
             <span>{{title}}信息</span>
-            <span class="examination-notes" @click="bindNotes">考试须知</span>
+            <span v-if='showExam' class="examination-notes" @click="bindNotes">考试须知</span>
           </h4>
           <div class="info-wrapper">
             <table class="info-box">
@@ -210,28 +210,6 @@ export default {
           orderid: null
         }
         this._goToOrderPage(params)
-        // this.Api.getUserInfo(1).then(res => {
-        //   console.log(res)
-        //   console.log('公司')
-        //   let data = {
-        //     companyId: res.companyId,
-        //     userId: res.id,
-        //     examId: this.id,
-        //     attachment: 'empty',
-        //     price: this.info.price
-        //   }
-        //   console.log(data)
-        //   return this.Api.createCompanyExamOrder(data)
-        // }).then(res => {
-        //   console.log(res)
-        //   let params = {
-        //     group: this.group,
-        //     type: this.type,
-        //     id: this.id,
-        //     orderid: res.id
-        //   }
-        //   this._goToOrderPage(params)
-        // })
       } else {
         if (this.type == 'exam') { // 个人 考试订单
           this.Api.getUserInfo(1).then(res => {

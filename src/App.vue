@@ -63,6 +63,7 @@ export default {
     registerOver () {
       this.isLogin = true
       this.showLogin = false
+      this.getUserInfo()
     }
   }
 }

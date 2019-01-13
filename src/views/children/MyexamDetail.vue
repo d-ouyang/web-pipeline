@@ -36,7 +36,7 @@
               <table class="info-box">
                 <tr>
                   <td class="name">考试时间</td>
-                  <td class="value">{{info.examDate}}</td>
+                  <td class="value">{{info.examDate}} - {{info.endDate}}</td>
                   <!-- <td class="value"></td> -->
                 </tr>
                 <tr>
@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <div class="info-container">
+        <div class="info-container" v-if='orderinfoShow'>
           <h4 class="info-header">
             <span>支付情况</span>
             <!-- <span class="examination-notes" @click="bindNotes">考试须知</span> -->
@@ -91,8 +91,10 @@ export default {
         name: '',
         location: '',
         examDate: '',
+        endDate: '',
         title: ''
       },
+      orderinfoShow: true,
       orderInfo: {
         payText: '',
         price: '',
@@ -128,6 +130,7 @@ export default {
         } else if (status == 5) {
           res.title = '审核未通过'
         }
+        console.log(res)
         this.info = Object.assign({},res)
       })
 
@@ -141,8 +144,10 @@ export default {
           res.payText = '其它'
         }
         res.time = this._returnYND(res.bookAt)
-        
+        this.orderinfoShow = true
         this.orderInfo = Object.assign({},res)
+      }).catch(err => {
+         this.orderinfoShow = false
       })
     },
     // 年月日

@@ -86,7 +86,7 @@
                   <div style="text-indent :30px;">公司账户：257202709096</div>
                   <div style="text-indent :30px;">公司开户行：中国银行濮阳科技新村支行 </div>
                   <div>2、将贵公司名称，转账记录及报名员工统计表发送至邮箱：richht@163.com  </div>
-                  <div>3、统计表里面备注考试编号和报名公司</div>
+                  <div>3、请在邮件中备注考试名称</div>
                   <div style="margin-bottom:60px;">4、报名成功后，您将收到确认邮件和员工报考表</div>
                   <span @click="downLoadSheet">
                     <i class="el-icon-download"></i>
