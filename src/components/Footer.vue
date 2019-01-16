@@ -1,6 +1,6 @@
 <template>
   <el-footer class="footer" height="27px">
-    <p :style="{color:color}">Copyright@2018 沪ICP备16035344号-1</p>
+    <p :style="{color:color}">Copyright@2018 <a target="_blank" href="http://www.miitbeian.gov.cn">豫ICP备11006208号-3</a></p>
   </el-footer>
 </template>
 <script>
